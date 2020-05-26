@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Products from Erokhin</string>
+    <string name="start">Start</string>
+    <string name="menu">Menu</string>
+    <string name="cart">Cart</string>
+    <string name="profile">Profile</string>
+    <string name="more">More</string>
 </resources>
