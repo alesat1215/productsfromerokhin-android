@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Products from Erokhin</string>
+    <!--MainActivity-->
     <string name="start">Start</string>
     <string name="menu">Menu</string>
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
     <string name="more">More</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
