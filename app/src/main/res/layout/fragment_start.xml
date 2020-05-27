@@ -39,5 +39,15 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/image_description"
             app:srcCompat="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/imageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Image title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
