@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
+    android:padding="2dp"
     app:cardCornerRadius="10dp"
     app:cardUseCompatPadding="true">
 
@@ -29,7 +30,6 @@
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:orientation="vertical"
-        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/productImage"
         app:layout_constraintStart_toEndOf="@+id/productImage"
         app:layout_constraintTop_toTopOf="@+id/productImage">
@@ -40,23 +40,32 @@
           android:layout_height="wrap_content"
           tools:text="@tools:sample/lorem[3]" />
 
-      <TextView
-          android:id="@+id/price"
+      <androidx.cardview.widget.CardView
+          android:id="@+id/priceContainer"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textSize="15sp"
-          android:textStyle="bold"
-          tools:text="@tools:sample/lorem[4]" />
+          android:layout_marginTop="8dp"
+          app:cardBackgroundColor="?attr/colorButtonNormal"
+          app:cardCornerRadius="10dp"
+          app:contentPadding="8dp">
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="@tools:sample/lorem[4]" />
+      </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
     <ImageView
         android:id="@+id/inCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/productInfo"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/productInfo"
         app:layout_constraintTop_toTopOf="@+id/productInfo"
         app:srcCompat="@android:drawable/ic_menu_add" />
