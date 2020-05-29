@@ -25,7 +25,7 @@ class StartFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_start, container, false).apply {
-            list.adapter = MyAdapter().apply { viewModel.products { it.filter { (it.price ?: 0) == 250 } }
+            list.adapter = MyAdapter().apply { viewModel.products { (it.price ?: 0) == 250 }
                 .observe(viewLifecycleOwner, Observer {
                     dataset = it
                     notifyDataSetChanged()
