@@ -38,8 +38,6 @@ class StartFragment : Fragment() {
 
 }
 
-//data class Products(val name: String, val price: Int)
-
 class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 class MyAdapter(private val dataset: List<Product>): RecyclerView.Adapter<MyViewHolder>() {
