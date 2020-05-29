@@ -53,7 +53,7 @@
           android:layout_height="wrap_content"
           android:textSize="20sp"
           android:textStyle="bold"
-          tools:text="250 P / k" />
+          tools:text="250 P / kg" />
     </androidx.cardview.widget.CardView>
 
     <ImageButton
