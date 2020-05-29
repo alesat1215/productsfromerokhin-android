@@ -18,35 +18,34 @@
         android:id="@+id/productImage"
         android:layout_width="120dp"
         android:layout_height="97dp"
+        android:layout_marginTop="8dp"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
         tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/productImage"
-        app:layout_constraintTop_toTopOf="@+id/productImage"
-        tools:text="Name \nlast name" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/full_names" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/priceContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:cardBackgroundColor="?attr/colorButtonNormal"
         app:cardCornerRadius="10dp"
         app:contentPadding="8dp"
         app:layout_constraintStart_toEndOf="@+id/productImage"
-        app:layout_constraintTop_toBottomOf="@+id/name">
+        app:layout_constraintTop_toTopOf="@+id/productImage">
 
       <TextView
           android:id="@+id/price"
@@ -54,17 +53,39 @@
           android:layout_height="wrap_content"
           android:textSize="20sp"
           android:textStyle="bold"
-          tools:text="250 P" />
+          tools:text="250 P / k" />
     </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/inCart"
+    <ImageButton
+        android:id="@+id/del"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/priceContainer"
-        app:layout_constraintStart_toEndOf="@+id/priceContainer"
-        app:layout_constraintTop_toTopOf="@+id/priceContainer"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/productImage"
+        app:layout_constraintStart_toEndOf="@+id/productImage"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/del"
+        app:layout_constraintStart_toEndOf="@+id/del"
+        app:layout_constraintTop_toTopOf="@+id/del"
+        tools:text="5" />
+
+    <ImageButton
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/productImage"
+        app:layout_constraintStart_toEndOf="@+id/count"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
