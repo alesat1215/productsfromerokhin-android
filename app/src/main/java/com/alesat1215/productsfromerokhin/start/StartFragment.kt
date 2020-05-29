@@ -25,16 +25,14 @@ class StartFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_start, container, false).apply {
-            list.adapter = MyAdapter().apply { viewModel.products { (it.price ?: 0) == 250 }
+            viewModel.products { (it.price ?: 0) == 250 }
                 .observe(viewLifecycleOwner, Observer {
-                    dataset = it
-                    notifyDataSetChanged()
-                })}
-            list2.adapter = MyAdapter().apply { viewModel.products()
+                    list.adapter = MyAdapter(it)
+                })
+            viewModel.products()
                 .observe(viewLifecycleOwner, Observer {
-                    dataset = it
-                    notifyDataSetChanged()
-                }) }
+                    list2.adapter = MyAdapter(it)
+                })
         }
     }
 
@@ -44,10 +42,10 @@ class StartFragment : Fragment() {
 
 class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-class MyAdapter(): RecyclerView.Adapter<MyViewHolder>() {
+class MyAdapter(val dataset: List<Product>): RecyclerView.Adapter<MyViewHolder>() {
 
 //    val products = Array(10) { Product("Name name", price = 250) }
-    var dataset: List<Product>? = null
+//    var dataset: List<Product>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
@@ -55,13 +53,13 @@ class MyAdapter(): RecyclerView.Adapter<MyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return dataset?.size ?: 0
+        return dataset.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val product = dataset?.get(position)
-        holder.itemView.name.text = product?.name
-        holder.itemView.price.text = product?.price.toString() + " P/kg"
+        val product = dataset.get(position)
+        holder.itemView.name.text = product.name
+        holder.itemView.price.text = product.price.toString() + " P/kg"
         holder.itemView.productImage.setImageResource(androidx.vectordrawable.R.color.notification_action_color_filter)
         holder.itemView.count.text = "3"
     }
