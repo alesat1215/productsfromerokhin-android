@@ -12,15 +12,24 @@
       android:layout_height="match_parent"
       android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/productImage"
-        android:layout_width="120dp"
-        android:layout_height="97dp"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/productImageContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:scaleType="fitXY"
+        app:cardCornerRadius="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toBottomOf="@+id/name">
+
+      <ImageView
+          android:id="@+id/productImage"
+          android:layout_width="120dp"
+          android:layout_height="97dp"
+          android:contentDescription="@string/product_image_description"
+          android:scaleType="fitXY"
+          tools:src="@tools:sample/avatars" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/name"
@@ -42,8 +51,8 @@
         app:cardBackgroundColor="?attr/colorButtonNormal"
         app:cardCornerRadius="10dp"
         app:contentPadding="8dp"
-        app:layout_constraintStart_toEndOf="@+id/productImage"
-        app:layout_constraintTop_toTopOf="@+id/productImage">
+        app:layout_constraintStart_toEndOf="@+id/productImageContainer"
+        app:layout_constraintTop_toTopOf="@+id/productImageContainer">
 
       <TextView
           android:id="@+id/price"
@@ -60,8 +69,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/productImage"
-        app:layout_constraintStart_toEndOf="@+id/productImage"
+        android:contentDescription="@string/del_button_description"
+        app:layout_constraintBottom_toBottomOf="@+id/productImageContainer"
+        app:layout_constraintStart_toEndOf="@+id/productImageContainer"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
     <TextView
@@ -82,7 +92,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/productImage"
+        android:contentDescription="@string/add_button_description"
+        app:layout_constraintBottom_toBottomOf="@+id/productImageContainer"
         app:layout_constraintStart_toEndOf="@+id/count"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
