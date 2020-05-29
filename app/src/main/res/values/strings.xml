@@ -8,4 +8,7 @@
     <string name="more">More</string>
     <!--StartFragment-->
     <string name="image_description">"Image with title"</string>
+    <string name="product_image_description">"Product image"</string>
+    <string name="add_button_description">"Add button"</string>
+    <string name="del_button_description">"Del button"</string>
 </resources>
