@@ -42,10 +42,7 @@ class StartFragment : Fragment() {
 
 class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-class MyAdapter(val dataset: List<Product>): RecyclerView.Adapter<MyViewHolder>() {
-
-//    val products = Array(10) { Product("Name name", price = 250) }
-//    var dataset: List<Product>? = null
+class MyAdapter(private val dataset: List<Product>): RecyclerView.Adapter<MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
