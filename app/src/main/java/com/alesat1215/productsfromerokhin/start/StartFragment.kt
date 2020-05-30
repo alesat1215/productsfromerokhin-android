@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
-import kotlinx.android.synthetic.main.list_item.view.*
+import com.alesat1215.productsfromerokhin.databinding.ListItemBinding
 
 /**
  * A simple [Fragment] subclass.
@@ -47,24 +48,22 @@ class StartFragment : Fragment() {
 
 }
 
-class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+class MyViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 
-class MyAdapter(private val dataset: List<Product>): RecyclerView.Adapter<MyViewHolder>() {
+class MyAdapter(private val dataSet: List<Product>): RecyclerView.Adapter<MyViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-        return MyViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        MyViewHolder(ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    override fun getItemCount(): Int {
-        return dataset.size
-    }
+    override fun getItemCount() = dataSet.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val product = dataset.get(position)
-        holder.itemView.name.text = product.name
-        holder.itemView.price.text = product.price.toString() + " P/kg"
-        holder.itemView.productImage.setImageResource(androidx.vectordrawable.R.color.notification_action_color_filter)
-        holder.itemView.count.text = "3"
+//        val product = dataset.get(position)
+//        holder.itemView.name.text = product.name
+//        holder.itemView.price.text = product.price.toString() + " P/kg"
+//        holder.itemView.productImage.setImageResource(androidx.vectordrawable.R.color.notification_action_color_filter)
+//        holder.itemView.count.text = "3"
+        holder.binding.setVariable(BR.product, dataSet[position])
+        holder.binding.executePendingBindings()
     }
 }
