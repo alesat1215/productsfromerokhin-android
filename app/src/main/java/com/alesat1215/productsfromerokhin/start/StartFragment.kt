@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Product
-import kotlinx.android.synthetic.main.fragment_start.view.*
+import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
 import kotlinx.android.synthetic.main.list_item.view.*
 
 /**
@@ -24,17 +24,26 @@ class StartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_start, container, false).apply {
-            viewModel.products { (it.price ?: 0) == 250 }
-                .observe(viewLifecycleOwner, Observer {
-                    list.adapter = MyAdapter(it)
-                })
-            viewModel.products()
-                .observe(viewLifecycleOwner, Observer {
-                    list2.adapter = MyAdapter(it)
-                })
-        }
+        return FragmentStartBinding.inflate(inflater, container, false).apply {
+            viewModel = this@StartFragment.viewModel
+            adapterToList(list) { (it.price ?: 0) == 250 }
+            adapterToList(list2)
+            executePendingBindings()
+//            viewModel.products { (it.price ?: 0) == 250 }
+//                .observe(viewLifecycleOwner, Observer {
+//                    list.adapter = MyAdapter(it)
+//                })
+//            viewModel.products()
+//                .observe(viewLifecycleOwner, Observer {
+//                    list2.adapter = MyAdapter(it)
+//                })
+        }.root
     }
+
+    private fun adapterToList(list: RecyclerView, predicate: ((Product) -> Boolean)? = null) =
+        viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
+            list.adapter = MyAdapter(it)
+        })
 
 }
 

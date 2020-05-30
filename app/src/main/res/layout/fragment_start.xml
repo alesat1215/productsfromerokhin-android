@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".start.StartFragment">
 
+    <data>
+        <import type="com.alesat1215.productsfromerokhin.data.StartTitle"/>
+        <variable
+            name="viewModel"
+            type="com.alesat1215.productsfromerokhin.start.StartViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,13 +26,14 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="Title"
+                android:text="@{viewModel.title(StartTitle.TITLE)}"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/ImageContainer"
@@ -51,10 +59,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="Image title"
+                    android:text="@{viewModel.title(StartTitle.IMAGE)}"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    app:autoSizeTextType="uniform" />
+                    app:autoSizeTextType="uniform"
+                    tools:text="Image title" />
             </androidx.cardview.widget.CardView>
 
             <FrameLayout
@@ -80,10 +89,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="List title"
+                        android:text="@{viewModel.title(StartTitle.LIST)}"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        app:autoSizeTextType="uniform" />
+                        app:autoSizeTextType="uniform"
+                        tools:text="List title" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -107,12 +117,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="List title 2"
+                android:text="@{viewModel.title(StartTitle.LIST2)}"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/list" />
+                app:layout_constraintTop_toBottomOf="@+id/list"
+                tools:text="List title 2" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list2"
