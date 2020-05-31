@@ -11,4 +11,5 @@
     <string name="product_image_description">"Product image"</string>
     <string name="add_button_description">"Add button"</string>
     <string name="del_button_description">"Del button"</string>
+    <string name="rub_kg">₽/kg</string>
 </resources>

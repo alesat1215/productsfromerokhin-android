@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="@{product.price.toString()}"
+            android:text="@{product.price.toString() + ' ' + @string/rub_kg}"
             tools:text="250 P / kg" />
       </androidx.cardview.widget.CardView>
 
