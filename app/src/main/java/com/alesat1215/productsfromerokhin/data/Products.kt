@@ -5,8 +5,8 @@ import androidx.room.*
 data class Products(
     @Embedded val group: Group,
     @Relation(
-        parentColumn = "index",
-        entityColumn = "groupIndex"
+        parentColumn = "id",
+        entityColumn = "groupId"
     )
     var products: List<Product>? = null
 )
@@ -14,8 +14,8 @@ data class Products(
 @Fts4
 @Entity
 data class Group(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "rowid")
-    var groupId: Int,
+//    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "rowid")
+    var id: String = "",
     var index: Int? = null,
     var name: String? = null
 )
@@ -23,9 +23,9 @@ data class Group(
 @Fts4
 @Entity
 data class Product(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "rowid")
-    var productId: Int,
-    var groupIndex: Int,
+//    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "rowid")
+    var id: String = "",
+    var groupId: String = "",
     var index: Int? = null,
     var name: String? = null,
     var last_name: String? = null,
