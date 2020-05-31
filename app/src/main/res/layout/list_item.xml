@@ -70,7 +70,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:text="@{product.price.toString() + ' ' + @string/rub_kg}"
-            tools:text="250 P / kg" />
+            tools:text="250 ₽/kg" />
       </androidx.cardview.widget.CardView>
 
       <ImageButton
