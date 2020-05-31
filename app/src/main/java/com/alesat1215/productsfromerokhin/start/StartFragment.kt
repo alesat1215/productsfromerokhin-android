@@ -17,7 +17,7 @@ import com.alesat1215.productsfromerokhin.util.BindRVAdapter
  */
 class StartFragment : Fragment() {
 
-    val viewModel: StartViewModel by viewModels()
+    private val viewModel: StartViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
