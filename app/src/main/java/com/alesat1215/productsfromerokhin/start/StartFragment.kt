@@ -43,7 +43,7 @@ class StartFragment : Fragment() {
 
     private fun adapterToList(list: RecyclerView, predicate: ((Product) -> Boolean)? = null) =
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
-            list.adapter = MyAdapter(it)
+            list.swapAdapter(MyAdapter(it), false)
         })
 
 }
