@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.alesat1215.productsfromerokhin.data.Products
+import com.alesat1215.productsfromerokhin.data.RemoteData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,12 +34,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        val products = snapshot.getValue(Products::class.java)
-//                        Log.d("firebase", "${products?.groups?.size}")
-//                        for (group in products?.groups ?: emptyList()) {
-//                            Log.d("firebase", "${group.products?.size} ${group.order}")
-//                        }
-                        for (product in products?.productsWithGroupOrder() ?: emptyList()) {
+                        val data = snapshot.getValue(RemoteData::class.java)
+                        Log.d("firebase", "${data?.title} ${data?.imageTitle} ${data?.listTitle} ${data?.listTitle2}")
+                        for (product in data?.productsWithGroupOrder() ?: emptyList()) {
                             Log.d("firebase", "${product.groupOrder} ${product.order}")
                         }
                     }
