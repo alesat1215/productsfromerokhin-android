@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.data.StartTitle.*
 
 class ProductsRepository {
-    private val products = Array(10) { Product("Name name", price = 250) }.asList()
+    private val products = Array(10) { Product(1, price = 250) }.asList()
 
     fun title(forType: StartTitle): LiveData<String> =
         when (forType) {
