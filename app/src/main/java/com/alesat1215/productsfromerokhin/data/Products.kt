@@ -10,15 +10,15 @@ data class RemoteData(
     val groups: List<Group>? = null
 ) {
     fun productsWithGroupOrder(): List<Product>? = groups?.flatMap { group ->
-        group.products?.apply { map { it.groupOrder = group.order } } ?: emptyList()
+        group.products?.apply { map { it.group = group.id } } ?: emptyList()
     }
 }
 
 data class Products(
     @Embedded val group: Group,
     @Relation(
-        parentColumn = "order",
-        entityColumn = "groupOrder"
+        parentColumn = "id",
+        entityColumn = "group"
     )
     val products: List<Product>
 )
@@ -26,9 +26,8 @@ data class Products(
 @Fts4
 @Entity
 data class Group(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "rowid")
+    @PrimaryKey @ColumnInfo(name = "rowid")
     var id: Int = 0,
-    val order: Int = 0,
     val name: String? = null,
     @Ignore var products: List<Product>? = null
 )
@@ -36,10 +35,9 @@ data class Group(
 @Fts4
 @Entity
 data class Product(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "rowid")
+    @PrimaryKey @ColumnInfo(name = "rowid")
     var id: Int = 0,
-    val order: Int = 0,
-    var groupOrder: Int = 0,
+    var group: Int = 0,
     val name: String? = null,
     val consist: String? = null,
     val img: String? = null,

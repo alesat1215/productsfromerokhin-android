@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                         val data = snapshot.getValue(RemoteData::class.java)
                         Log.d("firebase", "${data?.title} ${data?.imageTitle} ${data?.listTitle} ${data?.listTitle2}")
                         for (product in data?.productsWithGroupOrder() ?: emptyList()) {
-                            Log.d("firebase", "${product.groupOrder} ${product.order}")
+                            Log.d("firebase", "${product.group} ${product.id}")
                         }
                     }
 
