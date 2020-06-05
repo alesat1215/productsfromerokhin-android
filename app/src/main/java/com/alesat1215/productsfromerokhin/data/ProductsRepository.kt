@@ -3,28 +3,36 @@ package com.alesat1215.productsfromerokhin.data
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.room.Room
 import androidx.room.withTransaction
-import com.alesat1215.productsfromerokhin.data.StartTitle.*
+import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.*
+import java.util.concurrent.TimeUnit
 
 class ProductsRepository(private val application: Application) {
     private val auth = FirebaseAuth.getInstance()
     private val dbFB = FirebaseDatabase.getInstance().reference
 
+    private val dbFBRateLimit = RateLimiter(2, TimeUnit.MINUTES)
+
     private val db by lazy { Room.databaseBuilder(application, ProductsDatabase::class.java, "productsDatabase").build() }
-    val products by lazy { db.productsDao().products() }
+    private val products by lazy { db.productsDao().products() }
     val groups by lazy { db.productsDao().groups() }
     val titles by lazy { db.productsDao().titles() }
 
-    init {
-        updateDB()
+//    init {
+//        updateDB()
+//    }
+
+    fun products_(): LiveData<List<Product>> {
+        if(dbFBRateLimit.shouldFetch())
+            updateDB()
+        return products
     }
 
     private fun updateDB() {
@@ -42,7 +50,7 @@ class ProductsRepository(private val application: Application) {
                         for (product in data?.productsWithGroupId() ?: emptyList()) {
                             Log.d("firebase", "${product.group} ${product.id}")
                         }
-                        if (data != null)
+                        if (data != null) {
                             GlobalScope.launch(Dispatchers.IO) {
                                 db.withTransaction {
                                     db.clearAllTables()
@@ -50,12 +58,15 @@ class ProductsRepository(private val application: Application) {
                                     Log.d("firebase", "db is updated")
                                 }
                             }
+                        }
+
                     }
 
                 })
             } else Log.d("firebase", "Login failed")
         }
     }
+
 }
 
 enum class StartTitle {

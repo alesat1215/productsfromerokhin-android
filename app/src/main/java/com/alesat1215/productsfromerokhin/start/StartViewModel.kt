@@ -22,7 +22,7 @@ class StartViewModel(application: Application) : AndroidViewModel(application) {
 
     fun products(predicate: ((Product) -> Boolean)? = null): LiveData<List<Product>> {
         return if (predicate != null)
-            Transformations.map(repository.products) { it.filter(predicate) }
-        else repository.products
+            Transformations.map(repository.products_()) { it.filter(predicate) }
+        else repository.products_()
     }
 }
