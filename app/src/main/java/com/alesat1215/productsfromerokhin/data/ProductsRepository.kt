@@ -19,21 +19,13 @@ class ProductsRepository(private val application: Application) {
     private val dbFB = FirebaseDatabase.getInstance().reference
 
     private val db by lazy { Room.databaseBuilder(application, ProductsDatabase::class.java, "productsDatabase").build() }
-    val products_ by lazy { db.productsDao().products() }
+    val products by lazy { db.productsDao().products() }
     val groups by lazy { db.productsDao().groups() }
     val titles by lazy { db.productsDao().titles() }
 
     init {
         updateDB()
     }
-
-    fun title(forType: StartTitle): LiveData<String> =
-        when (forType) {
-            TITLE -> Transformations.map(titles) { it.title }
-            IMAGE -> Transformations.map(titles) { it.imageTitle }
-            LIST -> Transformations.map(titles) { it.listTitle }
-            LIST2 -> Transformations.map(titles) { it.listTitle2 }
-        }
 
     private fun updateDB() {
         auth.signInAnonymously().addOnCompleteListener {
