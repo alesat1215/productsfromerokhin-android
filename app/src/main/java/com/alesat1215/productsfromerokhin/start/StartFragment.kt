@@ -25,8 +25,8 @@ class StartFragment : Fragment() {
     ) =
         FragmentStartBinding.inflate(inflater, container, false).apply {
             viewModel = this@StartFragment.viewModel
-            adapterToList(list) { (it.price ?: 0) == 250 }
-            adapterToList(list2)
+            adapterToList(list) { it.inStart }
+            adapterToList(list2) { it.inStart2 }
             lifecycleOwner = this@StartFragment
             executePendingBindings()
         }.root
