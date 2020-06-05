@@ -27,6 +27,7 @@ class StartFragment : Fragment() {
             viewModel = this@StartFragment.viewModel
             adapterToList(list) { (it.price ?: 0) == 250 }
             adapterToList(list2)
+            lifecycleOwner = this@StartFragment
             executePendingBindings()
         }.root
 

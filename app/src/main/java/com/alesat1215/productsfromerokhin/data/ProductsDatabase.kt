@@ -13,7 +13,7 @@ interface ProductsDao {
     fun titles(): LiveData<RemoteData>
 
     @Transaction
-    fun update(data: RemoteData) {
+    suspend fun update(data: RemoteData) {
         val products = data.productsWithGroupId()
         if (products != null)
             insertProducts(products)
@@ -23,11 +23,11 @@ interface ProductsDao {
         insertTitles(data)
     }
     @Insert(entity = Product::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertProducts(products: List<Product>)
+    suspend fun insertProducts(products: List<Product>)
     @Insert(entity = Group::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertGroups(products: List<Group>)
+    suspend fun insertGroups(products: List<Group>)
     @Insert(entity = RemoteData::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertTitles(data: RemoteData)
+    suspend fun insertTitles(data: RemoteData)
 }
 
 @Database(entities = [Product::class, Group::class, RemoteData::class], version = 1, exportSchema = false)
