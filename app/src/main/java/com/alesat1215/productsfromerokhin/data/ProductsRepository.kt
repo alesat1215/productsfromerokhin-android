@@ -18,29 +18,36 @@ class ProductsRepository(private val application: Application) {
     private val auth = FirebaseAuth.getInstance()
     private val dbFB = FirebaseDatabase.getInstance().reference
 
-    private val dbFBRateLimit = RateLimiter(2, TimeUnit.MINUTES)
+    private val dbFBFetchLimit = RateLimiter(2, TimeUnit.MINUTES)
 
     private val db by lazy { Room.databaseBuilder(application, ProductsDatabase::class.java, "productsDatabase").build() }
     private val products by lazy { db.productsDao().products() }
-    val groups by lazy { db.productsDao().groups() }
-    val titles by lazy { db.productsDao().titles() }
+    private val groups by lazy { db.productsDao().groups() }
+    private val titles by lazy { db.productsDao().titles() }
 
-//    init {
-//        updateDB()
-//    }
-
-    fun products_(): LiveData<List<Product>> {
-        if(dbFBRateLimit.shouldFetch())
-            updateDB()
+    fun products(): LiveData<List<Product>> {
+        updateDB()
         return products
     }
 
+    fun titles(): LiveData<RemoteData?> {
+        updateDB()
+        return titles
+    }
+
+    fun groups(): LiveData<List<Group>> {
+        updateDB()
+        return groups
+    }
+
     private fun updateDB() {
+        if(!dbFBFetchLimit.shouldFetch()) return
         auth.signInAnonymously().addOnCompleteListener {
             if (it.isSuccessful) {
                 Log.d("firebase", auth.currentUser.toString())
                 dbFB.addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(error: DatabaseError) {
+                        dbFBFetchLimit.reset()
                         Log.d("firebase", error.message)
                     }
 
@@ -63,7 +70,10 @@ class ProductsRepository(private val application: Application) {
                     }
 
                 })
-            } else Log.d("firebase", "Login failed")
+            } else {
+                dbFBFetchLimit.reset()
+                Log.d("firebase", "Login failed")
+            }
         }
     }
 

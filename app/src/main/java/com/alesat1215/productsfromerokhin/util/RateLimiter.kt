@@ -1,6 +1,7 @@
 package com.alesat1215.productsfromerokhin.util
 
 import android.os.SystemClock
+import android.util.Log
 import java.util.concurrent.TimeUnit
 
 class RateLimiter(timeout: Int, timeUnit: TimeUnit)
@@ -13,17 +14,21 @@ class RateLimiter(timeout: Int, timeUnit: TimeUnit)
         val now = SystemClock.uptimeMillis()
         if (last == null) {
             last = now
+            Log.d("Limiter", "shouldFetch() -> true, from null last is: ${last}, timeout: ${timeout}")
             return true
         }
         if (now - (last ?: 0) > timeout) {
             last = now
+            Log.d("Limiter", "shouldFetch() -> true, last is: ${last}, timeout: ${timeout}")
             return true
         }
+        Log.d("Limiter", "shouldFetch() -> false, last is: ${last}, timeout: ${timeout}")
         return false
     }
 
     @Synchronized
     fun reset() {
         last = null
+        Log.d("Limiter", "Reset last to null")
     }
 }
