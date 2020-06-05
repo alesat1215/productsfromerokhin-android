@@ -10,7 +10,7 @@ interface ProductsDao {
     @Query("SELECT * FROM `group`")
     fun groups(): LiveData<List<Group>>
     @Query("SELECT * FROM remotedata LIMIT 1")
-    fun titles(): LiveData<RemoteData>
+    fun titles(): LiveData<RemoteData?>
 
     @Transaction
     suspend fun update(data: RemoteData) {
