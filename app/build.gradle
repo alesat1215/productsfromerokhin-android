@@ -56,6 +56,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.2'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.firebase:firebase-database:19.3.0'
+    // DI
+    implementation 'com.google.dagger:dagger-android-support:2.28'
+    kapt "com.google.dagger:dagger-compiler:2.28"
     // Test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
