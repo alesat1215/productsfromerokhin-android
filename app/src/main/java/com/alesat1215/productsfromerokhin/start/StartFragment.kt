@@ -11,11 +11,12 @@ import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
+import dagger.android.support.DaggerFragment
 
 /**
  * A simple [Fragment] subclass.
  */
-class StartFragment : Fragment() {
+class StartFragment : DaggerFragment() {
 
     private val viewModel: StartViewModel by viewModels()
 
