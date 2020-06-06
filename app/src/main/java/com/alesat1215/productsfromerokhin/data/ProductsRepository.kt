@@ -26,87 +26,34 @@ class ProductsRepository(private val application: Application) {
     private val titles by lazy { db.productsDao().titles() }
 
     fun products(): LiveData<List<Product>> {
-        updateDB_()
+        updateDB()
         return products
     }
 
     fun titles(): LiveData<RemoteData?> {
-        updateDB_()
+        updateDB()
         return titles
     }
 
     fun groups(): LiveData<List<Group>> {
-        updateDB_()
+        updateDB()
         return groups
     }
 
     private fun updateDB() {
         if(!dbFBFetchLimit.shouldFetch()) return
-        auth.signInAnonymously().addOnCompleteListener {
-            if (it.isSuccessful) {
-                Log.d("firebase", auth.currentUser.toString())
-                dbFB.addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(error: DatabaseError) {
-                        dbFBFetchLimit.reset()
-                        Log.d("firebase", error.message)
-                    }
-
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val data = snapshot.getValue(RemoteData::class.java)
-                        Log.d("firebase", "${data?.title} ${data?.imageTitle} ${data?.listTitle} ${data?.listTitle2}")
-                        for (product in data?.productsWithGroupId() ?: emptyList()) {
-                            Log.d("firebase", "${product.group} ${product.id}")
-                        }
-                        if (data != null) {
-                            GlobalScope.launch(Dispatchers.IO) {
-                                db.withTransaction {
-                                    db.clearAllTables()
-                                    db.productsDao().update(data)
-                                    Log.d("firebase", "db is updated")
-                                }
-                            }
-                        }
-
-                    }
-
-                })
-            } else {
-                dbFBFetchLimit.reset()
-                Log.d("firebase", "Login failed")
-            }
-        }
-    }
-
-    private fun updateDB_() {
-        if(!dbFBFetchLimit.shouldFetch()) return
         signInFB {
-            dbFB.database.goOnline()
-            dbFB.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                    dbFBFetchLimit.reset()
-                    dbFB.database.goOffline()
-                    Log.d("Firebase", error.message)
-                }
-
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val data = snapshot.getValue(RemoteData::class.java)
-                    Log.d("Firebase", "${data?.title} ${data?.imageTitle} ${data?.listTitle} ${data?.listTitle2}")
-                    for (product in data?.productsWithGroupId() ?: emptyList()) {
-                        Log.d("Firebase", "${product.group} ${product.id}")
-                    }
-                    if (data != null) {
-                        GlobalScope.launch(Dispatchers.IO) {
-                            db.withTransaction {
-                                db.clearAllTables()
-                                db.productsDao().update(data)
-                                Log.d("Firebase", "db is updated")
-                            }
+            fetchFB {
+                if (it != null) {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        db.withTransaction {
+                            db.clearAllTables()
+                            db.productsDao().update(it)
+                            Log.d("Firebase", "db is updated")
                         }
                     }
-                    dbFB.database.goOffline()
-                }
-
-            })
+                } else Log.d("Firebase", "Remote data is null. db is NOT updated")
+            }
         }
     }
 
@@ -125,6 +72,28 @@ class ProductsRepository(private val application: Application) {
                 Log.d("Firebase", "Sign in FAILED: ${it.exception}")
             }
         }
+    }
+
+    private fun fetchFB(onSuccess: (RemoteData?) -> Unit) {
+        dbFB.database.goOnline()
+        dbFB.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                dbFBFetchLimit.reset()
+                dbFB.database.goOffline()
+                Log.d("Firebase", error.message)
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.getValue(RemoteData::class.java)
+                Log.d("Firebase", "${data?.title} ${data?.imageTitle} ${data?.listTitle} ${data?.listTitle2}")
+                for (product in data?.productsWithGroupId() ?: emptyList()) {
+                    Log.d("Firebase", "${product.group} ${product.id}")
+                }
+                onSuccess(data)
+                dbFB.database.goOffline()
+            }
+
+        })
     }
 
 }
