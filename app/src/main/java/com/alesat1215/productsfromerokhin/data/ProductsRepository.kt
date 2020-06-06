@@ -1,26 +1,23 @@
 package com.alesat1215.productsfromerokhin.data
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.room.Room
 import androidx.room.withTransaction
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class ProductsRepository(private val application: Application) {
-    private val auth = FirebaseAuth.getInstance()
-    private val dbFB = FirebaseDatabase.getInstance().reference
+class ProductsRepository @Inject constructor(
+    private val authFB: FirebaseAuth,
+    private val dbFB: DatabaseReference,
+    private val db: ProductsDatabase
+) {
 
     private val dbFBFetchLimit = RateLimiter(2, TimeUnit.MINUTES)
 
-    private val db by lazy { Room.databaseBuilder(application, ProductsDatabase::class.java, "productsDatabase").build() }
     private val products by lazy { db.productsDao().products() }
     private val groups by lazy { db.productsDao().groups() }
     private val titles by lazy { db.productsDao().titles() }
@@ -58,14 +55,14 @@ class ProductsRepository(private val application: Application) {
     }
 
     private fun signInFB(onSuccess: () -> Unit) {
-        if (auth.currentUser != null) {
-            Log.d("Firebase", "Already sign in: ${auth.currentUser}")
+        if (authFB.currentUser != null) {
+            Log.d("Firebase", "Already sign in: ${authFB.currentUser}")
             onSuccess()
             return
         }
-        auth.signInAnonymously().addOnCompleteListener {
+        authFB.signInAnonymously().addOnCompleteListener {
             if (it.isSuccessful) {
-                Log.d("Firebase", "Sign in SUCCESS: ${auth.currentUser}")
+                Log.d("Firebase", "Sign in SUCCESS: ${authFB.currentUser}")
                 onSuccess()
             } else {
                 dbFBFetchLimit.reset()

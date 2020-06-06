@@ -4,12 +4,16 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.StartTitle
+import javax.inject.Inject
 
-class StartViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = ProductsRepository(application)
+class StartViewModel @Inject constructor(
+    private val repository: ProductsRepository
+) : ViewModel() {
+
     val groups = repository.groups()
 
     fun title(forType: StartTitle) =
