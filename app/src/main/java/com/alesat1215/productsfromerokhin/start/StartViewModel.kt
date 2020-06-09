@@ -27,4 +27,6 @@ class StartViewModel @Inject constructor(
             Transformations.map(repository.products()) { it.filter(predicate) }
         else repository.products()
     }
+
+    fun imageReference(fsPath: String) = repository.storageFB.child(fsPath)
 }
