@@ -12,8 +12,7 @@ class StartViewModel @Inject constructor(
     private val repository: ProductsRepository
 ) : ViewModel() {
 
-    val groups = repository.groups()
-
+    /** @return title for type */
     fun title(forType: StartTitle) =
         when (forType) {
             StartTitle.TITLE -> Transformations.map(repository.titles()) { it?.title }
@@ -22,6 +21,7 @@ class StartViewModel @Inject constructor(
             StartTitle.PRODUCTS2 -> Transformations.map(repository.titles()) { it?.productsTitle2 }
         }
 
+    /** @return products filtering by predicate */
     fun products(predicate: ((Product) -> Boolean)? = null): LiveData<List<Product>> {
         return if (predicate != null)
             Transformations.map(repository.products()) { it.filter(predicate) }
