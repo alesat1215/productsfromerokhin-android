@@ -36,6 +36,7 @@
             android:layout_height="97dp"
             android:contentDescription="@string/product_image_description"
             android:scaleType="fitXY"
+            app:fs_image="@{product.img}"
             tools:src="@tools:sample/avatars" />
       </androidx.cardview.widget.CardView>
 

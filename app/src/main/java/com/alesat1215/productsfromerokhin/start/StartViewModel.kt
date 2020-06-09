@@ -28,5 +28,5 @@ class StartViewModel @Inject constructor(
         else repository.products()
     }
 
-    fun imageReference(fsPath: String) = repository.storageFB.child(fsPath)
+//    fun imageReference(fsPath: String) = repository.storageFB.child(fsPath)
 }
