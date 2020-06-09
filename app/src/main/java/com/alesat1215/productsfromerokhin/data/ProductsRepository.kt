@@ -7,6 +7,8 @@ import com.alesat1215.productsfromerokhin.di.AppModule.DBfb
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,6 +18,7 @@ class ProductsRepository @Inject constructor(
     private val authFB: FirebaseAuth,
     private val dbFB: DatabaseReference,
     private val db: ProductsDatabase,
+    val storageFB: StorageReference,
     @DBfb private val dbFBFetchLimit: RateLimiter
 ) {
 
