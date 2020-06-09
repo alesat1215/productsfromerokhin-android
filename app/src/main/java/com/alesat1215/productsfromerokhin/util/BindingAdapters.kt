@@ -14,7 +14,7 @@ import java.io.InputStream
 
 val storageFB by lazy { FirebaseStorage.getInstance().reference }
 
-@BindingAdapter("fs_image")
+@BindingAdapter("fb_image")
 fun bindImage(imageView: ImageView, fsPath: String?) {
     if (fsPath == null) return
     Glide.with(imageView)
