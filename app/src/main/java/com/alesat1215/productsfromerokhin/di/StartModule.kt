@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
+/** Module for StartFragment */
 @Module
 abstract class StartModule {
     @ContributesAndroidInjector(modules = [ViewModelBuilder::class])
