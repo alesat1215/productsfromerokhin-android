@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
+import com.bumptech.glide.Glide
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 

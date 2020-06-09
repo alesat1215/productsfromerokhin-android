@@ -18,7 +18,6 @@ class ProductsRepository @Inject constructor(
     private val authFB: FirebaseAuth,
     private val dbFB: DatabaseReference,
     private val db: ProductsDatabase,
-    val storageFB: StorageReference,
     @DBfb private val dbFBFetchLimit: RateLimiter
 ) {
 
