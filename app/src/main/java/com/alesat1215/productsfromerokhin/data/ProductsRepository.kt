@@ -9,7 +9,9 @@ import com.google.firebase.database.*
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ProductsRepository @Inject constructor(
     private val authFB: FirebaseAuth,
     private val dbFB: DatabaseReference,
