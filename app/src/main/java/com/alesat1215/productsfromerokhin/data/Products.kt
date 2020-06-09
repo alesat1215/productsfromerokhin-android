@@ -3,7 +3,7 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.room.*
 
 /**
- * For get data from remote database & insert titles to Room
+ * Model for remote database & titles in Room
  * */
 @Fts4
 @Entity
@@ -23,7 +23,7 @@ data class RemoteData(
 }
 
 /**
- * For get Group from remote database & insert it to Room
+ * Model for Group from remote database & Room
  * */
 @Fts4
 @Entity
@@ -36,7 +36,7 @@ data class Group(
 }
 
 /**
- * For get Product from remote database & insert it to Room
+ * Model for Product from remote database & Room
  * */
 @Fts4
 @Entity
