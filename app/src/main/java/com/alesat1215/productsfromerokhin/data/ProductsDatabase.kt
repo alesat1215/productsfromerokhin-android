@@ -12,6 +12,7 @@ interface ProductsDao {
     @Query("SELECT * FROM remotedata LIMIT 1")
     fun titles(): LiveData<RemoteData?>
 
+    /** Insert products, groups & titles */
     @Transaction
     suspend fun update(data: RemoteData) {
         val products = data.productsWithGroupId()
