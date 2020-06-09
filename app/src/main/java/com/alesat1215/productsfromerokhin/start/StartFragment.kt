@@ -16,7 +16,8 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 /**
- * A simple [Fragment] subclass.
+ * [StartFragment] subclass DaggerFragment.
+ * First app screen.
  */
 class StartFragment : DaggerFragment() {
     @Inject
@@ -28,15 +29,20 @@ class StartFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) =
+        /** Bind data to view & setup it */
         FragmentStartBinding.inflate(inflater, container, false).apply {
+            /** Set view model to layout */
             viewModel = this@StartFragment.viewModel
-            adapterToList(products) { it.inStart }
-            adapterToList(products2) { it.inStart2 }
+            /** Set adapters for products */
+            adapterToProducts(products) { it.inStart }
+            adapterToProducts(products2) { it.inStart2 }
+            /** Set lifecycleOwner for LiveData in layout */
             lifecycleOwner = this@StartFragment
             executePendingBindings()
         }.root
 
-    private fun adapterToList(list: RecyclerView, predicate: ((Product) -> Boolean)? = null) =
+    /** Set adapter for list with predicate for dataSet */
+    private fun adapterToProducts(list: RecyclerView, predicate: ((Product) -> Boolean)? = null) =
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
             list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
         })
