@@ -18,8 +18,8 @@ class StartViewModel @Inject constructor(
         when (forType) {
             StartTitle.TITLE -> Transformations.map(repository.titles()) { it?.title }
             StartTitle.IMAGE -> Transformations.map(repository.titles()) { it?.imageTitle }
-            StartTitle.LIST -> Transformations.map(repository.titles()) { it?.listTitle }
-            StartTitle.LIST2 -> Transformations.map(repository.titles()) { it?.listTitle2 }
+            StartTitle.PRODUCTS -> Transformations.map(repository.titles()) { it?.listTitle }
+            StartTitle.PRODUCTS2 -> Transformations.map(repository.titles()) { it?.listTitle2 }
         }
 
     fun products(predicate: ((Product) -> Boolean)? = null): LiveData<List<Product>> {
