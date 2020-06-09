@@ -3,11 +3,11 @@ package com.alesat1215.productsfromerokhin.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.withTransaction
+import com.alesat1215.productsfromerokhin.di.AppModule.DBfb
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.coroutines.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,10 +15,9 @@ import javax.inject.Singleton
 class ProductsRepository @Inject constructor(
     private val authFB: FirebaseAuth,
     private val dbFB: DatabaseReference,
-    private val db: ProductsDatabase
+    private val db: ProductsDatabase,
+    @DBfb private val dbFBFetchLimit: RateLimiter
 ) {
-
-    private val dbFBFetchLimit = RateLimiter(2, TimeUnit.MINUTES)
 
     private val products by lazy { db.productsDao().products() }
     private val groups by lazy { db.productsDao().groups() }
