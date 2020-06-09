@@ -3,7 +3,7 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.room.*
 
 /**
- * For get data from Realtime Database & insert titles to Room
+ * For get data from remote database & insert titles to Room
  * */
 @Fts4
 @Entity
@@ -13,6 +13,7 @@ data class RemoteData(
     val productsTitle: String? = null,
     val productsTitle2: String? = null
 ) {
+    /** Only for remote database */
     @Ignore var groups: List<Group>? = null
 
     /** @return all products from all groups with group id */
@@ -22,7 +23,7 @@ data class RemoteData(
 }
 
 /**
- * For get Group from Realtime Database & insert it to Room
+ * For get Group from remote database & insert it to Room
  * */
 @Fts4
 @Entity
@@ -30,11 +31,12 @@ data class Group(
     val id: Int = 0,
     val name: String? = null
 ) {
+    /** Only for remote database */
     @Ignore var products: List<Product>? = null
 }
 
 /**
- * For get Product from Realtime Database & insert it to Room
+ * For get Product from remote database & insert it to Room
  * */
 @Fts4
 @Entity
