@@ -15,5 +15,4 @@ interface AppComponent : AndroidInjector<App> {
     interface Factory {
         fun create(@BindsInstance applicationContext: Context): AppComponent
     }
-
 }
