@@ -25,10 +25,6 @@ object AppModule {
     @Provides
     fun dbFB() = FirebaseDatabase.getInstance().reference
 
-//    @Singleton
-//    @Provides
-//    fun storageFB() = FirebaseStorage.getInstance().reference
-
     @Singleton
     @Provides
     fun db(applicationContext: Context) =
