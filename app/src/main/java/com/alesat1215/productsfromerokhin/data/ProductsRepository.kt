@@ -7,8 +7,6 @@ import com.alesat1215.productsfromerokhin.di.AppModule.DBfb
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -85,7 +83,7 @@ class ProductsRepository @Inject constructor(
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val data = snapshot.getValue(RemoteData::class.java)
-                Log.d("Firebase", "${data?.title} ${data?.imageTitle} ${data?.listTitle} ${data?.listTitle2}")
+                Log.d("Firebase", "${data?.title} ${data?.imageTitle} ${data?.productsTitle} ${data?.productsTitle2}")
                 for (product in data?.productsWithGroupId() ?: emptyList()) {
                     Log.d("Firebase", "${product.group} ${product.id}")
                 }

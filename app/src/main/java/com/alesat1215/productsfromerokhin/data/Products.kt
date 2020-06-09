@@ -2,30 +2,28 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.room.*
 
+/**
+ * For get data from Realtime Database & insert titles to Room
+ * */
 @Fts4
 @Entity
 data class RemoteData(
     val title: String? = null,
     val imageTitle: String? = null,
-    val listTitle: String? = null,
-    val listTitle2: String? = null
+    val productsTitle: String? = null,
+    val productsTitle2: String? = null
 ) {
     @Ignore var groups: List<Group>? = null
 
+    /** @return all products from all groups with group id */
     fun productsWithGroupId(): List<Product>? = groups?.flatMap { group ->
         group.products?.apply { map { it.group = group.id } } ?: emptyList()
     }
 }
 
-//data class Products(
-//    @Embedded val group: Group,
-//    @Relation(
-//        parentColumn = "id",
-//        entityColumn = "group"
-//    )
-//    val products: List<Product>
-//)
-
+/**
+ * For get Group from Realtime Database & insert it to Room
+ * */
 @Fts4
 @Entity
 data class Group(
@@ -35,6 +33,9 @@ data class Group(
     @Ignore var products: List<Product>? = null
 }
 
+/**
+ * For get Product from Realtime Database & insert it to Room
+ * */
 @Fts4
 @Entity
 data class Product(
