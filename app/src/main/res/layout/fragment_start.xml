@@ -5,7 +5,7 @@
     tools:context=".start.StartFragment">
 
     <data>
-        <import type="com.alesat1215.productsfromerokhin.data.StartTitle"/>
+        <import type="com.alesat1215.productsfromerokhin.start.StartTitle"/>
         <variable
             name="viewModel"
             type="com.alesat1215.productsfromerokhin.start.StartViewModel" />

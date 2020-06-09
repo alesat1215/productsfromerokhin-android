@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.StartTitle
+import com.alesat1215.productsfromerokhin.start.StartTitle.*
 import javax.inject.Inject
 
 class StartViewModel @Inject constructor(
@@ -15,11 +15,11 @@ class StartViewModel @Inject constructor(
     /** @return title for type */
     fun title(forType: StartTitle) =
         when (forType) {
-            StartTitle.TITLE -> Transformations.map(repository.titles()) { it?.title }
-            StartTitle.IMG -> Transformations.map(repository.titles()) { it?.img }
-            StartTitle.IMGTITLE -> Transformations.map(repository.titles()) { it?.imgTitle }
-            StartTitle.PRODUCTS -> Transformations.map(repository.titles()) { it?.productsTitle }
-            StartTitle.PRODUCTS2 -> Transformations.map(repository.titles()) { it?.productsTitle2 }
+            TITLE -> Transformations.map(repository.titles()) { it?.title }
+            IMG -> Transformations.map(repository.titles()) { it?.img }
+            IMGTITLE -> Transformations.map(repository.titles()) { it?.imgTitle }
+            PRODUCTS -> Transformations.map(repository.titles()) { it?.productsTitle }
+            PRODUCTS2 -> Transformations.map(repository.titles()) { it?.productsTitle2 }
         }
 
     /** @return products filtering by predicate */
@@ -29,4 +29,9 @@ class StartViewModel @Inject constructor(
         else repository.products()
     }
 
+}
+
+/** Type of data in StartFragment */
+enum class StartTitle {
+    TITLE, IMGTITLE, IMG, PRODUCTS, PRODUCTS2
 }

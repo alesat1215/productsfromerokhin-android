@@ -124,7 +124,3 @@ class ProductsRepository @Inject constructor(
     }
 
 }
-
-enum class StartTitle {
-    TITLE, IMGTITLE, IMG, PRODUCTS, PRODUCTS2
-}
