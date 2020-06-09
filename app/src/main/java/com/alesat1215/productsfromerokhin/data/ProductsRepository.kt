@@ -21,7 +21,7 @@ class ProductsRepository @Inject constructor(
     private val dbFB: DatabaseReference,
     /** Room database */
     private val db: ProductsDatabase,
-    /** Limiting the frequency of queries to a remote database */
+    /** Limiting the frequency of queries to remote database */
     @DBfb private val dbFBFetchLimit: RateLimiter
 ) {
     /** @return LiveData with products from Room only once */
