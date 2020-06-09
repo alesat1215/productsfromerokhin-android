@@ -6,7 +6,6 @@ import com.alesat1215.productsfromerokhin.data.ProductsDatabase
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.TimeUnit
@@ -34,6 +33,7 @@ object AppModule {
     @Retention(RUNTIME)
     annotation class DBfb
 
+    /** Limiter for remote database  */
     @DBfb
     @Provides
     fun limiter() = RateLimiter(2, TimeUnit.MINUTES)
