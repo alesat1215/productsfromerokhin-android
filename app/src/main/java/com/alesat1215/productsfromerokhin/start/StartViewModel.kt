@@ -1,7 +1,5 @@
 package com.alesat1215.productsfromerokhin.start
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
