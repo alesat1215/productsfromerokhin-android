@@ -12,8 +12,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.InputStream
 
+/** Remote storage reference init only once */
 val storageFB by lazy { FirebaseStorage.getInstance().reference }
 
+/** Load image from remote storage & set it to imageView */
 @BindingAdapter("fb_image")
 fun bindImage(imageView: ImageView, fsPath: String?) {
     if (fsPath == null) return
@@ -22,6 +24,7 @@ fun bindImage(imageView: ImageView, fsPath: String?) {
         .into(imageView)
 }
 
+/** Glide module for load image from remote storage */
 @GlideModule
 class FBGlideModule: AppGlideModule() {
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
