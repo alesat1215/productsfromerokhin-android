@@ -110,7 +110,7 @@ class ProductsRepository @Inject constructor(
                 val data = snapshot.getValue(RemoteData::class.java)
                 Log.d("Firebase", "Get remote data with " +
                         "title: ${data?.title}, " +
-                        "imageTitle: ${data?.imageTitle}, " +
+                        "imageTitle: ${data?.imgTitle}, " +
                         "productsTitle: ${data?.productsTitle}, " +
                         "productsTitle2: ${data?.productsTitle2}, " +
                         "group: ${data?.groups?.count()}, " +
@@ -126,5 +126,5 @@ class ProductsRepository @Inject constructor(
 }
 
 enum class StartTitle {
-    TITLE, IMAGE, PRODUCTS, PRODUCTS2
+    TITLE, IMGTITLE, IMG, PRODUCTS, PRODUCTS2
 }

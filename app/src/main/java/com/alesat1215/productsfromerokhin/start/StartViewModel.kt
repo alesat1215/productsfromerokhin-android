@@ -16,7 +16,8 @@ class StartViewModel @Inject constructor(
     fun title(forType: StartTitle) =
         when (forType) {
             StartTitle.TITLE -> Transformations.map(repository.titles()) { it?.title }
-            StartTitle.IMAGE -> Transformations.map(repository.titles()) { it?.imageTitle }
+            StartTitle.IMG -> Transformations.map(repository.titles()) { it?.img }
+            StartTitle.IMGTITLE -> Transformations.map(repository.titles()) { it?.imgTitle }
             StartTitle.PRODUCTS -> Transformations.map(repository.titles()) { it?.productsTitle }
             StartTitle.PRODUCTS2 -> Transformations.map(repository.titles()) { it?.productsTitle2 }
         }
