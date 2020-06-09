@@ -36,7 +36,7 @@
                 tools:text="Title" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/ImageContainer"
+                android:id="@+id/imageContainer"
                 android:layout_width="0dp"
                 android:layout_height="175dp"
                 android:layout_marginStart="8dp"
@@ -67,7 +67,7 @@
             </androidx.cardview.widget.CardView>
 
             <FrameLayout
-                android:id="@+id/ListTitleFrame"
+                android:id="@+id/productsTitleFrame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
@@ -75,32 +75,32 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ImageContainer">
+                app:layout_constraintTop_toBottomOf="@+id/imageContainer">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/ListTitleContainer"
+                    android:id="@+id/productsTitleContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/colorAccent"
                     app:cardCornerRadius="10dp">
 
                     <TextView
-                        android:id="@+id/ListTitle"
+                        android:id="@+id/productsTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="@{viewModel.title(StartTitle.LIST)}"
+                        android:text="@{viewModel.title(StartTitle.PRODUCTS)}"
                         android:textSize="24sp"
                         android:textStyle="bold"
                         app:autoSizeTextType="uniform"
-                        tools:text="List title" />
+                        tools:text="Products title" />
 
                 </androidx.cardview.widget.CardView>
 
             </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list"
+                android:id="@+id/products"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -108,33 +108,33 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ListTitleFrame"
-                tools:listitem="@layout/list_item" />
+                app:layout_constraintTop_toBottomOf="@+id/productsTitleFrame"
+                tools:listitem="@layout/product_item" />
 
             <TextView
-                android:id="@+id/listTitle2"
+                android:id="@+id/productsTitle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{viewModel.title(StartTitle.LIST2)}"
+                android:text="@{viewModel.title(StartTitle.PRODUCTS2)}"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/list"
-                tools:text="List title 2" />
+                app:layout_constraintTop_toBottomOf="@+id/products"
+                tools:text="Products title 2" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list2"
+                android:id="@+id/products2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listTitle2"
-                tools:listitem="@layout/list_item" />
+                app:layout_constraintTop_toBottomOf="@+id/productsTitle2"
+                tools:listitem="@layout/product_item" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

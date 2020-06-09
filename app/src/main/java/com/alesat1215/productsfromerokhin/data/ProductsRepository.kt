@@ -99,5 +99,5 @@ class ProductsRepository @Inject constructor(
 }
 
 enum class StartTitle {
-    TITLE, IMAGE, LIST, LIST2
+    TITLE, IMAGE, PRODUCTS, PRODUCTS2
 }
