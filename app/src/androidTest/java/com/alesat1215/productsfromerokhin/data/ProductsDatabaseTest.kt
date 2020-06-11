@@ -5,7 +5,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.alesat1215.productsfromerokhin.liveDataValue
 import com.alesat1215.productsfromerokhin.remoteDataMock
 import org.junit.After
 import org.junit.Before
@@ -39,13 +38,17 @@ class ProductsDatabaseTest {
 
     @Test
     fun updateAndRead() {
+        var products = listOf<Product>()
+        var groups = listOf<Group>()
+        var titles: RemoteData? = null
+        dao.products().observeForever { products = it }
+        dao.groups().observeForever { groups = it }
+        dao.titles().observeForever { titles = it }
         val data = remoteDataMock()
         dao.update(data)
-        val products = liveDataValue(dao.products())
         assertEquals(products, data.productsWithGroupId())
-        val groups = liveDataValue(dao.groups())
+        assertEquals(products, data.productsWithGroupId())
         assertEquals(groups.map { it.id }, data.groups?.map { it.id })
-        val titles = liveDataValue(dao.titles())
         assertEquals(titles?.title, data.title)
         assertEquals(titles?.img, data.img)
         assertEquals(titles?.imgTitle, data.imgTitle)
