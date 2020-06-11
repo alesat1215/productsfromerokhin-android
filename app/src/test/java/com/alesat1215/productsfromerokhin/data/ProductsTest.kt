@@ -4,7 +4,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 
-class RemoteDataTest {
+class ProductsTest {
 
     @Test
     fun productsWithGroupId() {
