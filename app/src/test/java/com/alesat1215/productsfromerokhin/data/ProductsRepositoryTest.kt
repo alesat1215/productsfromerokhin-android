@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import org.junit.Test
 import com.alesat1215.productsfromerokhin.remoteDataMockTest
+import com.google.firebase.database.FirebaseDatabase
 
 import org.junit.Assert.*
 import org.junit.Before
@@ -36,7 +37,8 @@ class ProductsRepositoryTest {
     @Before
     fun setUp() {
         `when`(authFBMock.currentUser).thenReturn(mock(FirebaseUser::class.java))
-        `when`(dbFBFetchLimit.shouldFetch()).thenReturn(false)
+        `when`(dbFB.database).thenReturn(mock(FirebaseDatabase::class.java))
+        `when`(dbFBFetchLimit.shouldFetch()).thenReturn(true)
         `when`(db.productsDao()).thenReturn(mock(ProductsDao::class.java))
         `when`(db.productsDao().products()).thenReturn(products)
         `when`(db.productsDao().groups()).thenReturn(groups)
