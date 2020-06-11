@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.alesat1215.productsfromerokhin.remoteDataMock
+import com.alesat1215.productsfromerokhin.remoteDataMockAndroidTest
 import org.junit.After
 import org.junit.Before
 
@@ -44,7 +44,7 @@ class ProductsDatabaseTest {
         dao.products().observeForever { products = it }
         dao.groups().observeForever { groups = it }
         dao.titles().observeForever { titles = it }
-        val data = remoteDataMock()
+        val data = remoteDataMockAndroidTest()
         dao.update(data)
         assertEquals(products, data.productsWithGroupId())
         assertEquals(products, data.productsWithGroupId())
