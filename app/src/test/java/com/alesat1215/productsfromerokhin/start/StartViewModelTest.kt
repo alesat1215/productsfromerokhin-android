@@ -24,7 +24,6 @@ class StartViewModelTest {
     private lateinit var repository: ProductsRepository
     private lateinit var viewModel: StartViewModel
     private val data = remoteDataMockTest()
-    private val products = data.productsWithGroupId()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -32,7 +31,7 @@ class StartViewModelTest {
     @Before
     fun setUp() {
         `when`(repository.titles()).thenReturn(MutableLiveData(data))
-        `when`(repository.products()).thenReturn(MutableLiveData(products))
+        `when`(repository.products()).thenReturn(MutableLiveData(data.productsWithGroupId()))
         viewModel = StartViewModel(repository)
     }
 
@@ -53,5 +52,11 @@ class StartViewModelTest {
 
     @Test
     fun products() {
+        var products = listOf<Product>()
+        viewModel.products().observeForever { products = it }
+        assertEquals(products, data.productsWithGroupId())
+        val predicate: (Product) -> Boolean = { it.id != 1 }
+        viewModel.products(predicate).observeForever { products = it }
+        assertEquals(products, data.productsWithGroupId()?.filter(predicate))
     }
 }
