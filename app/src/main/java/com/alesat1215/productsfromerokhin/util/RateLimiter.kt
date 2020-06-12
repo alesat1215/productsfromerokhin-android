@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 class RateLimiter(timeout: Int, timeUnit: TimeUnit)
 {
     /** Time in millis for last run shouldFetch() */
-    private var last: Long = 0
+    private var last: Long? = null
     /** Timeout in millis for "true" result for shouldFetch() */
     private val timeout = timeUnit.toMillis(timeout.toLong())
 
@@ -17,13 +17,13 @@ class RateLimiter(timeout: Int, timeUnit: TimeUnit)
     fun shouldFetch(): Boolean {
         val now = SystemClock.uptimeMillis()
         /** Return true for first fetch & update last */
-        if (last == 0L) {
+        if (last == null) {
             last = now
-            Log.d("Limiter", "shouldFetch() -> true, from 0 last is: ${last}, timeout: ${timeout}")
+            Log.d("Limiter", "shouldFetch() -> true, from null last is: ${last}, timeout: ${timeout}")
             return true
         }
         /** Return true if timeout is over & update last */
-        if (now - last > timeout) {
+        if (now - (last ?: 0) >= timeout) {
             last = now
             Log.d("Limiter", "shouldFetch() -> true, last is: ${last}, timeout: ${timeout}")
             return true
@@ -36,7 +36,7 @@ class RateLimiter(timeout: Int, timeUnit: TimeUnit)
     /** Reset as if no fetch yet */
     @Synchronized
     fun reset() {
-        last = 0
+        last = null
         Log.d("Limiter", "Reset last to null")
     }
 }
