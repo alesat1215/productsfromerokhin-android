@@ -4,6 +4,7 @@ import com.alesat1215.productsfromerokhin.di.DaggerTestAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 
+/** For UI test with dagger */
 class TestApp : App() {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
         DaggerTestAppComponent.create()

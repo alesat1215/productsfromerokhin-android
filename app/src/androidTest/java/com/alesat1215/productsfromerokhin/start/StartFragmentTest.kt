@@ -28,6 +28,7 @@ class StartFragmentTest {
 
     @Test
     fun checkViews() {
+        sleep(3000)
         onView(withId(R.id.title)).check(matches(withText(data.title)))
         onView(withId(R.id.imgTitle)).check(matches(withText(data.imgTitle)))
         onView(withId(R.id.productsTitle)).check(matches(withText(data.productsTitle)))
