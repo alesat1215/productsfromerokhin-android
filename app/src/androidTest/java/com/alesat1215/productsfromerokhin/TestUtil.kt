@@ -5,11 +5,11 @@ import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.data.RemoteData
 
 fun remoteDataMockAndroidTest() = RemoteData(
-    "Title",
-    "Img",
-    "ImgTitle",
-    "ProductsTitle",
-    "ProductsTitle2"
+    "Title Test",
+    "Img Test",
+    "ImgTitle Test",
+    "ProductsTitle Test",
+    "ProductsTitle2 Test"
 ).apply { groups = listOf(
     Group(1).apply { products = products123AndroidTest() },
     Group(2).apply { products = products456AndroidTest() }

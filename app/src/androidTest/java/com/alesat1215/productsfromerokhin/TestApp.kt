@@ -1,11 +1,10 @@
 package com.alesat1215.productsfromerokhin
 
-import com.alesat1215.productsfromerokhin.di.DaggerAppComponent
+import com.alesat1215.productsfromerokhin.di.DaggerTestAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 
-/** For auto inject in activity, fragments */
-open class App : DaggerApplication() {
+class TestApp : App() {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
-        DaggerAppComponent.factory().create(applicationContext)
+        DaggerTestAppComponent.create()
 }
