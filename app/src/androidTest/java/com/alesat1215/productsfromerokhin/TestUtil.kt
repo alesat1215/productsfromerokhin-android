@@ -16,12 +16,12 @@ fun remoteDataMockAndroidTest() = RemoteData(
 ) }
 
 fun products123AndroidTest() = listOf(
-    Product(1, name = "Product 1 Test"),
-    Product(2, name = "Product 2 Test"),
-    Product(3, name = "Product 3 Test")
+    Product(1, name = "Product 1 Test", inStart = true),
+    Product(2, name = "Product 2 Test", inStart = true),
+    Product(3, name = "Product 3 Test", inStart = true)
 )
 fun products456AndroidTest() = listOf(
-    Product(4, name = "Product 4 Test"),
-    Product(5, name = "Product 5 Test"),
-    Product(6, name = "Product 6 Test")
+    Product(4, name = "Product 4 Test", inStart2 = true),
+    Product(5, name = "Product 5 Test", inStart2 = true),
+    Product(6, name = "Product 6 Test", inStart2 = true)
 )
