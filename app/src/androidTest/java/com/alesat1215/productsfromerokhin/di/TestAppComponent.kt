@@ -10,10 +10,12 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
+/** Fro UI test with dagger */
 @Singleton
 @Component(modules = [AndroidSupportInjectionModule::class, StartModule::class, TestRepositoryModule::class])
 interface TestAppComponent : AndroidInjector<TestApp>
 
+/** Provide mock repository for UI test */
 @Module
 abstract class TestRepositoryModule {
     @Binds

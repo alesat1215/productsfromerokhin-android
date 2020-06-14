@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
 
+/** For UI testing with TestApp & TestAppComponent */
 class DaggerAndroidJUnitRunner : AndroidJUnitRunner() {
     override fun newApplication(
         cl: ClassLoader?,
