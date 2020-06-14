@@ -10,4 +10,9 @@
         android:name="com.alesat1215.productsfromerokhin.start.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" />
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.alesat1215.productsfromerokhin.menu.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" />
 </navigation>
