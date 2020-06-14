@@ -15,7 +15,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.alesat1215.productsfromerokhin.DaggerAndroidJUnitRunner"
     }
 
     buildTypes {
@@ -66,6 +67,7 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.28'
     kapt 'com.google.dagger:dagger-android-processor:2.28'
     kapt "com.google.dagger:dagger-compiler:2.28"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:2.28"
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
@@ -78,4 +80,5 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation 'org.mockito:mockito-core:2.27.0'
     testImplementation 'org.mockito:mockito-inline:2.27.0'
+    debugImplementation 'androidx.fragment:fragment-testing:1.2.5'
 }
