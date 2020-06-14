@@ -11,6 +11,17 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
+interface IProductsRepository {
+    /** Get products & update Room from remote database if needed */
+    fun products(): LiveData<List<Product>>
+
+    /** Get titles & update Room from remote database if needed */
+    fun titles(): LiveData<RemoteData?>
+
+    /** Get groups & update Room from remote database if needed */
+    fun groups(): LiveData<List<Group>>
+}
+
 /** Repository for products, groups & titles.
  * Return LiveData from Room & update if needed Room from remote database.
  * */
@@ -23,7 +34,7 @@ class ProductsRepository @Inject constructor(
     private val db: ProductsDatabase,
     /** Limiting the frequency of queries to remote database */
     @DBfb private val dbFBFetchLimit: RateLimiter
-) {
+) : IProductsRepository {
     /** @return LiveData with products from Room only once */
     private val products by lazy { db.productsDao().products() }
     /** @return LiveData with groups from Room only once */
@@ -32,19 +43,19 @@ class ProductsRepository @Inject constructor(
     private val titles by lazy { db.productsDao().titles() }
 
     /** Get products & update Room from remote database if needed */
-    fun products(): LiveData<List<Product>> {
+    override fun products(): LiveData<List<Product>> {
         updateDB()
         return products
     }
 
     /** Get titles & update Room from remote database if needed */
-    fun titles(): LiveData<RemoteData?> {
+    override fun titles(): LiveData<RemoteData?> {
         updateDB()
         return titles
     }
 
     /** Get groups & update Room from remote database if needed */
-    fun groups(): LiveData<List<Group>> {
+    override fun groups(): LiveData<List<Group>> {
         updateDB()
         return groups
     }

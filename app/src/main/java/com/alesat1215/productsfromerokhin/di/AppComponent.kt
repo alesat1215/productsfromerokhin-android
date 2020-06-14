@@ -9,7 +9,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, AndroidSupportInjectionModule::class, StartModule::class])
+@Component(modules = [AppModule::class, AndroidSupportInjectionModule::class, StartModule::class, RepositoryModule::class])
 interface AppComponent : AndroidInjector<App> {
     @Component.Factory
     interface Factory {
