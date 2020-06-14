@@ -45,7 +45,7 @@
           android:id="@+id/name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@{product.name}"
+          android:text="@{product.name ?? ``}"
           android:textSize="18sp"
           android:textStyle="bold"
           app:autoSizeTextType="uniform"
@@ -68,7 +68,7 @@
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{product.price.toString() + ' ' + @string/rub_kg}"
+            android:text="@{(product.price.toString() ?? ``) + ' ' + @string/rub_kg}"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="250 ₽/kg" />
