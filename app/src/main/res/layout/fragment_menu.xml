@@ -35,9 +35,10 @@
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/products"
-            android:layout_width="409dp"
-            android:layout_height="681dp"
+            android:id="@+id/products_menu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
