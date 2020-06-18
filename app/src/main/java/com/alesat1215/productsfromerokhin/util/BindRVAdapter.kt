@@ -26,4 +26,6 @@ class BindRVAdapter<T>(private val dataSet: List<T>, private val vhLayout: Int):
         holder.binding.setVariable(BR.product, dataSet[position])
         holder.binding.executePendingBindings()
     }
+
+    fun itemAtIndex(index: Int?) = if (index != null && index in dataSet.indices) dataSet[index] else null
 }
