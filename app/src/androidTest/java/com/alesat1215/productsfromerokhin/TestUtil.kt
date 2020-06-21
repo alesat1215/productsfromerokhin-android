@@ -11,8 +11,8 @@ fun remoteDataMockAndroidTest() = RemoteData(
     "ProductsTitle Test",
     "ProductsTitle2 Test"
 ).apply { groups = listOf(
-    Group(1).apply { products = products123AndroidTest() },
-    Group(2).apply { products = products456AndroidTest() }
+    Group(1, "Group 1 Test").apply { products = products123AndroidTest() },
+    Group(2, "Group 2 Test").apply { products = products456AndroidTest() }
 ) }
 
 fun products123AndroidTest() = listOf(
