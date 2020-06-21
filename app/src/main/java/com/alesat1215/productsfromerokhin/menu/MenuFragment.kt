@@ -64,7 +64,7 @@ class MenuFragment : DaggerFragment() {
         })
     }
 
-    /** Set adapter for list with predicate for dataSet */
+    /** Set adapter for products */
     private fun adapterToProducts(list: RecyclerView) =
         viewModel.products().observe(viewLifecycleOwner, Observer {
             list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
