@@ -5,6 +5,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -12,13 +13,12 @@ import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.products123AndroidTest
 import com.alesat1215.productsfromerokhin.products456AndroidTest
 import com.alesat1215.productsfromerokhin.remoteDataMockAndroidTest
-import org.hamcrest.core.IsNot.not
+import com.alesat1215.productsfromerokhin.util.BindViewHolder
 import org.junit.Before
 
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.Thread.sleep
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -37,17 +37,33 @@ class MenuFragmentTest {
     }
 
     @Test
-    fun switchGroup() {
+    fun scrollWhenSwitchGroup() {
         val group = data.groups!!.first().name
         val productFromGroup = products123AndroidTest().first().name
         val group2 = data.groups!!.last().name
         val productFromGroup2 = products456AndroidTest().first().name
-
+        // Scroll bottom
         onView(withText(productFromGroup)).check(matches(isDisplayed()))
         onView(withText(group2)).perform(click())
         onView(withText(productFromGroup2)).check(matches(isDisplayed()))
         onView(withText(productFromGroup)).check(doesNotExist())
+        // Scroll start
         onView(withText(group)).perform(click())
         onView(withText(productFromGroup)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun switchGroupWhenScroll() {
+        val group = data.groups!!.first().name
+        val group2 = data.groups!!.last().name
+        val startPosition = 0
+        val bottomPosition = data.productsWithGroupId()!!.count() - 1
+        // Scroll bottom
+        onView(withText(group)).check(matches(isSelected()))
+        onView(withId(R.id.products_menu)).perform(RecyclerViewActions.scrollToPosition<BindViewHolder>(bottomPosition))
+        onView(withText(group2)).check(matches(isSelected()))
+        // Scroll start
+        onView(withId(R.id.products_menu)).perform(RecyclerViewActions.scrollToPosition<BindViewHolder>(startPosition))
+        onView(withText(group)).check(matches(isSelected()))
     }
 }
