@@ -38,6 +38,7 @@ class MenuFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ) = FragmentMenuBinding.inflate(inflater, container, false).apply {
         groupsToTabs(groups)
+        scrollToProductWithGroup(groups)
         adapterToProducts(productsMenu)
         switchGroup(productsMenu)
         lifecycleOwner = this@MenuFragment
@@ -79,7 +80,7 @@ class MenuFragment : DaggerFragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 /** Visible position */
-                val index = (recyclerView.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition()
+                val index = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
                 /** Current product at position */
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.itemAtIndex(index)
                 /** Switch group if needed */
@@ -89,6 +90,18 @@ class MenuFragment : DaggerFragment() {
                     group?.select()
                 }
             }
+        })
+    }
+
+    private fun scrollToProductWithGroup(groups: TabLayout) {
+        groups.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val index = viewModel.products().value?.indexOfFirst { it.group == tab?.tag }
+                (products_menu.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(index ?: 0, 0)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) { }
+            override fun onTabUnselected(tab: TabLayout.Tab?) { }
         })
     }
 
