@@ -30,7 +30,7 @@ class MenuFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by viewModels<MenuViewModel> { viewModelFactory }
-
+    /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
 
     override fun onCreateView(
@@ -44,6 +44,7 @@ class MenuFragment : DaggerFragment() {
         executePendingBindings()
     }.root
 
+    /** Setup tabs with groups & save local copy */
     private fun groupsToTabs(tabs: TabLayout) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
             tabs.removeAllTabs()
@@ -53,7 +54,9 @@ class MenuFragment : DaggerFragment() {
                     text = it.name
                     tag = it.id
                 }
+                // Save to local copy
                 groupTabs.add(tab)
+                // Set tabs to bar
                 tabs.addTab(tab)
             }
         })
@@ -65,16 +68,23 @@ class MenuFragment : DaggerFragment() {
             list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
         })
 
+    /** Switch tabs to for group of current product */
     private fun switchGroup(list: RecyclerView) {
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            /** Current group */
+            private var group = groups?.getTabAt(groups?.selectedTabPosition ?: 0)
+            /** Check group for visible product & switch it if needed */
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
+                /** Visible position */
                 val index = (recyclerView.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition()
+                /** Current product at position */
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.itemAtIndex(index)
-                val group = groups.getTabAt(groups.selectedTabPosition)
+                /** Switch group if needed */
                 if (group?.tag != product?.group)  {
-                    groupTabs.filter { it.tag == product?.group }.firstOrNull()?.select()
+                    /** Found group with id in local copy of tabs, update current group & select it */
+                    group = groupTabs.filter { it.tag == product?.group }.firstOrNull()
+                    group?.select()
                 }
             }
         })
