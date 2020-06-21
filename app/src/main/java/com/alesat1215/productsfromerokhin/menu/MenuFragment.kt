@@ -33,6 +33,8 @@ class MenuFragment : DaggerFragment() {
     /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
 
+    private var byScroll = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,15 +82,17 @@ class MenuFragment : DaggerFragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 /** Visible position */
-                val index = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
+                val index = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition()
                 /** Current product at position */
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.itemAtIndex(index)
                 /** Switch group if needed */
                 if (group?.tag != product?.group)  {
                     /** Found group with id in local copy of tabs, update current group & select it */
                     group = groupTabs.filter { it.tag == product?.group }.firstOrNull()
+                    byScroll = true
                     group?.select()
                 }
+                byScroll = false
             }
         })
     }
@@ -96,8 +100,10 @@ class MenuFragment : DaggerFragment() {
     private fun scrollToProductWithGroup(groups: TabLayout) {
         groups.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val index = viewModel.products().value?.indexOfFirst { it.group == tab?.tag }
-                (products_menu.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(index ?: 0, 0)
+                if (!byScroll) {
+                    val index = viewModel.products().value?.indexOfFirst { it.group == tab?.tag }
+                    (products_menu.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(index ?: 0, 0)
+                }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) { }
