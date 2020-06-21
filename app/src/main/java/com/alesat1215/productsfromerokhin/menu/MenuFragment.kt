@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +17,6 @@ import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_menu.*
-import java.util.function.BiPredicate
 import javax.inject.Inject
 
 /**
@@ -32,7 +29,7 @@ class MenuFragment : DaggerFragment() {
     private val viewModel by viewModels<MenuViewModel> { viewModelFactory }
     /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
-
+    /** For scrolling to product only for click on tab */
     private var byScroll = true
 
     override fun onCreateView(
@@ -89,20 +86,29 @@ class MenuFragment : DaggerFragment() {
                 if (group?.tag != product?.group)  {
                     /** Found group with id in local copy of tabs, update current group & select it */
                     group = groupTabs.filter { it.tag == product?.group }.firstOrNull()
+                    /** Disable scrolling in tab select listener */
                     byScroll = true
+                    /** Select tab */
                     group?.select()
+                    Log.d("Products menu", "Change group id to: ${group?.tag}")
                 }
+                /** Enable scrolling in tab select listener */
                 byScroll = false
             }
         })
     }
 
+    /** Scroll to first product with current group id. Only for click on tab event */
     private fun scrollToProductWithGroup(groups: TabLayout) {
         groups.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                /** If click on tab */
                 if (!byScroll) {
-                    val index = viewModel.products().value?.indexOfFirst { it.group == tab?.tag }
-                    (products_menu.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(index ?: 0, 0)
+                    /** Find first product with group id */
+                    val position = viewModel.products().value?.indexOfFirst { it.group == tab?.tag } ?: 0
+                    /** Scroll to position */
+                    (products_menu.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
+                    Log.d("Products menu", "For tab click scroll to position: ${position}, group: ${tab?.tag}")
                 }
             }
 
