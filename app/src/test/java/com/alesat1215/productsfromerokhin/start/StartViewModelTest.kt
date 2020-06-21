@@ -23,7 +23,7 @@ class StartViewModelTest {
     @Mock
     private lateinit var repository: ProductsRepository
     private lateinit var viewModel: StartViewModel
-    private val data = remoteDataMockTest()
+    private val data by lazy { remoteDataMockTest() }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
