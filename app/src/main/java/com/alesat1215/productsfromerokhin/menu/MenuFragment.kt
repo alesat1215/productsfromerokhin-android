@@ -47,8 +47,10 @@ class MenuFragment : DaggerFragment() {
     /** Setup tabs with groups & save local copy */
     private fun groupsToTabs(tabs: TabLayout) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
+            /** Clear tabs from view & local copy */
             tabs.removeAllTabs()
             groupTabs.clear()
+            /** Set tabs to view & local copy */
             it.forEach {
                 val tab = tabs.newTab().apply {
                     text = it.name
