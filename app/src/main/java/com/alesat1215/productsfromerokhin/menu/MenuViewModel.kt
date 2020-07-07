@@ -12,6 +12,8 @@ class MenuViewModel @Inject constructor(
     /** Save state for list to remember scroll position */
     val recyclerViewState = mutableMapOf<Int, Parcelable>()
 
+    var selectedTabPosition = 0
+
     fun products() = repository.products()
 
     fun groups() = repository.groups()

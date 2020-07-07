@@ -54,6 +54,7 @@ class MenuFragment : DaggerFragment() {
     /** Setup tabs with groups & save local copy */
     private fun groupsToTabs(tabs: TabLayout) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
+            byScroll = true
             /** Clear tabs from view & local copy */
             tabs.removeAllTabs()
             groupTabs.clear()
@@ -68,6 +69,8 @@ class MenuFragment : DaggerFragment() {
                 // Set tabs to bar
                 tabs.addTab(tab)
             }
+            restoreSelectedTab()
+            byScroll = false
             Log.d("Menu", "Add groups to tabs")
         })
     }
@@ -136,6 +139,7 @@ class MenuFragment : DaggerFragment() {
         super.onPause()
 
         saveScrollPosition()
+        saveSelectedTab()
     }
 
     /** Restore state from viewModel for list */
@@ -151,6 +155,15 @@ class MenuFragment : DaggerFragment() {
             Log.d("Menu", "Save state for products_menu")
         }
 
+    private fun restoreSelectedTab() {
+        groups.getTabAt(viewModel.selectedTabPosition)?.select()
+        Log.d("Menu", "Restore selected tab position")
+    }
+
+    private fun saveSelectedTab() {
+        viewModel.selectedTabPosition = groups.selectedTabPosition
+        Log.d("Menu", "Save selected tab position")
+    }
 
 
 }
