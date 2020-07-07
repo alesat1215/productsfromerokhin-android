@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentMenuBinding
+import com.alesat1215.productsfromerokhin.start.StartTitle
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
@@ -26,7 +28,7 @@ class MenuFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel by viewModels<MenuViewModel> { viewModelFactory }
+    private val viewModel by activityViewModels<MenuViewModel> { viewModelFactory }
     /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
     /** For scrolling to product only for click on tab */
@@ -116,5 +118,29 @@ class MenuFragment : DaggerFragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) { }
         })
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        saveScrollPosition()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        restoreScrollPosition()
+    }
+
+    private fun saveScrollPosition() =
+        products_menu.layoutManager?.onSaveInstanceState()?.also {
+            viewModel.recyclerViewState[products_menu.id] = it
+            Log.d("Scroll", "Save state for products")
+        }
+
+    private fun restoreScrollPosition() =
+        viewModel.recyclerViewState[products_menu.id]?.also {
+            products_menu.layoutManager?.onRestoreInstanceState(it)
+            Log.d("Scroll", "Restore state for products")
+        }
 
 }
