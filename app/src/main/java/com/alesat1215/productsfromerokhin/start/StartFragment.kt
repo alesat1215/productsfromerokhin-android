@@ -68,21 +68,21 @@ class StartFragment : DaggerFragment() {
     /** Save state to viewModel for products & products2 */
     private fun saveScrollPosition() {
         products.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.scrollPosition[productsState] = it
+            viewModel.recyclerViewState[productsState] = it
             Log.d("Scroll", "Save state for ${productsState}")
         }
         products2.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.scrollPosition[products2State] = it
+            viewModel.recyclerViewState[products2State] = it
             Log.d("Scroll", "Save state for ${products2State}")
         }
     }
     /** Restore state from viewModel for products & products2 */
     private fun restoreScrollPosition() {
-        viewModel.scrollPosition[productsState]?.also {
+        viewModel.recyclerViewState[productsState]?.also {
             products.layoutManager?.onRestoreInstanceState(it)
             Log.d("Scroll", "Restore state for ${productsState}")
         }
-        viewModel.scrollPosition[products2State]?.also {
+        viewModel.recyclerViewState[products2State]?.also {
             products2.layoutManager?.onRestoreInstanceState(it)
             Log.d("Scroll", "Restore state for ${products2State}")
         }

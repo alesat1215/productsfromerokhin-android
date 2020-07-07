@@ -13,6 +13,9 @@ class StartViewModel @Inject constructor(
     private val repository: IProductsRepository
 ) : ViewModel() {
 
+    /** Save state for lists to remember scroll position */
+    val recyclerViewState = mutableMapOf<String, Parcelable>()
+
     /** @return title for type */
     fun title(forType: StartTitle) =
         when (forType) {
@@ -29,8 +32,6 @@ class StartViewModel @Inject constructor(
             Transformations.map(repository.products()) { it.filter(predicate) }
         else repository.products()
     }
-
-    val scrollPosition = mutableMapOf<String, Parcelable>()
 
 }
 
