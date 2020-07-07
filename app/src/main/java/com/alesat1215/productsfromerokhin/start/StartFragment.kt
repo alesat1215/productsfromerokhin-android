@@ -61,7 +61,7 @@ class StartFragment : DaggerFragment() {
         restoreScrollPosition()
     }
 
-    /** Save state to viewModel for list */
+    /** Save state to viewModel for lists */
     private fun saveScrollPosition() {
         products.layoutManager?.onSaveInstanceState()?.also {
             viewModel.recyclerViewState[PRODUCTS] = it
