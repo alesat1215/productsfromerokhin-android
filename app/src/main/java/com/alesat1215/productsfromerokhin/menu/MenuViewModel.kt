@@ -9,6 +9,7 @@ class MenuViewModel @Inject constructor(
     private val repository: IProductsRepository
 ) : ViewModel() {
 
+    /** Save state for list to remember scroll position */
     val recyclerViewState = mutableMapOf<Int, Parcelable>()
 
     fun products() = repository.products()

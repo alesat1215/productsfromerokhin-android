@@ -119,28 +119,31 @@ class MenuFragment : DaggerFragment() {
         })
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        saveScrollPosition()
-    }
-
     override fun onResume() {
         super.onResume()
 
         restoreScrollPosition()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        saveScrollPosition()
+    }
+
+    /** Restore state from viewModel for list */
+    private fun restoreScrollPosition() =
+        viewModel.recyclerViewState[products_menu.id]?.also {
+            products_menu.layoutManager?.onRestoreInstanceState(it)
+            Log.d("Scroll", "Restore state for products")
+        }
+    /** Save state to viewModel for list */
     private fun saveScrollPosition() =
         products_menu.layoutManager?.onSaveInstanceState()?.also {
             viewModel.recyclerViewState[products_menu.id] = it
             Log.d("Scroll", "Save state for products")
         }
 
-    private fun restoreScrollPosition() =
-        viewModel.recyclerViewState[products_menu.id]?.also {
-            products_menu.layoutManager?.onRestoreInstanceState(it)
-            Log.d("Scroll", "Restore state for products")
-        }
+
 
 }

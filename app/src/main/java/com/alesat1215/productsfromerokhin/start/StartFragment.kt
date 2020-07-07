@@ -48,29 +48,18 @@ class StartFragment : DaggerFragment() {
             list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
         })
 
-    override fun onPause() {
-        super.onPause()
-
-        saveScrollPosition()
-    }
-
     override fun onResume() {
         super.onResume()
 
         restoreScrollPosition()
     }
 
-    /** Save state to viewModel for lists */
-    private fun saveScrollPosition() {
-        products.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.recyclerViewState[products.id] = it
-            Log.d("Scroll", "Save state for products")
-        }
-        products2.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.recyclerViewState[products2.id] = it
-            Log.d("Scroll", "Save state for products2")
-        }
+    override fun onPause() {
+        super.onPause()
+
+        saveScrollPosition()
     }
+
     /** Restore state from viewModel for lists */
     private fun restoreScrollPosition() {
         viewModel.recyclerViewState[products.id]?.also {
@@ -80,6 +69,17 @@ class StartFragment : DaggerFragment() {
         viewModel.recyclerViewState[products2.id]?.also {
             products2.layoutManager?.onRestoreInstanceState(it)
             Log.d("Scroll", "Restore state for products2")
+        }
+    }
+    /** Save state to viewModel for lists */
+    private fun saveScrollPosition() {
+        products.layoutManager?.onSaveInstanceState()?.also {
+            viewModel.recyclerViewState[products.id] = it
+            Log.d("Scroll", "Save state for products")
+        }
+        products2.layoutManager?.onSaveInstanceState()?.also {
+            viewModel.recyclerViewState[products2.id] = it
+            Log.d("Scroll", "Save state for products2")
         }
     }
 
