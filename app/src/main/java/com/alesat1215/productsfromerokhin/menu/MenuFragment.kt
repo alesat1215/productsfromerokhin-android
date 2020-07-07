@@ -68,6 +68,7 @@ class MenuFragment : DaggerFragment() {
                 // Set tabs to bar
                 tabs.addTab(tab)
             }
+            Log.d("Menu", "Add groups to tabs")
         })
     }
 
@@ -75,6 +76,7 @@ class MenuFragment : DaggerFragment() {
     private fun adapterToProducts(list: RecyclerView) =
         viewModel.products().observe(viewLifecycleOwner, Observer {
             list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
+            Log.d("Menu", "Set adapter to products_menu")
         })
 
     /** Switch tabs to for group of current product */
@@ -97,7 +99,7 @@ class MenuFragment : DaggerFragment() {
                     byScroll = true
                     /** Select tab */
                     group?.select()
-                    Log.d("Products menu", "Change group id to: ${group?.tag}")
+                    Log.d("Menu", "Change group id to: ${group?.tag}")
                 }
                 /** Enable scrolling in tab select listener */
                 byScroll = false
@@ -115,7 +117,7 @@ class MenuFragment : DaggerFragment() {
                     val position = viewModel.products().value?.indexOfFirst { it.group == tab?.tag } ?: 0
                     /** Scroll to position */
                     (products_menu.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
-                    Log.d("Products menu", "For tab click scroll to position: ${position}, group: ${tab?.tag}")
+                    Log.d("Menu", "For tab click scroll to position: ${position}, group: ${tab?.tag}")
                 }
             }
 
@@ -140,13 +142,13 @@ class MenuFragment : DaggerFragment() {
     private fun restoreScrollPosition() =
         viewModel.recyclerViewState[products_menu.id]?.also {
             products_menu.layoutManager?.onRestoreInstanceState(it)
-            Log.d("Scroll", "Restore state for products")
+            Log.d("Menu", "Restore state for products_menu")
         }
     /** Save state to viewModel for list */
     private fun saveScrollPosition() =
         products_menu.layoutManager?.onSaveInstanceState()?.also {
             viewModel.recyclerViewState[products_menu.id] = it
-            Log.d("Scroll", "Save state for products")
+            Log.d("Menu", "Save state for products_menu")
         }
 
 

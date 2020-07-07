@@ -46,6 +46,7 @@ class StartFragment : DaggerFragment() {
     private fun adapterToProducts(list: RecyclerView, predicate: ((Product) -> Boolean)? = null) =
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
             list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
+            Log.d("Menu", "Set adapter to products")
         })
 
     override fun onResume() {
@@ -64,22 +65,22 @@ class StartFragment : DaggerFragment() {
     private fun restoreScrollPosition() {
         viewModel.recyclerViewState[products.id]?.also {
             products.layoutManager?.onRestoreInstanceState(it)
-            Log.d("Scroll", "Restore state for products")
+            Log.d("Start", "Restore state for products")
         }
         viewModel.recyclerViewState[products2.id]?.also {
             products2.layoutManager?.onRestoreInstanceState(it)
-            Log.d("Scroll", "Restore state for products2")
+            Log.d("Start", "Restore state for products2")
         }
     }
     /** Save state to viewModel for lists */
     private fun saveScrollPosition() {
         products.layoutManager?.onSaveInstanceState()?.also {
             viewModel.recyclerViewState[products.id] = it
-            Log.d("Scroll", "Save state for products")
+            Log.d("Start", "Save state for products")
         }
         products2.layoutManager?.onSaveInstanceState()?.also {
             viewModel.recyclerViewState[products2.id] = it
-            Log.d("Scroll", "Save state for products2")
+            Log.d("Start", "Save state for products2")
         }
     }
 
