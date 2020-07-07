@@ -32,7 +32,7 @@ class MenuFragment : DaggerFragment() {
     /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
     /** For scrolling to product only for click on tab */
-    private var byScroll = true
+    private var scrollByGroup = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +54,8 @@ class MenuFragment : DaggerFragment() {
     /** Setup tabs with groups & save local copy */
     private fun groupsToTabs(tabs: TabLayout) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
-            byScroll = true
+            /** Disable scrolling in tab select listener */
+            scrollByGroup = false
             /** Clear tabs from view & local copy */
             tabs.removeAllTabs()
             groupTabs.clear()
@@ -70,7 +71,8 @@ class MenuFragment : DaggerFragment() {
                 tabs.addTab(tab)
             }
             restoreSelectedTab()
-            byScroll = false
+            /** Enable scrolling in tab select listener */
+            scrollByGroup = true
             Log.d("Menu", "Add groups to tabs")
         })
     }
@@ -99,13 +101,13 @@ class MenuFragment : DaggerFragment() {
                     /** Found group with id in local copy of tabs, update current group & select it */
                     group = groupTabs.filter { it.tag == product?.group }.firstOrNull()
                     /** Disable scrolling in tab select listener */
-                    byScroll = true
+                    scrollByGroup = false
                     /** Select tab */
                     group?.select()
                     Log.d("Menu", "Change group id to: ${group?.tag}")
                 }
                 /** Enable scrolling in tab select listener */
-                byScroll = false
+                scrollByGroup = true
             }
         })
     }
@@ -115,7 +117,7 @@ class MenuFragment : DaggerFragment() {
         groups.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 /** If click on tab */
-                if (!byScroll) {
+                if (scrollByGroup) {
                     /** Find first product with group id */
                     val position = viewModel.products().value?.indexOfFirst { it.group == tab?.tag } ?: 0
                     /** Scroll to position */
