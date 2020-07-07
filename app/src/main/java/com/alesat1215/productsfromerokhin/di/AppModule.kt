@@ -36,5 +36,5 @@ object AppModule {
     /** Limiter for remote database  */
     @DBfb
     @Provides
-    fun limiter() = RateLimiter(2, TimeUnit.MINUTES)
+    fun limiter() = RateLimiter(1, TimeUnit.MINUTES)
 }
