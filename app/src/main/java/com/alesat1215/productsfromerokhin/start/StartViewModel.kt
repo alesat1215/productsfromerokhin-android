@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.start
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,8 @@ class StartViewModel @Inject constructor(
             Transformations.map(repository.products()) { it.filter(predicate) }
         else repository.products()
     }
+
+    val scrollPosition = mutableMapOf<String, Parcelable>()
 
 }
 
