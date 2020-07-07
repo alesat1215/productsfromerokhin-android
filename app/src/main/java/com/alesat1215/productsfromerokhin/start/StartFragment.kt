@@ -1,8 +1,10 @@
 package com.alesat1215.productsfromerokhin.start
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +14,7 @@ import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_start.*
 import javax.inject.Inject
 
 /**
@@ -21,8 +24,12 @@ import javax.inject.Inject
 class StartFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val viewModel by viewModels<StartViewModel> { viewModelFactory }
+    /** Need "by activity" for restore scroll state */
+    private val viewModel by activityViewModels<StartViewModel> { viewModelFactory }
+    /** Key for restore state of products list */
+    private val productsState = "products"
+    /** Key for restore state of products2 list */
+    private val products2State = "products2"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +52,41 @@ class StartFragment : DaggerFragment() {
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
             list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
         })
+
+    override fun onPause() {
+        super.onPause()
+
+        saveScrollPosition()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        restoreScrollPosition()
+    }
+
+    /** Save state to viewModel for products & products2 */
+    private fun saveScrollPosition() {
+        products.layoutManager?.onSaveInstanceState()?.also {
+            viewModel.scrollPosition[productsState] = it
+            Log.d("Scroll", "Save state for ${productsState}")
+        }
+        products2.layoutManager?.onSaveInstanceState()?.also {
+            viewModel.scrollPosition[products2State] = it
+            Log.d("Scroll", "Save state for ${products2State}")
+        }
+    }
+    /** Restore state from viewModel for products & products2 */
+    private fun restoreScrollPosition() {
+        viewModel.scrollPosition[productsState]?.also {
+            products.layoutManager?.onRestoreInstanceState(it)
+            Log.d("Scroll", "Restore state for ${productsState}")
+        }
+        viewModel.scrollPosition[products2State]?.also {
+            products2.layoutManager?.onRestoreInstanceState(it)
+            Log.d("Scroll", "Restore state for ${products2State}")
+        }
+    }
 
 }
 
