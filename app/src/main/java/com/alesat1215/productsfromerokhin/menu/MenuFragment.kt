@@ -38,10 +38,15 @@ class MenuFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FragmentMenuBinding.inflate(inflater, container, false).apply {
+        /** Set groups to tabs */
         groupsToTabs(groups)
+        /** Add scroll to product when group tap */
         scrollToProductWithGroup(groups)
+        /** Set adapter for products */
         adapterToProducts(productsMenu)
+        /** Add switch group when scroll */
         switchGroup(productsMenu)
+        /** Set lifecycleOwner for LiveData in layout */
         lifecycleOwner = this@MenuFragment
         executePendingBindings()
     }.root
