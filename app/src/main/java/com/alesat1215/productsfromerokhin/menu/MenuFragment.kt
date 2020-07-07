@@ -27,7 +27,7 @@ import javax.inject.Inject
 class MenuFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
+    /** Need "by activity" for restore scroll state */
     private val viewModel by activityViewModels<MenuViewModel> { viewModelFactory }
     /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
