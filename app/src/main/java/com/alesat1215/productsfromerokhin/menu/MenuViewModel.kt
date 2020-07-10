@@ -10,9 +10,10 @@ class MenuViewModel @Inject constructor(
 ) : ViewModel() {
 
     /** Save state for list to remember scroll position */
-    val recyclerViewState = mutableMapOf<Int, Parcelable>()
-
-    var selectedTabPosition = 0
+//    val recyclerViewState = mutableMapOf<Int, Parcelable>()
+//
+//    var selectedTabPosition = 0
+    var scrollPosition = 0
 
     fun products() = repository.products()
 
