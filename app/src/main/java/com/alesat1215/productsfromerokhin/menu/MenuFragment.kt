@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
+import com.alesat1215.productsfromerokhin.data.Group
 import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentMenuBinding
 import com.alesat1215.productsfromerokhin.start.StartTitle
@@ -38,12 +39,13 @@ class MenuFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FragmentMenuBinding.inflate(inflater, container, false).apply {
+        bindGroupsAndProducts(groups, productsMenu)
         /** Set groups to tabs */
-        groupsToTabs(groups)
+//        groupsToTabs(groups)
         /** Add scroll to product when group tap */
         scrollToProductWithGroup(groups)
         /** Set adapter for products */
-        adapterToProducts(productsMenu)
+//        adapterToProducts(productsMenu)
         /** Add switch group when scroll */
         switchGroup(productsMenu)
         /** Set lifecycleOwner for LiveData in layout */
@@ -51,38 +53,79 @@ class MenuFragment : DaggerFragment() {
         executePendingBindings()
     }.root
 
-    /** Setup tabs with groups & save local copy */
-    private fun groupsToTabs(tabs: TabLayout) {
+    private fun bindGroupsAndProducts(groups: TabLayout, productsMenu: RecyclerView) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
-            /** Disable scrolling in tab select listener */
-            scrollByGroup = false
-            /** Clear tabs from view & local copy */
-            tabs.removeAllTabs()
-            groupTabs.clear()
-            /** Set tabs to view & local copy */
-            it.forEach {
-                val tab = tabs.newTab().apply {
-                    text = it.name
-                    tag = it.id
-                }
-                // Save to local copy
-                groupTabs.add(tab)
-                // Set tabs to bar
-                tabs.addTab(tab)
-            }
-//            restoreSelectedTab()
-            /** Enable scrolling in tab select listener */
-            scrollByGroup = true
-            Log.d("Menu", "Add groups to tabs")
+            groupsToTabs(groups, it)
+            val products = viewModel.products()
+            products.observe(viewLifecycleOwner, Observer {
+                adapterToProducts(productsMenu, it)
+                products.removeObservers(viewLifecycleOwner)
+            })
         })
     }
 
+    private fun groupsToTabs(tabs: TabLayout, groups: List<Group>) {
+        /** Disable scrolling in tab select listener */
+        scrollByGroup = false
+        /** Clear tabs from view & local copy */
+        tabs.removeAllTabs()
+        groupTabs.clear()
+        /** Set tabs to view & local copy */
+        groups.forEach {
+            val tab = tabs.newTab().apply {
+                text = it.name
+                tag = it.id
+            }
+            // Save to local copy
+            groupTabs.add(tab)
+            // Set tabs to bar
+            tabs.addTab(tab)
+        }
+//            restoreSelectedTab()
+        /** Enable scrolling in tab select listener */
+        scrollByGroup = true
+        Log.d("Menu", "Add groups to tabs")
+    }
+
+    private fun adapterToProducts(list: RecyclerView, products: List<Product>) {
+        list.swapAdapter(BindRVAdapter(products, R.layout.product_item), true)
+        Log.d("Menu", "Set adapter to products_menu")
+        restoreScrollPosition(list)
+    }
+
+    /** Setup tabs with groups & save local copy */
+//    private fun groupsToTabs(tabs: TabLayout) {
+//        viewModel.groups().observe(viewLifecycleOwner, Observer {
+//            /** Disable scrolling in tab select listener */
+//            scrollByGroup = false
+//            /** Clear tabs from view & local copy */
+//            tabs.removeAllTabs()
+//            groupTabs.clear()
+//            /** Set tabs to view & local copy */
+//            it.forEach {
+//                val tab = tabs.newTab().apply {
+//                    text = it.name
+//                    tag = it.id
+//                }
+//                // Save to local copy
+//                groupTabs.add(tab)
+//                // Set tabs to bar
+//                tabs.addTab(tab)
+//            }
+////            restoreSelectedTab()
+//            /** Enable scrolling in tab select listener */
+//            scrollByGroup = true
+//            Log.d("Menu", "Add groups to tabs")
+//        })
+//    }
+
     /** Set adapter for products */
-    private fun adapterToProducts(list: RecyclerView) =
-        viewModel.products().observe(viewLifecycleOwner, Observer {
-            list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
-            Log.d("Menu", "Set adapter to products_menu")
-        })
+//    private fun adapterToProducts(list: RecyclerView) =
+//        viewModel.products().observe(viewLifecycleOwner, Observer {
+//            list.swapAdapter(BindRVAdapter(it, R.layout.product_item), true)
+//            Log.d("Menu", "Set adapter to products_menu")
+//            restoreScrollPosition(list)
+//        })
 
     /** Switch tabs to for group of current product */
     private fun switchGroup(list: RecyclerView) {
@@ -144,27 +187,19 @@ class MenuFragment : DaggerFragment() {
         })
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//
-////        restoreScrollPosition()
-//    }
-
     override fun onPause() {
         super.onPause()
 
         saveScrollPosition()
-//        saveScrollPosition()
-//        saveSelectedTab()
     }
 
     private fun saveScrollPosition() {
-        viewModel.scrollPosition = (products_menu.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
+        viewModel.scrollPosition = products_menu.computeVerticalScrollOffset()
         Log.d("Menu", "Save scroll position for products_menu: ${viewModel.scrollPosition}")
     }
 
-    private fun restoreScrollPosition() {
-        products_menu.scrollToPosition(viewModel.scrollPosition)
+    private fun restoreScrollPosition(list: RecyclerView) {
+        list.post { list.smoothScrollBy(0, viewModel.scrollPosition) }
         Log.d("Menu", "Restore scroll position for products_menu: ${viewModel.scrollPosition}")
     }
 
