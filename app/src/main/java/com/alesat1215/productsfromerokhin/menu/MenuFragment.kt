@@ -117,6 +117,16 @@ class MenuFragment : DaggerFragment() {
                 /** Enable scrolling in tab select listener */
                 tabSelected = true
             }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                when (newState) {
+                    RecyclerView.SCROLL_STATE_SETTLING -> Log.d("Menu", "Settling")
+                    RecyclerView.SCROLL_STATE_IDLE -> saveScrollPosition()
+                    RecyclerView.SCROLL_STATE_DRAGGING -> Log.d("Menu", "DRAGGING")
+                }
+            }
         })
     }
 
@@ -139,11 +149,11 @@ class MenuFragment : DaggerFragment() {
         })
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        saveScrollPosition()
-    }
+//    override fun onPause() {
+//        super.onPause()
+//
+//        saveScrollPosition()
+//    }
 
     /** Save state to viewModel for list */
     private fun saveScrollPosition() {
