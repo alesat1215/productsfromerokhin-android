@@ -31,7 +31,7 @@ class MenuFragment : DaggerFragment() {
     /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
     /** For scrolling to product only for click on tab */
-    private var scrollByGroup = false
+    private var tabSelected = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +39,10 @@ class MenuFragment : DaggerFragment() {
     ) = FragmentMenuBinding.inflate(inflater, container, false).apply {
         /** Add groups to tabs, products to list */
         bindGroupsAndProducts(groups, productsMenu)
-        /** Add scroll to product when group tap */
-        scrollToProductWithGroup(groups)
+        /** Add scroll to product when group selected */
+        onTabSelected(groups)
         /** Add switch group when scroll */
-        switchGroup(productsMenu)
+        onScrollGroupSwitcher(productsMenu)
         /** Set lifecycleOwner for LiveData in layout */
         lifecycleOwner = this@MenuFragment
         executePendingBindings()
@@ -92,8 +92,8 @@ class MenuFragment : DaggerFragment() {
         restoreScrollPosition(list)
     }
 
-    /** Switch tabs to for group of current product */
-    private fun switchGroup(list: RecyclerView) {
+    /** Switch tabs to group of current product */
+    private fun onScrollGroupSwitcher(list: RecyclerView) {
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             /** Current group */
             private var group = groups?.getTabAt(groups?.selectedTabPosition ?: 0)
@@ -109,23 +109,23 @@ class MenuFragment : DaggerFragment() {
                     /** Found group with id in local copy of tabs, update current group & select it */
                     group = groupTabs.filter { it.tag == product?.group }.firstOrNull()
                     /** Disable scrolling in tab select listener */
-                    scrollByGroup = false
+                    tabSelected = false
                     /** Select tab */
                     group?.select()
                     Log.d("Menu", "Change group id to: ${group?.tag}")
                 }
                 /** Enable scrolling in tab select listener */
-                scrollByGroup = true
+                tabSelected = true
             }
         })
     }
 
     /** Scroll to first product with current group id. Only for click on tab event */
-    private fun scrollToProductWithGroup(groups: TabLayout) {
+    private fun onTabSelected(groups: TabLayout) {
         groups.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 /** If click on tab */
-                if (scrollByGroup) {
+                if (tabSelected) {
                     /** Find first product with group id */
                     val position = viewModel.products().value?.indexOfFirst { it.group == tab?.tag } ?: 0
                     /** Scroll to position */
