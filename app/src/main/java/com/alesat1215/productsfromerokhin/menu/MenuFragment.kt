@@ -31,7 +31,7 @@ class MenuFragment : DaggerFragment() {
     /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
     /** For scrolling to product only for click on tab */
-    private var tabSelected = false
+    private var tabSelected = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
