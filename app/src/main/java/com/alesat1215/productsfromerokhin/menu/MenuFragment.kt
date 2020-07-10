@@ -67,34 +67,34 @@ class MenuFragment : DaggerFragment() {
     }
 
     /** Setup tabs with groups & save local copy */
-    private fun groupsToTabs(tabs: TabLayout, groups: List<Group>) {
+    private fun groupsToTabs(groups: TabLayout, data: List<Group>) {
         /** Clear tabs from view & local copy */
-        tabs.removeAllTabs()
+        groups.removeAllTabs()
         groupTabs.clear()
         /** Set tabs to view & local copy */
-        groups.forEach {
-            val tab = tabs.newTab().apply {
+        data.forEach {
+            val tab = groups.newTab().apply {
                 text = it.name
                 tag = it.id
             }
             // Save to local copy
             groupTabs.add(tab)
             // Set tabs to bar
-            tabs.addTab(tab)
+            groups.addTab(tab)
         }
         Log.d("Menu", "Add groups to tabs: ${groupTabs.count()}")
     }
     /** Set adapter for products & restore scroll position */
-    private fun adapterToProducts(list: RecyclerView, products: List<Product>) {
-        list.swapAdapter(BindRVAdapter(products, R.layout.product_item), true)
-        Log.d("Menu", "Set adapter to products_menu with items count: ${products.count()}")
+    private fun adapterToProducts(productsMenu: RecyclerView, data: List<Product>) {
+        productsMenu.swapAdapter(BindRVAdapter(data, R.layout.product_item), true)
+        Log.d("Menu", "Set adapter to products_menu with items count: ${data.count()}")
         // Set scroll position
-        restoreScrollPosition(list)
+        restoreScrollPosition(productsMenu)
     }
 
     /** Switch tabs to group of current product */
-    private fun onScrollGroupSwitcher(list: RecyclerView) {
-        list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+    private fun onScrollGroupSwitcher(productsMenu: RecyclerView) {
+        productsMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             /** Current group */
             private var group = groups?.getTabAt(groups?.selectedTabPosition ?: 0)
             /** Check group for visible product & switch it if needed */
