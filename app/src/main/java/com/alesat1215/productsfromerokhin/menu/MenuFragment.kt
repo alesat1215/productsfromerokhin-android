@@ -134,38 +134,49 @@ class MenuFragment : DaggerFragment() {
     override fun onResume() {
         super.onResume()
 
-        restoreScrollPosition()
+//        restoreScrollPosition()
     }
 
     override fun onPause() {
         super.onPause()
 
         saveScrollPosition()
-        saveSelectedTab()
+//        saveScrollPosition()
+//        saveSelectedTab()
+    }
+
+    private fun saveScrollPosition() {
+        viewModel.scrollPosition = (products_menu.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
+        Log.d("Menu", "Save scroll position for products_menu: ${viewModel.scrollPosition}")
+    }
+
+    private fun restoreScrollPosition() {
+        products_menu.scrollToPosition(viewModel.scrollPosition)
+        Log.d("Menu", "Restore scroll position for products_menu: ${viewModel.scrollPosition}")
     }
 
     /** Restore state from viewModel for list */
-    private fun restoreScrollPosition() =
-        viewModel.recyclerViewState[products_menu.id]?.also {
-            products_menu.layoutManager?.onRestoreInstanceState(it)
-            Log.d("Menu", "Restore state for products_menu")
-        }
-    /** Save state to viewModel for list */
-    private fun saveScrollPosition() =
-        products_menu.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.recyclerViewState[products_menu.id] = it
-            Log.d("Menu", "Save state for products_menu")
-        }
-
-    private fun restoreSelectedTab() {
-        groups.getTabAt(viewModel.selectedTabPosition)?.select()
-        Log.d("Menu", "Restore selected tab position")
-    }
-
-    private fun saveSelectedTab() {
-        viewModel.selectedTabPosition = groups.selectedTabPosition
-        Log.d("Menu", "Save selected tab position")
-    }
+//    private fun restoreScrollPosition() =
+//        viewModel.recyclerViewState[products_menu.id]?.also {
+//            products_menu.layoutManager?.onRestoreInstanceState(it)
+//            Log.d("Menu", "Restore state for products_menu")
+//        }
+//    /** Save state to viewModel for list */
+//    private fun saveScrollPosition() =
+//        products_menu.layoutManager?.onSaveInstanceState()?.also {
+//            viewModel.recyclerViewState[products_menu.id] = it
+//            Log.d("Menu", "Save state for products_menu")
+//        }
+//
+//    private fun restoreSelectedTab() {
+//        groups.getTabAt(viewModel.selectedTabPosition)?.select()
+//        Log.d("Menu", "Restore selected tab position")
+//    }
+//
+//    private fun saveSelectedTab() {
+//        viewModel.selectedTabPosition = groups.selectedTabPosition
+//        Log.d("Menu", "Save selected tab position")
+//    }
 
 
 }
