@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_start.*
 import javax.inject.Inject
 
 /**
- * [StartFragment] subclass DaggerFragment.
+ * [StartFragment] subclass of [DaggerFragment].
  * First app screen.
  */
 class StartFragment : DaggerFragment() {
