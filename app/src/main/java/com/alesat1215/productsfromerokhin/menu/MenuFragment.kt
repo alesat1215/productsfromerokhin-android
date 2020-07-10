@@ -70,7 +70,7 @@ class MenuFragment : DaggerFragment() {
                 // Set tabs to bar
                 tabs.addTab(tab)
             }
-            restoreSelectedTab()
+//            restoreSelectedTab()
             /** Enable scrolling in tab select listener */
             scrollByGroup = true
             Log.d("Menu", "Add groups to tabs")
@@ -98,18 +98,31 @@ class MenuFragment : DaggerFragment() {
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.itemAtIndex(index)
                 /** Switch group if needed */
                 if (group?.tag != product?.group)  {
-                    /** Found group with id in local copy of tabs, update current group & select it */
-                    group = groupTabs.filter { it.tag == product?.group }.firstOrNull()
-                    /** Disable scrolling in tab select listener */
-                    scrollByGroup = false
-                    /** Select tab */
-                    group?.select()
-                    Log.d("Menu", "Change group id to: ${group?.tag}")
+                    selectGroup(product?.group ?: 0)
+//                    /** Found group with id in local copy of tabs, update current group & select it */
+//                    group = groupTabs.filter { it.tag == product?.group }.firstOrNull()
+//                    /** Disable scrolling in tab select listener */
+//                    scrollByGroup = false
+//                    /** Select tab */
+//                    group?.select()
+//                    Log.d("Menu", "Change group id to: ${group?.tag}")
                 }
-                /** Enable scrolling in tab select listener */
-                scrollByGroup = true
+//                /** Enable scrolling in tab select listener */
+//                scrollByGroup = true
             }
         })
+    }
+
+    private fun selectGroup(tag: Int) {
+        /** Found group with id in local copy of tabs, update current group & select it */
+        val group = groupTabs.filter { it.tag == tag }.firstOrNull()
+        /** Disable scrolling in tab select listener */
+        scrollByGroup = false
+        /** Select tab */
+        group?.select()
+        Log.d("Menu", "Change group id to: ${group?.tag}")
+        /** Enable scrolling in tab select listener */
+        scrollByGroup = true
     }
 
     /** Scroll to first product with current group id. Only for click on tab event */
@@ -131,11 +144,11 @@ class MenuFragment : DaggerFragment() {
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-
-//        restoreScrollPosition()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//
+////        restoreScrollPosition()
+//    }
 
     override fun onPause() {
         super.onPause()
