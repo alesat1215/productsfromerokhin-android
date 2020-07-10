@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Group
@@ -31,7 +32,7 @@ class MenuFragment : DaggerFragment() {
     /** Local copy of tabs. For filter by group id & change selected */
     private val groupTabs = mutableListOf<TabLayout.Tab>()
     /** For scrolling to product only for click on tab */
-    private var tabSelected = true
+    private var tabSelected = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,8 +42,8 @@ class MenuFragment : DaggerFragment() {
         bindGroupsAndProducts(groups, productsMenu)
         /** Add scroll to product when group selected */
         onTabSelected(groups)
-        /** Add switch group when scroll */
-        onScrollGroupSwitcher(productsMenu)
+        /** Add switch group when scroll & save position */
+        onScroll(productsMenu)
         /** Set lifecycleOwner for LiveData in layout */
         lifecycleOwner = this@MenuFragment
         executePendingBindings()
@@ -92,8 +93,8 @@ class MenuFragment : DaggerFragment() {
         restoreScrollPosition(productsMenu)
     }
 
-    /** Switch tabs to group of current product */
-    private fun onScrollGroupSwitcher(productsMenu: RecyclerView) {
+    /** Switch tabs to group of current product & save scroll position */
+    private fun onScroll(productsMenu: RecyclerView) {
         productsMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             /** Current group */
             private var group = groups?.getTabAt(groups?.selectedTabPosition ?: 0)
@@ -118,14 +119,11 @@ class MenuFragment : DaggerFragment() {
                 tabSelected = true
             }
 
+            /** Save scroll position */
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-
-                when (newState) {
-                    RecyclerView.SCROLL_STATE_SETTLING -> Log.d("Menu", "Settling")
-                    RecyclerView.SCROLL_STATE_IDLE -> saveScrollPosition()
-                    RecyclerView.SCROLL_STATE_DRAGGING -> Log.d("Menu", "DRAGGING")
-                }
+                // Save position when scroll stop
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) saveScrollPosition()
             }
         })
     }
@@ -139,7 +137,11 @@ class MenuFragment : DaggerFragment() {
                     /** Find first product with group id */
                     val position = viewModel.products().value?.indexOfFirst { it.group == tab?.tag } ?: 0
                     /** Scroll to position */
-                    (products_menu.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
+                    products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
+                        // Scroll item in top
+                        override fun getVerticalSnapPreference() = SNAP_TO_START
+                        // Set scroll position
+                    }.apply { targetPosition = position })
                     Log.d("Menu", "For tab click scroll to position: ${position}, group: ${tab?.tag}")
                 }
             }
@@ -148,12 +150,6 @@ class MenuFragment : DaggerFragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) { }
         })
     }
-
-//    override fun onPause() {
-//        super.onPause()
-//
-//        saveScrollPosition()
-//    }
 
     /** Save state to viewModel for list */
     private fun saveScrollPosition() {
