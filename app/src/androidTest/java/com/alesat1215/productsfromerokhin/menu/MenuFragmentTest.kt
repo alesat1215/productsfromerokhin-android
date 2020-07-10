@@ -37,7 +37,7 @@ class MenuFragmentTest {
     }
 
     @Test
-    fun scrollWhenSwitchGroup() {
+    fun onTabSelected() {
         val group = data.groups!!.first().name
         val productFromGroup = products123AndroidTest().first().name
         val group2 = data.groups!!.last().name
@@ -53,7 +53,7 @@ class MenuFragmentTest {
     }
 
     @Test
-    fun switchGroupWhenScroll() {
+    fun onScroll() {
         val group = data.groups!!.first().name
         val group2 = data.groups!!.last().name
         val startPosition = 0
