@@ -32,7 +32,7 @@ class MenuFragmentTest {
 
     @Test
     fun checkViews() {
-        onView(withId(R.id.groups)).check(matches(isDisplayed()))
+        onView(withId(R.id.groups_menu)).check(matches(isDisplayed()))
         onView(withId(R.id.products_menu)).check(matches(isDisplayed()))
     }
 

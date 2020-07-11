@@ -31,23 +31,23 @@ class StartFragmentTest {
     @Test
     fun checkViews() {
         // Titles
-        onView(withId(R.id.title)).check(matches(withText(data.title)))
-        onView(withId(R.id.imgTitle)).check(matches(withText(data.imgTitle)))
-        onView(withId(R.id.productsTitle)).check(matches(withText(data.productsTitle)))
-        onView(withId(R.id.productsTitle2)).check(matches(withText(data.productsTitle2)))
+        onView(withId(R.id.title_start)).check(matches(withText(data.title)))
+        onView(withId(R.id.imgTitle_start)).check(matches(withText(data.imgTitle)))
+        onView(withId(R.id.productsTitle_start)).check(matches(withText(data.productsTitle)))
+        onView(withId(R.id.productsTitle2_start)).check(matches(withText(data.productsTitle2)))
         // Products
         val products = products123AndroidTest()
         onView(withText(products.first().name)).check(matches(isDisplayed()))
-        onView(withId(R.id.products)).perform(scrollToPosition<BindViewHolder>(1))
+        onView(withId(R.id.products_start)).perform(scrollToPosition<BindViewHolder>(1))
         onView(withText(products[1].name)).check(matches(isDisplayed()))
-        onView(withId(R.id.products)).perform(scrollToPosition<BindViewHolder>(products.count() - 1))
+        onView(withId(R.id.products_start)).perform(scrollToPosition<BindViewHolder>(products.count() - 1))
         onView(withText(products.last().name)).check(matches(isDisplayed()))
         // Products2
         val products2 = products456AndroidTest()
         onView(withText(products2.first().name)).check(matches(isDisplayed()))
-        onView(withId(R.id.products2)).perform(scrollToPosition<BindViewHolder>(1))
+        onView(withId(R.id.products2_start)).perform(scrollToPosition<BindViewHolder>(1))
         onView(withText(products2[1].name)).check(matches(isDisplayed()))
-        onView(withId(R.id.products2)).perform(scrollToPosition<BindViewHolder>(products2.count() - 1))
+        onView(withId(R.id.products2_start)).perform(scrollToPosition<BindViewHolder>(products2.count() - 1))
         onView(withText(products2.last().name)).check(matches(isDisplayed()))
     }
 }

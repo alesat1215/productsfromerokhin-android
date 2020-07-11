@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.data
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.remoteDataMockAndroidTest
 import javax.inject.Inject
@@ -16,4 +17,6 @@ class ProductsRepositoryMock @Inject constructor() : IProductsRepository {
     override fun titles() = MutableLiveData(data)
 
     override fun groups() = MutableLiveData(data.groups!!)
+
+    override val productsInCart = MutableLiveData<List<ProductInCart>>(emptyList())
 }
