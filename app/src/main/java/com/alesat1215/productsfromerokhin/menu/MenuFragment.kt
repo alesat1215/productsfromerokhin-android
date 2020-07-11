@@ -87,7 +87,7 @@ class MenuFragment : DaggerFragment() {
     }
     /** Set adapter for products & restore scroll position */
     private fun adapterToProducts(productsMenu: RecyclerView, data: List<Product>) {
-        productsMenu.swapAdapter(BindRVAdapter(data, R.layout.product_item), true)
+        productsMenu.swapAdapter(BindRVAdapter(data, R.layout.product_menu_item), true)
         Log.d("Menu", "Set adapter to products_menu with items count: ${data.count()}")
         // Set scroll position
         restoreScrollPosition(productsMenu)
