@@ -51,3 +51,16 @@ data class Product(
     val inStart: Boolean = false,
     val inStart2: Boolean = false
 )
+
+/**
+ * Model for Product in cart
+ * */
+@Fts4
+@Entity
+data class ProductInCart(
+    val name: String? = null,
+    val consist: String? = null,
+    val img: String? = null,
+    val price: Int? = null,
+    val count: Int = 0
+)
