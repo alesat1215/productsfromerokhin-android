@@ -14,12 +14,12 @@ import javax.inject.Singleton
 interface IProductsRepository {
     /** Get products & update Room from remote database if needed */
     fun products(): LiveData<List<Product>>
-
     /** Get titles & update Room from remote database if needed */
     fun titles(): LiveData<RemoteData?>
-
     /** Get groups & update Room from remote database if needed */
     fun groups(): LiveData<List<Group>>
+    /** Get products in cart */
+    val productsInCart: LiveData<List<ProductInCart>>
 }
 
 /** Repository for products, groups & titles.
@@ -41,6 +41,8 @@ class ProductsRepository @Inject constructor(
     private val groups by lazy { db.productsDao().groups() }
     /** @return LiveData with titles from Room only once */
     private val titles by lazy { db.productsDao().titles() }
+    /** @return LiveData with products in cart from Room only once */
+    override val productsInCart by lazy { db.productsDao().productsInCart() }
 
     /** Get products & update Room from remote database if needed */
     override fun products(): LiveData<List<Product>> {
