@@ -9,5 +9,6 @@ class LoadViewModel @Inject constructor(
     private val repository: IProductsRepository
 ) : ViewModel() {
 
+    /** Trigger of data loading */
     fun loadComplete() = Transformations.map(repository.products()) { it.isNotEmpty() }
 }

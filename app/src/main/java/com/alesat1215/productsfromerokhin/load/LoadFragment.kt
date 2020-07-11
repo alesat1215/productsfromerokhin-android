@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.alesat1215.productsfromerokhin.R
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 /**
@@ -33,9 +34,20 @@ class LoadFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupLoadingAnimation()
+    }
+
+    /** When data is loading navigate to destination */
+    private fun setupLoadingAnimation() {
+        // Hide BottomNavigationView
+        activity?.nav_view?.visibility = View.GONE
+        // Subscribe to trigger of data loading
         viewModel.loadComplete().observe(viewLifecycleOwner, Observer {
             if (it) {
+                // For non empty data navigate to destination
                 findNavController().navigate(R.id.action_loadFragment_to_startFragment)
+                // Show BottomNavigationView
+                activity?.nav_view?.visibility = View.VISIBLE
                 Log.d("Load", "Load complete")
             }
         })
