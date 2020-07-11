@@ -126,7 +126,7 @@ class MenuFragment : DaggerFragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 // Save position when scroll stop
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) saveScrollPosition()
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) saveScrollPosition(recyclerView)
             }
         })
     }
@@ -155,8 +155,8 @@ class MenuFragment : DaggerFragment() {
     }
 
     /** Save state to viewModel for list */
-    private fun saveScrollPosition() {
-        viewModel.scrollPosition = products_menu.computeVerticalScrollOffset()
+    private fun saveScrollPosition(list: RecyclerView) {
+        viewModel.scrollPosition = list.computeVerticalScrollOffset()
         Log.d("Menu", "Save scroll position for products_menu: ${viewModel.scrollPosition}")
     }
     /** Restore state from viewModel for list */
