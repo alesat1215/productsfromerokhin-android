@@ -23,7 +23,7 @@ class BindRVAdapter<T>(private val dataSet: List<T>, private val vhLayout: Int):
 
     /** Set item with data to layout */
     override fun onBindViewHolder(holder: BindViewHolder, position: Int) {
-        holder.binding.setVariable(BR.product, dataSet[position])
+        holder.binding.setVariable(BR.data, dataSet[position])
         holder.binding.executePendingBindings()
     }
 
