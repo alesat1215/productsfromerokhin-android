@@ -39,9 +39,9 @@ class MenuFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ) = FragmentMenuBinding.inflate(inflater, container, false).apply {
         /** Add groups to tabs, products to list */
-        bindGroupsAndProducts(groups, productsMenu)
+        bindGroupsAndProducts(groupsMenu, productsMenu)
         /** Add scroll to product when group selected */
-        onTabSelected(groups)
+        onTabSelected(groupsMenu)
         /** Add switch group when scroll & save position */
         onScroll(productsMenu)
         /** Set lifecycleOwner for LiveData in layout */
@@ -97,7 +97,7 @@ class MenuFragment : DaggerFragment() {
     private fun onScroll(productsMenu: RecyclerView) {
         productsMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             /** Current group */
-            private var group = groups?.getTabAt(groups?.selectedTabPosition ?: 0)
+            private var group = groups_menu?.getTabAt(groups_menu?.selectedTabPosition ?: 0)
             /** Check group for visible product & switch it if needed */
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -118,7 +118,7 @@ class MenuFragment : DaggerFragment() {
                     tabSelected = true
                     /** Fix scroll position for first item.
                      * Need for correct scroll position when groups are updates in this screen */
-                    if (groups?.selectedTabPosition == 0) groups?.scrollTo(0, 0)
+                    if (groups_menu?.selectedTabPosition == 0) groups_menu?.scrollTo(0, 0)
                 }
             }
 

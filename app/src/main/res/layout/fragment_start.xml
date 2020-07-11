@@ -20,7 +20,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/title_start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
                 tools:text="Title" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/imgContainer"
+                android:id="@+id/imgContainer_start"
                 android:layout_width="0dp"
                 android:layout_height="175dp"
                 android:layout_marginStart="8dp"
@@ -45,10 +45,10 @@
                 app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title">
+                app:layout_constraintTop_toBottomOf="@+id/title_start">
 
                 <ImageView
-                    android:id="@+id/img"
+                    android:id="@+id/img_start"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:fb_image="@{viewModel.title(StartTitle.IMG)}"
@@ -56,7 +56,7 @@
                     app:srcCompat="@color/colorAccent" />
 
                 <TextView
-                    android:id="@+id/imgTitle"
+                    android:id="@+id/imgTitle_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -68,7 +68,7 @@
             </androidx.cardview.widget.CardView>
 
             <FrameLayout
-                android:id="@+id/productsTitleFrame"
+                android:id="@+id/productsTitleFrame_start"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
@@ -76,17 +76,17 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgContainer">
+                app:layout_constraintTop_toBottomOf="@+id/imgContainer_start">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/productsTitleContainer"
+                    android:id="@+id/productsTitleContainer_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/colorAccent"
                     app:cardCornerRadius="10dp">
 
                     <TextView
-                        android:id="@+id/productsTitle"
+                        android:id="@+id/productsTitle_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
@@ -101,7 +101,7 @@
             </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/products"
+                android:id="@+id/products_start"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -109,11 +109,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/productsTitleFrame"
-                tools:listitem="@layout/product_item" />
+                app:layout_constraintTop_toBottomOf="@+id/productsTitleFrame_start"
+                tools:listitem="@layout/product_start_item" />
 
             <TextView
-                android:id="@+id/productsTitle2"
+                android:id="@+id/productsTitle2_start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -123,19 +123,19 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/products"
+                app:layout_constraintTop_toBottomOf="@+id/products_start"
                 tools:text="Products title 2" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/products2"
+                android:id="@+id/products2_start"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/productsTitle2"
-                tools:listitem="@layout/product_item" />
+                app:layout_constraintTop_toBottomOf="@+id/productsTitle2_start"
+                tools:listitem="@layout/product_start_item" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

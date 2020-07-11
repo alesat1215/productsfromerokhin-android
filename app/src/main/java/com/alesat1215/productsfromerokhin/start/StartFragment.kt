@@ -35,8 +35,8 @@ class StartFragment : DaggerFragment() {
             /** Set view model to layout */
             viewModel = this@StartFragment.viewModel
             /** Set adapters for products */
-            adapterToProducts(products) { it.inStart }
-            adapterToProducts(products2) { it.inStart2 }
+            adapterToProducts(productsStart) { it.inStart }
+            adapterToProducts(products2Start) { it.inStart2 }
             /** Set lifecycleOwner for LiveData in layout */
             lifecycleOwner = this@StartFragment
             executePendingBindings()
@@ -45,7 +45,7 @@ class StartFragment : DaggerFragment() {
     /** Set adapter for list with predicate for dataSet */
     private fun adapterToProducts(list: RecyclerView, predicate: ((Product) -> Boolean)? = null) =
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
-            list.swapAdapter(BindRVAdapter(it, R.layout.product_item), false)
+            list.swapAdapter(BindRVAdapter(it, R.layout.product_start_item), false)
             Log.d("Menu", "Set adapter to products")
         })
 
@@ -63,23 +63,23 @@ class StartFragment : DaggerFragment() {
 
     /** Restore state from viewModel for lists */
     private fun restoreScrollPosition() {
-        viewModel.recyclerViewState[products.id]?.also {
-            products.layoutManager?.onRestoreInstanceState(it)
+        viewModel.recyclerViewState[products_start.id]?.also {
+            products_start.layoutManager?.onRestoreInstanceState(it)
             Log.d("Start", "Restore state for products")
         }
-        viewModel.recyclerViewState[products2.id]?.also {
-            products2.layoutManager?.onRestoreInstanceState(it)
+        viewModel.recyclerViewState[products2_start.id]?.also {
+            products2_start.layoutManager?.onRestoreInstanceState(it)
             Log.d("Start", "Restore state for products2")
         }
     }
     /** Save state to viewModel for lists */
     private fun saveScrollPosition() {
-        products.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.recyclerViewState[products.id] = it
+        products_start.layoutManager?.onSaveInstanceState()?.also {
+            viewModel.recyclerViewState[products_start.id] = it
             Log.d("Start", "Save state for products")
         }
-        products2.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.recyclerViewState[products2.id] = it
+        products2_start.layoutManager?.onSaveInstanceState()?.also {
+            viewModel.recyclerViewState[products2_start.id] = it
             Log.d("Start", "Save state for products2")
         }
     }

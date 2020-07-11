@@ -22,17 +22,17 @@
 
 
       <androidx.cardview.widget.CardView
-          android:id="@+id/productImageContainer"
+          android:id="@+id/productImageContainer_start"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
           app:cardCornerRadius="10dp"
           app:cardElevation="0dp"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/name">
+          app:layout_constraintTop_toBottomOf="@+id/name_start">
 
         <ImageView
-            android:id="@+id/productImage"
+            android:id="@+id/productImage_start"
             android:layout_width="120dp"
             android:layout_height="97dp"
             android:contentDescription="@string/product_image_description"
@@ -42,7 +42,7 @@
       </androidx.cardview.widget.CardView>
 
       <TextView
-          android:id="@+id/name"
+          android:id="@+id/name_start"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@{product.name ?? ``}"
@@ -54,18 +54,18 @@
           tools:text="@tools:sample/full_names" />
 
       <androidx.cardview.widget.CardView
-          android:id="@+id/priceContainer"
+          android:id="@+id/priceContainer_start"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="8dp"
           app:cardBackgroundColor="?attr/colorButtonNormal"
           app:cardCornerRadius="10dp"
           app:contentPadding="8dp"
-          app:layout_constraintStart_toEndOf="@+id/productImageContainer"
-          app:layout_constraintTop_toTopOf="@+id/productImageContainer">
+          app:layout_constraintStart_toEndOf="@+id/productImageContainer_start"
+          app:layout_constraintTop_toTopOf="@+id/productImageContainer_start">
 
         <TextView
-            android:id="@+id/price"
+            android:id="@+id/price_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{(product.price.toString() ?? ``) + ' ' + @string/rub_kg}"
@@ -75,37 +75,37 @@
       </androidx.cardview.widget.CardView>
 
       <ImageButton
-          android:id="@+id/del"
+          android:id="@+id/del_start"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="8dp"
           android:background="#FFFFFF"
           android:contentDescription="@string/del_button_description"
-          app:layout_constraintBottom_toBottomOf="@+id/productImageContainer"
-          app:layout_constraintStart_toEndOf="@+id/productImageContainer"
+          app:layout_constraintBottom_toBottomOf="@+id/productImageContainer_start"
+          app:layout_constraintStart_toEndOf="@+id/productImageContainer_start"
           app:srcCompat="@android:drawable/ic_menu_add" />
 
       <TextView
-          android:id="@+id/count"
+          android:id="@+id/count_start"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="8dp"
           android:textSize="18sp"
           android:textStyle="bold"
-          app:layout_constraintBottom_toBottomOf="@+id/del"
-          app:layout_constraintStart_toEndOf="@+id/del"
-          app:layout_constraintTop_toTopOf="@+id/del"
+          app:layout_constraintBottom_toBottomOf="@+id/del_start"
+          app:layout_constraintStart_toEndOf="@+id/del_start"
+          app:layout_constraintTop_toTopOf="@+id/del_start"
           tools:text="5" />
 
       <ImageButton
-          android:id="@+id/add"
+          android:id="@+id/add_start"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="8dp"
           android:background="#FFFFFF"
           android:contentDescription="@string/add_button_description"
-          app:layout_constraintBottom_toBottomOf="@+id/productImageContainer"
-          app:layout_constraintStart_toEndOf="@+id/count"
+          app:layout_constraintBottom_toBottomOf="@+id/productImageContainer_start"
+          app:layout_constraintStart_toEndOf="@+id/count_start"
           app:srcCompat="@android:drawable/ic_menu_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
