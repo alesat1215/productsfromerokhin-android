@@ -116,6 +116,9 @@ class MenuFragment : DaggerFragment() {
                     Log.d("Menu", "Change group id to: ${group?.tag}")
                     /** Enable scrolling in tab select listener */
                     tabSelected = true
+                    /** Fix scroll position for first item.
+                     * Need for correct scroll position when groups are updates in this screen */
+                    if (groups?.selectedTabPosition == 0) groups?.scrollTo(0, 0)
                 }
             }
 
