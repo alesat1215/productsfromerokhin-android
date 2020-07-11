@@ -72,9 +72,8 @@ class ProductsRepository @Inject constructor(
                 if (it != null) {
                     GlobalScope.launch(Dispatchers.IO) {
                         db.withTransaction {
-                            db.clearAllTables()
+                            db.productsDao().clearBeforeUpdate()
                             db.productsDao().update(it)
-                            Log.d("Firebase", "db is updated")
                         }
                     }
                 } else Log.d("Firebase", "Remote data is null. db is NOT updated")
