@@ -31,16 +31,17 @@ class LoadViewModelTest {
 
     @Test
     fun loadCompleteEmptyData() {
+        // Repository return empty list of products
         `when`(repository.products())
             .thenReturn(MutableLiveData(emptyList()))
         var result = true
         viewModel.loadComplete().observeForever { result = it }
         assertFalse(result)
-
     }
 
     @Test
     fun loadCompleteNotEmptyData() {
+        // Repository return not empty list of products
         `when`(repository.products())
             .thenReturn(MutableLiveData(data.productsWithGroupId()))
         var result = false
