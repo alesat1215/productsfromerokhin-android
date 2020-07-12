@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.data.Group
-import com.alesat1215.productsfromerokhin.data.Product
+import com.alesat1215.productsfromerokhin.data.local.GroupDB
+import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentMenuBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import com.google.android.material.tabs.TabLayout
@@ -68,7 +68,7 @@ class MenuFragment : DaggerFragment() {
     }
 
     /** Setup tabs with groups & save local copy */
-    private fun groupsToTabs(groups: TabLayout, data: List<Group>) {
+    private fun groupsToTabs(groups: TabLayout, data: List<GroupDB>) {
         /** Clear tabs from view & local copy */
         groups.removeAllTabs()
         groupTabs.clear()

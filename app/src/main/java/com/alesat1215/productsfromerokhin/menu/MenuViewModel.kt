@@ -3,7 +3,7 @@ package com.alesat1215.productsfromerokhin.menu
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
-import com.alesat1215.productsfromerokhin.data.Product
+import com.alesat1215.productsfromerokhin.data.local.Product
 import javax.inject.Inject
 
 class MenuViewModel @Inject constructor(
