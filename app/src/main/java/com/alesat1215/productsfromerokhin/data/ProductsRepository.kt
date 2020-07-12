@@ -3,6 +3,7 @@ package com.alesat1215.productsfromerokhin.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.withTransaction
+import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.di.AppModule.DBfb
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
@@ -15,9 +16,9 @@ interface IProductsRepository {
     /** Get products & update Room from remote database if needed */
     fun products(): LiveData<List<Product>>
     /** Get titles & update Room from remote database if needed */
-    fun titles(): LiveData<RemoteData?>
+    fun titles(): LiveData<Titles>
     /** Get groups & update Room from remote database if needed */
-    fun groups(): LiveData<List<Group>>
+    fun groups(): LiveData<List<GroupDB>>
     /** Get products in cart */
     val productsInCart: LiveData<List<ProductInCart>>
 }
@@ -51,13 +52,13 @@ class ProductsRepository @Inject constructor(
     }
 
     /** Get titles & update Room from remote database if needed */
-    override fun titles(): LiveData<RemoteData?> {
+    override fun titles(): LiveData<Titles> {
         updateDB()
         return titles
     }
 
     /** Get groups & update Room from remote database if needed */
-    override fun groups(): LiveData<List<Group>> {
+    override fun groups(): LiveData<List<GroupDB>> {
         updateDB()
         return groups
     }
@@ -106,7 +107,7 @@ class ProductsRepository @Inject constructor(
     }
 
     /** Fetch data from remote database & execute onSuccess function */
-    private fun fetchFB(onSuccess: (RemoteData?) -> Unit) {
+    private fun fetchFB(onSuccess: (IRemoteData?) -> Unit) {
         /** Connect to remote database */
         dbFB.database.goOnline()
         dbFB.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -125,8 +126,8 @@ class ProductsRepository @Inject constructor(
                         "imageTitle: ${data?.imgTitle}, " +
                         "productsTitle: ${data?.productsTitle}, " +
                         "productsTitle2: ${data?.productsTitle2}, " +
-                        "group: ${data?.groups?.count()}, " +
-                        "products: ${data?.productsWithGroupId()?.count()}"
+                        "group: ${data?.groups?.count()}, "// +
+//                        "products: ${data?.productsWithGroupId()?.count()}"
                 )
                 onSuccess(data)
                 dbFB.database.goOffline()

@@ -6,7 +6,7 @@
   <data>
     <variable
         name="data"
-        type="com.alesat1215.productsfromerokhin.data.Product" />
+        type="com.alesat1215.productsfromerokhin.data.local.Product" />
   </data>
 
   <androidx.cardview.widget.CardView

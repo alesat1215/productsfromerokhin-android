@@ -7,7 +7,7 @@
     <data>
         <variable
             name="data"
-            type="com.alesat1215.productsfromerokhin.data.Product" />
+            type="com.alesat1215.productsfromerokhin.data.local.Product" />
         <variable
             name="viewModel"
             type="com.alesat1215.productsfromerokhin.menu.MenuViewModel" />

@@ -5,6 +5,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.alesat1215.productsfromerokhin.data.local.ProductsDao
+import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
 import com.alesat1215.productsfromerokhin.remoteDataMockAndroidTest
 import org.junit.After
 import org.junit.Before

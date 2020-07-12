@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.data.Product
+import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import dagger.android.support.DaggerFragment

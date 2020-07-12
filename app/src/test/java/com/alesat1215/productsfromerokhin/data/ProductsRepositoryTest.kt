@@ -2,6 +2,8 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.alesat1215.productsfromerokhin.data.local.ProductsDao
+import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
