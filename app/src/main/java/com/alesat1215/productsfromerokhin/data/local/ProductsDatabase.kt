@@ -24,17 +24,6 @@ interface ProductsDao {
     /** Insert products, groups & titles */
     @Transaction
     fun update(data: IRemoteData) {
-//        val products = data.productsWithGroupId()
-//        if (products != null)
-//            insertProducts(products)
-//        val groups = data.groups
-//        if (groups != null)
-//            insertGroups(groups)
-//        insertTitles(data)
-//        val localData = data.asLocalData()
-//        insertTitles(localData.first)
-//        insertGroups(localData.second)
-//        insertProducts(localData.third)
         insertTitles(data.titles())
         insertGroups(data.groups())
         insertProducts(data.products())

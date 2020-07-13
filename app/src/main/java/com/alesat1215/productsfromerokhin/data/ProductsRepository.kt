@@ -126,8 +126,8 @@ class ProductsRepository @Inject constructor(
                         "imageTitle: ${data?.imgTitle}, " +
                         "productsTitle: ${data?.productsTitle}, " +
                         "productsTitle2: ${data?.productsTitle2}, " +
-                        "group: ${data?.groups?.count()}, "// +
-//                        "products: ${data?.productsWithGroupId()?.count()}"
+                        "group: ${data?.groups?.count()}, " +
+                        "products: ${data?.products()?.count()}"
                 )
                 onSuccess(data)
                 dbFB.database.goOffline()

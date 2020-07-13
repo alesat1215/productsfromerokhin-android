@@ -7,7 +7,6 @@ import androidx.room.Fts4
  * Model for Product with count in cart
  * */
 data class Product(
-//    val id: Int = 0,
     var group: String? = null,
     val name: String? = null,
     val consist: String? = null,
@@ -24,7 +23,6 @@ data class Product(
 @Fts4
 @Entity
 data class ProductDB(
-//    val id: Int = 0,
     var group: String? = null,
     val name: String? = null,
     val consist: String? = null,
@@ -40,7 +38,6 @@ data class ProductDB(
 @Fts4
 @Entity
 data class GroupDB(
-//    val id: Int = 0,
     val name: String? = null
 )
 
