@@ -1,11 +1,8 @@
 package com.alesat1215.productsfromerokhin.start
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.RemoteData
 import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.remoteDataMockTest
 import org.junit.Before
