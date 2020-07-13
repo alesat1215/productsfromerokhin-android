@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.RemoteData
 import com.alesat1215.productsfromerokhin.remoteDataMockTest
@@ -28,12 +27,12 @@ class StartViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Before
-    fun setUp() {
-        `when`(repository.titles()).thenReturn(MutableLiveData(data))
-        `when`(repository.products()).thenReturn(MutableLiveData(data.productsWithGroupId()))
-        viewModel = StartViewModel(repository)
-    }
+//    @Before
+//    fun setUp() {
+//        `when`(repository.titles()).thenReturn(MutableLiveData(data))
+//        `when`(repository.products()).thenReturn(MutableLiveData(data.productsWithGroupId()))
+//        viewModel = StartViewModel(repository)
+//    }
 
     @Test
     fun title() {
@@ -50,13 +49,13 @@ class StartViewModelTest {
         assertEquals(title, data.productsTitle2)
     }
 
-    @Test
-    fun products() {
-        var products = listOf<Product>()
-        viewModel.products().observeForever { products = it }
-        assertEquals(products, data.productsWithGroupId())
-        val predicate: (Product) -> Boolean = { it.id != 1 }
-        viewModel.products(predicate).observeForever { products = it }
-        assertEquals(products, data.productsWithGroupId()?.filter(predicate))
-    }
+//    @Test
+//    fun products() {
+//        var products = listOf<Product>()
+//        viewModel.products().observeForever { products = it }
+//        assertEquals(products, data.productsWithGroupId())
+//        val predicate: (Product) -> Boolean = { it.id != 1 }
+//        viewModel.products(predicate).observeForever { products = it }
+//        assertEquals(products, data.productsWithGroupId()?.filter(predicate))
+//    }
 }
