@@ -21,6 +21,8 @@ interface IProductsRepository {
     fun groups(): LiveData<List<GroupDB>>
     /** Get products in cart */
     val productsInCart: LiveData<List<ProductInCart>>
+    /** Add product to cart */
+    suspend fun addProductToCart(product: ProductInCart)
 }
 
 /** Repository for products, groups & titles.
@@ -61,6 +63,10 @@ class ProductsRepository @Inject constructor(
     override fun groups(): LiveData<List<GroupDB>> {
         updateDB()
         return groups
+    }
+
+    override suspend fun addProductToCart(product: ProductInCart) = withContext(Dispatchers.IO) {
+        db.productsDao().insertProductInCart(product)
     }
 
     /** Update Room from remote database if needed */
