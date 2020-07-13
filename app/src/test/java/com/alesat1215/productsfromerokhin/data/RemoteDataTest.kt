@@ -1,10 +1,31 @@
 package com.alesat1215.productsfromerokhin.data
 
+import com.alesat1215.productsfromerokhin.products123Test
+import com.alesat1215.productsfromerokhin.remoteDataMockTest
 import org.junit.Test
 
 import org.junit.Assert.*
 
 class RemoteDataTest {
+
+    //GroupRemote
+    @Test
+    fun groupDB() {
+        val group = GroupRemote("name")
+        assertEquals(group.name, group.groupDB().name)
+    }
+
+    @Test
+    fun productsDB() {
+        val groupName = "groupName"
+        val products = products123Test()
+        val group = GroupRemote("groupName", products)
+        val productsDB = group.productsDB()
+        productsDB.withIndex().forEach {
+            assertEquals(it.value.group, groupName)
+            assertEquals(it.value.name, products[it.index].name)
+        }
+    }
 
     // ProductRemote
     @Test
