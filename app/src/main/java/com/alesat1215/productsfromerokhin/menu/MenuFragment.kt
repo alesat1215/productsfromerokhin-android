@@ -76,7 +76,6 @@ class MenuFragment : DaggerFragment() {
         data.forEach {
             val tab = groups.newTab().apply {
                 text = it.name
-//                tag = it.id
             }
             // Save to local copy
             groupTabs.add(tab)
@@ -106,7 +105,6 @@ class MenuFragment : DaggerFragment() {
                 /** Current product at position */
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.itemAtIndex(index)
                 /** Switch group if needed */
-//                if (group?.tag != product?.group)  {
                 if (group?.text != product?.group)  {
                     /** Found group with id in local copy of tabs, update current group & select it */
                     group = groupTabs.filter { it.text == product?.group }.firstOrNull()
