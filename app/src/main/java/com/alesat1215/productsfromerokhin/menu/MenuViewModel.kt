@@ -23,11 +23,11 @@ class MenuViewModel @Inject constructor(
     fun addProductToCart(product: Product) {
         viewModelScope.launch {
             repository.addProductToCart(product.productInCart())
-            Log.d("Menu", "Add to cart: ${product.name}")
+            Log.d("Menu", "Add to cart: ${product.productDB?.name}")
         }
     }
 
     fun delProductFromCart(product: Product) {
-        Log.d("Menu", "Del from cart: ${product.name}")
+        Log.d("Menu", "Del from cart: ${product.productDB?.name}")
     }
 }

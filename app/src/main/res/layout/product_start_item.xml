@@ -37,7 +37,7 @@
             android:layout_height="97dp"
             android:contentDescription="@string/product_image_description"
             android:scaleType="fitXY"
-            app:fb_image="@{data.img}"
+            app:fb_image="@{data.productDB.img}"
             tools:src="@tools:sample/avatars" />
       </androidx.cardview.widget.CardView>
 
@@ -45,7 +45,7 @@
           android:id="@+id/name_start"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@{data.name ?? ``}"
+          android:text="@{data.productDB.name ?? ``}"
           android:textSize="18sp"
           android:textStyle="bold"
           app:autoSizeTextType="uniform"
@@ -68,7 +68,7 @@
             android:id="@+id/price_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{(data.price.toString() ?? ``) + ' ' + @string/rub_kg}"
+            android:text="@{(data.productDB.price.toString() ?? ``) + ' ' + @string/rub_kg}"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="250 ₽/kg" />
@@ -92,6 +92,7 @@
           android:layout_marginStart="8dp"
           android:textSize="18sp"
           android:textStyle="bold"
+          android:text="@{Integer.toString(data.inCart.size())}"
           app:layout_constraintBottom_toBottomOf="@+id/del_start"
           app:layout_constraintStart_toEndOf="@+id/del_start"
           app:layout_constraintTop_toTopOf="@+id/del_start"

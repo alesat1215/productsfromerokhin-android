@@ -35,8 +35,8 @@ class StartFragment : DaggerFragment() {
             /** Set view model to layout */
             viewModel = this@StartFragment.viewModel
             /** Set adapters for products */
-            adapterToProducts(productsStart) { it.inStart }
-            adapterToProducts(products2Start) { it.inStart2 }
+            adapterToProducts(productsStart) { it.productDB?.inStart ?: false }
+            adapterToProducts(products2Start) { it.productDB?.inStart2 ?: false }
             /** Set lifecycleOwner for LiveData in layout */
             lifecycleOwner = this@StartFragment
             executePendingBindings()

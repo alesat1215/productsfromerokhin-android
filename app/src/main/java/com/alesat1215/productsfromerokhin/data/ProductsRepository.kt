@@ -2,6 +2,7 @@ package com.alesat1215.productsfromerokhin.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.room.withTransaction
 import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.di.AppModule.DBfb
@@ -20,7 +21,7 @@ interface IProductsRepository {
     /** Get groups & update Room from remote database if needed */
     fun groups(): LiveData<List<GroupDB>>
     /** Get products in cart */
-    val productsInCart: LiveData<List<ProductInCart>>
+    val productsInCart: LiveData<List<Product>>
     /** Add product to cart */
     suspend fun addProductToCart(product: ProductInCart)
 }
@@ -45,7 +46,8 @@ class ProductsRepository @Inject constructor(
     /** @return LiveData with titles from Room only once */
     private val titles by lazy { db.productsDao().titles() }
     /** @return LiveData with products in cart from Room only once */
-    override val productsInCart by lazy { db.productsDao().productsInCart() }
+//    override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
+    override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
 
     /** Get products & update Room from remote database if needed */
     override fun products(): LiveData<List<Product>> {
