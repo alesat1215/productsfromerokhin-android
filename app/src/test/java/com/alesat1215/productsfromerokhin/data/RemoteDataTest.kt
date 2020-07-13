@@ -8,7 +8,7 @@ import org.junit.Assert.*
 
 class RemoteDataTest {
 
-    val remoteData = remoteDataMockTest()
+    private val remoteData by lazy { remoteDataMockTest() }
 
     //RemoteData
     @Test
