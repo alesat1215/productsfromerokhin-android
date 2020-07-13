@@ -8,10 +8,11 @@ import org.junit.Assert.*
 
 class RemoteDataTest {
 
+    val remoteData = remoteDataMockTest()
+
     //RemoteData
     @Test
     fun titles() {
-        val remoteData = remoteDataMockTest()
         val titles = remoteData.titles()
         assertEquals(titles.title, remoteData.title)
         assertEquals(titles.img, remoteData.img)
@@ -22,11 +23,16 @@ class RemoteDataTest {
 
     @Test
     fun groups() {
-        val remoteData = remoteDataMockTest()
         val groupsDB = remoteData.groups()
         groupsDB.withIndex().forEach {
             assertEquals(it.value.name, remoteData.groups?.get(it.index)?.name)
         }
+    }
+
+    @Test
+    fun products() {
+        val products = remoteData.groups?.map { it.productsDB() }?.flatten()
+        assertEquals(remoteData.products(), products)
     }
 
     //GroupRemote
