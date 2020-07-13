@@ -8,6 +8,18 @@ import org.junit.Assert.*
 
 class RemoteDataTest {
 
+    //RemoteData
+    @Test
+    fun titles() {
+        val remoteData = remoteDataMockTest()
+        val titles = remoteData.titles()
+        assertEquals(titles.title, remoteData.title)
+        assertEquals(titles.img, remoteData.img)
+        assertEquals(titles.imgTitle, remoteData.imgTitle)
+        assertEquals(titles.productsTitle, remoteData.productsTitle)
+        assertEquals(titles.productsTitle2, remoteData.productsTitle2)
+    }
+
     //GroupRemote
     @Test
     fun groupDB() {
