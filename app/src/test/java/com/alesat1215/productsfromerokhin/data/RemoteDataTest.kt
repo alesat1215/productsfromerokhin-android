@@ -20,6 +20,15 @@ class RemoteDataTest {
         assertEquals(titles.productsTitle2, remoteData.productsTitle2)
     }
 
+    @Test
+    fun groups() {
+        val remoteData = remoteDataMockTest()
+        val groupsDB = remoteData.groups()
+        groupsDB.withIndex().forEach {
+            assertEquals(it.value.name, remoteData.groups?.get(it.index)?.name)
+        }
+    }
+
     //GroupRemote
     @Test
     fun groupDB() {
