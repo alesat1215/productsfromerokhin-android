@@ -3,6 +3,7 @@ package com.alesat1215.productsfromerokhin.load
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
+import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.remoteDataMockTest
 import org.junit.Test
 
@@ -20,6 +21,9 @@ class LoadViewModelTest {
     private lateinit var repository: ProductsRepository
     private lateinit var viewModel: LoadViewModel
     private val data by lazy { remoteDataMockTest() }
+    private val products by lazy { data.products().map {
+        Product(it.group, it.name, it.consist, it.img, it.price, it.inStart, it.inStart2)
+    } }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -39,13 +43,13 @@ class LoadViewModelTest {
         assertFalse(result)
     }
 
-//    @Test
-//    fun loadCompleteNotEmptyData() {
-//        // Repository return not empty list of products
-//        `when`(repository.products())
-//            .thenReturn(MutableLiveData(data.productsWithGroupId()))
-//        var result = false
-//        viewModel.loadComplete().observeForever { result = it }
-//        assertTrue(result)
-//    }
+    @Test
+    fun loadCompleteNotEmptyData() {
+        // Repository return not empty list of products
+        `when`(repository.products())
+            .thenReturn(MutableLiveData(products))
+        var result = false
+        viewModel.loadComplete().observeForever { result = it }
+        assertTrue(result)
+    }
 }
