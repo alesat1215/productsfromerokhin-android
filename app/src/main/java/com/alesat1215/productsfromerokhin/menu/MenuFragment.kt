@@ -76,7 +76,7 @@ class MenuFragment : DaggerFragment() {
         data.forEach {
             val tab = groups.newTab().apply {
                 text = it.name
-                tag = it.id
+//                tag = it.id
             }
             // Save to local copy
             groupTabs.add(tab)
@@ -106,14 +106,15 @@ class MenuFragment : DaggerFragment() {
                 /** Current product at position */
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.itemAtIndex(index)
                 /** Switch group if needed */
-                if (group?.tag != product?.group)  {
+//                if (group?.tag != product?.group)  {
+                if (group?.text != product?.group)  {
                     /** Found group with id in local copy of tabs, update current group & select it */
-                    group = groupTabs.filter { it.tag == product?.group }.firstOrNull()
+                    group = groupTabs.filter { it.text == product?.group }.firstOrNull()
                     /** Disable scrolling in tab select listener */
                     tabSelected = false
                     /** Select tab */
                     group?.select()
-                    Log.d("Menu", "Change group id to: ${group?.tag}")
+                    Log.d("Menu", "Change group to: ${group?.text}")
                     /** Enable scrolling in tab select listener */
                     tabSelected = true
                     /** Fix scroll position for first item.
@@ -138,14 +139,14 @@ class MenuFragment : DaggerFragment() {
                 /** If click on tab */
                 if (tabSelected) {
                     /** Find first product with group id */
-                    val position = viewModel.products().value?.indexOfFirst { it.group == tab?.tag } ?: 0
+                    val position = viewModel.products().value?.indexOfFirst { it.group == tab?.text } ?: 0
                     /** Scroll to position */
                     products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
                         // Scroll item in top
                         override fun getVerticalSnapPreference() = SNAP_TO_START
                         // Set scroll position
                     }.apply { targetPosition = position })
-                    Log.d("Menu", "For tab click scroll to position: ${position}, group: ${tab?.tag}")
+                    Log.d("Menu", "For tab click scroll to position: ${position}, group: ${tab?.text}")
                 }
             }
 

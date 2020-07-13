@@ -8,7 +8,7 @@ import androidx.room.Fts4
  * */
 data class Product(
 //    val id: Int = 0,
-    var group: Int = 0,
+    var group: String? = null,
     val name: String? = null,
     val consist: String? = null,
     val img: String? = null,
@@ -25,7 +25,7 @@ data class Product(
 @Entity
 data class ProductDB(
 //    val id: Int = 0,
-    var group: Int = 0,
+    var group: String? = null,
     val name: String? = null,
     val consist: String? = null,
     val img: String? = null,
@@ -40,7 +40,7 @@ data class ProductDB(
 @Fts4
 @Entity
 data class GroupDB(
-    val id: Int = 0,
+//    val id: Int = 0,
     val name: String? = null
 )
 
