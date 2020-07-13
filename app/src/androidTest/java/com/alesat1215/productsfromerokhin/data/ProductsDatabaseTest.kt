@@ -5,8 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.alesat1215.productsfromerokhin.data.local.ProductsDao
-import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
+import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.remoteDataMockAndroidTest
 import org.junit.After
 import org.junit.Before
@@ -20,6 +19,10 @@ import org.junit.runner.RunWith
 class ProductsDatabaseTest2 {
     private lateinit var dao: ProductsDao
     private lateinit var db: ProductsDatabase
+    private val data by lazy { remoteDataMockAndroidTest() }
+    private val products by lazy { data.products().map {
+        Product(it.group, it.name, it.consist, it.img, it.price, it.inStart, it.inStart2)
+    } }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -41,16 +44,14 @@ class ProductsDatabaseTest2 {
     @Test
     fun updateAndRead() {
         var products = listOf<Product>()
-        var groups = listOf<Group>()
-        var titles: RemoteData? = null
+        var groups = listOf<GroupDB>()
+        var titles: Titles? = null
         dao.products().observeForever { products = it }
         dao.groups().observeForever { groups = it }
         dao.titles().observeForever { titles = it }
-        val data = remoteDataMockAndroidTest()
         dao.update(data)
-        assertEquals(products, data.productsWithGroupId())
-        assertEquals(products, data.productsWithGroupId())
-        assertEquals(groups.map { it.id }, data.groups?.map { it.id })
+        assertEquals(products, this.products)
+        assertEquals(groups, data.groups())
         assertEquals(titles?.title, data.title)
         assertEquals(titles?.img, data.img)
         assertEquals(titles?.imgTitle, data.imgTitle)
