@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.RemoteData
+import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.remoteDataMockTest
 import org.junit.Before
 import org.junit.Test
@@ -23,16 +24,19 @@ class StartViewModelTest {
     private lateinit var repository: ProductsRepository
     private lateinit var viewModel: StartViewModel
     private val data by lazy { remoteDataMockTest() }
+    private val products by lazy { data.products().map {
+        Product(it.group, it.name, it.consist, it.img, it.price, it.inStart, it.inStart2)
+    } }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-//    @Before
-//    fun setUp() {
-//        `when`(repository.titles()).thenReturn(MutableLiveData(data))
-//        `when`(repository.products()).thenReturn(MutableLiveData(data.productsWithGroupId()))
-//        viewModel = StartViewModel(repository)
-//    }
+    @Before
+    fun setUp() {
+        `when`(repository.titles()).thenReturn(MutableLiveData(data.titles()))
+        `when`(repository.products()).thenReturn(MutableLiveData(products))
+        viewModel = StartViewModel(repository)
+    }
 
     @Test
     fun title() {
@@ -49,13 +53,13 @@ class StartViewModelTest {
         assertEquals(title, data.productsTitle2)
     }
 
-//    @Test
-//    fun products() {
-//        var products = listOf<Product>()
-//        viewModel.products().observeForever { products = it }
-//        assertEquals(products, data.productsWithGroupId())
-//        val predicate: (Product) -> Boolean = { it.id != 1 }
-//        viewModel.products(predicate).observeForever { products = it }
-//        assertEquals(products, data.productsWithGroupId()?.filter(predicate))
-//    }
+    @Test
+    fun products() {
+        var products = listOf<Product>()
+        viewModel.products().observeForever { products = it }
+        assertEquals(products, this.products)
+        val predicate: (Product) -> Boolean = { it.name == "product_1" }
+        viewModel.products(predicate).observeForever { products = it }
+        assertEquals(products, this.products.filter(predicate))
+    }
 }
