@@ -1,7 +1,7 @@
 package com.alesat1215.productsfromerokhin
 
-import com.alesat1215.productsfromerokhin.data.Group
-import com.alesat1215.productsfromerokhin.data.Product
+import com.alesat1215.productsfromerokhin.data.GroupRemote
+import com.alesat1215.productsfromerokhin.data.ProductRemote
 import com.alesat1215.productsfromerokhin.data.RemoteData
 
 fun remoteDataMockTest() = RemoteData(
@@ -9,11 +9,12 @@ fun remoteDataMockTest() = RemoteData(
     "Img",
     "ImgTitle",
     "ProductsTitle",
-    "ProductsTitle2"
-).apply { groups = listOf(
-    Group(1).apply { products = products123Test() },
-    Group(2).apply { products = products456Test() }
-) }
+    "ProductsTitle2",
+    listOf(
+        GroupRemote("group_1").apply { products = products123Test() },
+        GroupRemote("group_2").apply { products = products456Test() }
+    )
+)
 
-fun products123Test() = listOf(Product(1), Product(2), Product(3))
-fun products456Test() = listOf(Product(4), Product(5), Product(6))
+fun products123Test() = listOf(ProductRemote("product_1"), ProductRemote("product_2"), ProductRemote("product_3"))
+fun products456Test() = listOf(ProductRemote("product_4"), ProductRemote("product_5"), ProductRemote("product_6"))

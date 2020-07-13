@@ -2,8 +2,7 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.alesat1215.productsfromerokhin.data.local.ProductsDao
-import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
+import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -32,9 +31,11 @@ class ProductsRepositoryTest {
     @Mock
     private lateinit var dbFBFetchLimit: RateLimiter
 
-    private val products: LiveData<List<Product>> = MutableLiveData(remoteDataMockTest().productsWithGroupId())
-    private val groups: LiveData<List<Group>> = MutableLiveData(remoteDataMockTest().groups!!.map { it.apply { products = null } })
-    private val titles: LiveData<RemoteData?> = MutableLiveData(remoteDataMockTest().apply { groups = null })
+    private val products: LiveData<List<Product>> = MutableLiveData(remoteDataMockTest().products().map {
+        Product(it.group, it.name, it.consist, it.img, it.price, it.inStart, it.inStart2)
+    })
+    private val groups: LiveData<List<GroupDB>> = MutableLiveData(remoteDataMockTest().groups())
+    private val titles: LiveData<Titles> = MutableLiveData(remoteDataMockTest().titles())
 
     @Before
     fun setUp() {
