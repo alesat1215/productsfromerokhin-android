@@ -97,6 +97,7 @@
                 android:layout_marginStart="8dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:text="@{Integer.toString(data.count)}"
                 app:layout_constraintBottom_toBottomOf="@+id/del_menu"
                 app:layout_constraintStart_toEndOf="@+id/del_menu"
                 app:layout_constraintTop_toTopOf="@+id/del_menu"
