@@ -62,7 +62,7 @@ class MenuFragment : DaggerFragment() {
             products.observe(viewLifecycleOwner, Observer {
                 adapterToProducts(productsMenu, it)
                 // Unsubscribe from events for products
-                products.removeObservers(viewLifecycleOwner)
+//                products.removeObservers(viewLifecycleOwner)
             })
         })
     }
@@ -105,9 +105,9 @@ class MenuFragment : DaggerFragment() {
                 /** Current product at position */
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.itemAtIndex(index)
                 /** Switch group if needed */
-                if (group?.text != product?.group)  {
+                if (group?.text != product?.productDB?.group)  {
                     /** Found group with id in local copy of tabs, update current group & select it */
-                    group = groupTabs.filter { it.text == product?.group }.firstOrNull()
+                    group = groupTabs.filter { it.text == product?.productDB?.group }.firstOrNull()
                     /** Disable scrolling in tab select listener */
                     tabSelected = false
                     /** Select tab */
@@ -137,7 +137,7 @@ class MenuFragment : DaggerFragment() {
                 /** If click on tab */
                 if (tabSelected) {
                     /** Find first product with group id */
-                    val position = viewModel.products().value?.indexOfFirst { it.group == tab?.text } ?: 0
+                    val position = viewModel.products().value?.indexOfFirst { it.productDB?.group == tab?.text } ?: 0
                     /** Scroll to position */
                     products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
                         // Scroll item in top

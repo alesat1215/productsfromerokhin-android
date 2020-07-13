@@ -7,19 +7,21 @@ import com.alesat1215.productsfromerokhin.data.IRemoteData
 
 @Dao
 interface ProductsDao {
-    @Query(
-        "SELECT productdb.name, productdb.inStart, productdb.inStart2, " +
-            "productdb.consist, productdb.`group`, productdb.img, productdb.price, productincart.count " +
-            "FROM productdb LEFT JOIN productincart " +
-            "ON productdb.name = productincart.name AND productdb.consist = productincart.consist"
-    )
+//    @Query(
+//        "SELECT productdb.name, productdb.inStart, productdb.inStart2, " +
+//            "productdb.consist, productdb.`group`, productdb.img, productdb.price, productincart.count " +
+//            "FROM productdb LEFT JOIN productincart " +
+//            "ON productdb.name = productincart.name AND productdb.consist = productincart.consist"
+//    )
+    @Transaction
+    @Query("SELECT * FROM productdb")
     fun products(): LiveData<List<Product>>
     @Query("SELECT * FROM groupdb")
     fun groups(): LiveData<List<GroupDB>>
     @Query("SELECT * FROM titles LIMIT 1")
     fun titles(): LiveData<Titles>
-    @Query("SELECT * FROM productincart")
-    fun productsInCart(): LiveData<List<ProductInCart>>
+//    @Query("SELECT * FROM productincart")
+//    fun productsInCart(): LiveData<List<ProductInCart>>
 
     /** Insert products, groups & titles */
     @Transaction
