@@ -1,9 +1,12 @@
 package com.alesat1215.productsfromerokhin.menu
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
 import com.alesat1215.productsfromerokhin.data.local.Product
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MenuViewModel @Inject constructor(
@@ -18,10 +21,13 @@ class MenuViewModel @Inject constructor(
     fun groups() = repository.groups()
 
     fun addProductToCart(product: Product) {
-        Log.d("Menu", product.name)
+        viewModelScope.launch {
+            repository.addProductToCart(product.productInCart())
+            Log.d("Menu", "Add to cart: ${product.name}")
+        }
     }
 
     fun delProductFromCart(product: Product) {
-        Log.d("Menu", product.name)
+        Log.d("Menu", "Del from cart: ${product.name}")
     }
 }

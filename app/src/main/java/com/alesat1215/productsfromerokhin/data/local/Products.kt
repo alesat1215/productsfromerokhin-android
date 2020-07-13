@@ -15,7 +15,9 @@ data class Product(
     val inStart: Boolean = false,
     val inStart2: Boolean = false,
     val count: Int = 0
-)
+) {
+    fun productInCart() = ProductInCart(name, consist, img, price, count)
+}
 
 /**
  * Model for Product

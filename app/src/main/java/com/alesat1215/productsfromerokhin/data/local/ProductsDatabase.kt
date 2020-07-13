@@ -35,6 +35,8 @@ interface ProductsDao {
     fun insertGroups(products: List<GroupDB>)
     @Insert(entity = Titles::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertTitles(titles: Titles)
+    @Insert(entity = ProductInCart::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProductInCart(product: ProductInCart)
 
     /** Clear products, groups & titles */
     @Transaction
