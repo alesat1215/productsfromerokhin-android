@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.data.local.GroupDB
 import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentMenuBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
+import com.alesat1215.productsfromerokhin.util.tabWithText
 import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_menu.*
@@ -29,8 +29,6 @@ class MenuFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     /** Need "by activity" for restore scroll state */
     private val viewModel by activityViewModels<MenuViewModel> { viewModelFactory }
-    /** Local copy of tabs. For filter by group id & change selected */
-    private val groupTabs = mutableListOf<TabLayout.Tab>()
     /** For scrolling to product only for click on tab */
     private var tabSelected = true
 
@@ -57,23 +55,20 @@ class MenuFragment : DaggerFragment() {
         restoreScrollPosition(products_menu)
     }
 
-    /** Setup groups to tabs & save local copy */
+    /** Set groups to tabs */
     private fun groupsToTabs(groups: TabLayout) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
-            /** Clear tabs from view & local copy */
+            // Clear tabs from view
             groups.removeAllTabs()
-            groupTabs.clear()
-            /** Set tabs to view & local copy */
+            // Set tabs to view
             it.forEach {
                 val tab = groups.newTab().apply {
                     text = it.name
                 }
-                // Save to local copy
-                groupTabs.add(tab)
                 // Set tabs to bar
                 groups.addTab(tab)
             }
-            Log.d("Menu", "Add groups to tabs: ${groupTabs.count()}")
+            Log.d("Menu", "Add groups to tabs: ${groups.tabCount}")
             /** Fix scroll position for first item.
              * Need for correct scroll position when groups are updates in this screen */
             if (groups.selectedTabPosition == 0) groups_menu?.scrollTo(0, 0)
@@ -102,16 +97,16 @@ class MenuFragment : DaggerFragment() {
                 val index = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
                 /** Current product at position */
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.getItem(index)
-                /** Switch group if needed */
+                // Switch group if needed
                 if (group?.text != product?.productDB?.group)  {
-                    /** Found group with id in local copy of tabs, update current group & select it */
-                    group = groupTabs.filter { it.text == product?.productDB?.group }.firstOrNull()
-                    /** Disable scrolling in tab select listener */
+                    // Found group with text
+                    group = groups_menu.tabWithText(product?.productDB?.group)
+                    // Disable scrolling in tab select listener
                     tabSelected = false
-                    /** Select tab */
+                    // Select tab
                     group?.select()
                     Log.d("Menu", "Change group to: ${group?.text}")
-                    /** Enable scrolling in tab select listener */
+                    // Enable scrolling in tab select listener
                     tabSelected = true
                 }
             }
