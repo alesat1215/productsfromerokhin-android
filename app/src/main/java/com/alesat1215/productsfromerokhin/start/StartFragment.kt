@@ -35,19 +35,27 @@ class StartFragment : DaggerFragment() {
             /** Set view model to layout */
             viewModel = this@StartFragment.viewModel
             /** Set adapters for products */
-            adapterToProducts(productsStart) { it.productDB?.inStart ?: false }
-            adapterToProducts(products2Start) { it.productDB?.inStart2 ?: false }
+//            adapterToProducts(productsStart) { it.productDB?.inStart ?: false }
+//            adapterToProducts(products2Start) { it.productDB?.inStart2 ?: false }
+            productsStart.adapter = adapterToProducts { it.productDB?.inStart ?: false }
+            products2Start.adapter = adapterToProducts { it.productDB?.inStart2 ?: false }
             /** Set lifecycleOwner for LiveData in layout */
             lifecycleOwner = this@StartFragment
             executePendingBindings()
         }.root
 
     /** Set adapter for list with predicate for dataSet */
-    private fun adapterToProducts(list: RecyclerView, predicate: ((Product) -> Boolean)? = null) =
+    private fun adapterToProducts(predicate: ((Product) -> Boolean)? = null): BindRVAdapter<Product> {
+        val adapter = BindRVAdapter<Product>(R.layout.product_start_item)
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
-            list.swapAdapter(BindRVAdapter(it, R.layout.product_start_item), false)
-            Log.d("Menu", "Set adapter to products")
+//            list.swapAdapter(BindRVAdapter(it, R.layout.product_start_item), false)
+            adapter.submitList(it)
+//            Log.d("Menu", "Set adapter to products")
+            Log.d("Menu", "Set list to adapter: ${it.count()}")
         })
+        Log.d("Menu", "Set adapter to products")
+        return adapter
+    }
 
     override fun onResume() {
         super.onResume()

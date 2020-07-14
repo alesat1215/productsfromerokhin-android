@@ -1,33 +1,46 @@
 package com.alesat1215.productsfromerokhin.util
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 /** View holder for data binding */
 class BindViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 
 /** Adapter for binding items from dataSet to vhLayout */
-class BindRVAdapter<T>(private val dataSet: List<T>, private val vhLayout: Int, private val viewModel: ViewModel? = null): RecyclerView.Adapter<BindViewHolder>() {
+class BindRVAdapter<T>(private val vhLayout: Int, private val viewModel: ViewModel? = null):
+    ListAdapter<T, BindViewHolder>(DiffCallback<T>()) {
 
     /** Binding layout to view holder & return it */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         BindViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(parent.context), vhLayout, parent, false)
         )
-
-    override fun getItemCount() = dataSet.count()
-
+//
+//    override fun getItemCount() = dataSet.count()
+//
     /** Set item with data to layout */
     override fun onBindViewHolder(holder: BindViewHolder, position: Int) {
-        holder.binding.setVariable(BR.data, dataSet[position])
+        holder.binding.setVariable(BR.data, getItem(position))
         holder.binding.setVariable(BR.viewModel, viewModel)
         holder.binding.executePendingBindings()
     }
 
-    fun itemAtIndex(index: Int?) = if (index != null) dataSet.elementAtOrNull(index) else null
+    override public fun getItem(position: Int): T {
+        return super.getItem(position)
+    }
+}
+
+class DiffCallback<T> : DiffUtil.ItemCallback<T>() {
+    override fun areItemsTheSame(oldItem: T, newItem: T) = oldItem == newItem
+
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: T, newItem: T) = oldItem == newItem
 }
