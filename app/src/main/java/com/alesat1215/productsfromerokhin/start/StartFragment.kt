@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
@@ -30,30 +29,26 @@ class StartFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) =
-        /** Bind data to view & setup it */
+        // Bind data to view & setup it
         FragmentStartBinding.inflate(inflater, container, false).apply {
-            /** Set view model to layout */
+            // Set view model to layout
             viewModel = this@StartFragment.viewModel
-            /** Set adapters for products */
-//            adapterToProducts(productsStart) { it.productDB?.inStart ?: false }
-//            adapterToProducts(products2Start) { it.productDB?.inStart2 ?: false }
+            // Set adapters to products
             productsStart.adapter = adapterToProducts { it.productDB?.inStart ?: false }
             products2Start.adapter = adapterToProducts { it.productDB?.inStart2 ?: false }
-            /** Set lifecycleOwner for LiveData in layout */
+            // Set lifecycleOwner for LiveData in layout
             lifecycleOwner = this@StartFragment
             executePendingBindings()
         }.root
 
-    /** Set adapter for list with predicate for dataSet */
+    /** Create adapter for list with predicate for dataSet */
     private fun adapterToProducts(predicate: ((Product) -> Boolean)? = null): BindRVAdapter<Product> {
         val adapter = BindRVAdapter<Product>(R.layout.product_start_item)
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
-//            list.swapAdapter(BindRVAdapter(it, R.layout.product_start_item), false)
             adapter.submitList(it)
-//            Log.d("Menu", "Set adapter to products")
-            Log.d("Menu", "Set list to adapter: ${it.count()}")
+            Log.d("Menu", "Set list to adapter for products in start: ${it.count()}")
         })
-        Log.d("Menu", "Set adapter to products")
+        Log.d("Menu", "Set adapter to products in start")
         return adapter
     }
 
