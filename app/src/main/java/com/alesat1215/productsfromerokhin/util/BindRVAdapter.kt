@@ -23,9 +23,7 @@ class BindRVAdapter<T>(private val vhLayout: Int, private val viewModel: ViewMod
         BindViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(parent.context), vhLayout, parent, false)
         )
-//
-//    override fun getItemCount() = dataSet.count()
-//
+
     /** Set item with data to layout */
     override fun onBindViewHolder(holder: BindViewHolder, position: Int) {
         holder.binding.setVariable(BR.data, getItem(position))
@@ -33,11 +31,11 @@ class BindRVAdapter<T>(private val vhLayout: Int, private val viewModel: ViewMod
         holder.binding.executePendingBindings()
     }
 
-    override public fun getItem(position: Int): T {
-        return super.getItem(position)
-    }
+    // Make get item public
+    public override fun getItem(position: Int) = super.getItem(position)
 }
 
+/** Diff for BindRVAdapter. Items must be data classes */
 class DiffCallback<T> : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T) = oldItem == newItem
 
