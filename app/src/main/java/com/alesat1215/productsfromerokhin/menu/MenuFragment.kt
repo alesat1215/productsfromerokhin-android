@@ -74,6 +74,9 @@ class MenuFragment : DaggerFragment() {
                 groups.addTab(tab)
             }
             Log.d("Menu", "Add groups to tabs: ${groupTabs.count()}")
+            /** Fix scroll position for first item.
+             * Need for correct scroll position when groups are updates in this screen */
+            if (groups.selectedTabPosition == 0) groups_menu?.scrollTo(0, 0)
         })
     }
     /** Create adapter for products & set data to it */
@@ -110,9 +113,6 @@ class MenuFragment : DaggerFragment() {
                     Log.d("Menu", "Change group to: ${group?.text}")
                     /** Enable scrolling in tab select listener */
                     tabSelected = true
-                    /** Fix scroll position for first item.
-                     * Need for correct scroll position when groups are updates in this screen */
-                    if (groups_menu?.selectedTabPosition == 0) groups_menu?.scrollTo(0, 0)
                 }
             }
 
