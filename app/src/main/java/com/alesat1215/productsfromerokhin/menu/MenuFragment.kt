@@ -38,10 +38,10 @@ class MenuFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FragmentMenuBinding.inflate(inflater, container, false).apply {
+        // Add groups to tabs
         groupsToTabs(groupsMenu)
+        // Set adapter to products
         productsMenu.adapter = adapterToProducts()
-        /** Add groups to tabs, products to list */
-//        bindGroupsAndProducts(groupsMenu, productsMenu)
         /** Add scroll to product when group selected */
         onTabSelected(groupsMenu)
         /** Add switch group when scroll & save position */
@@ -51,30 +51,18 @@ class MenuFragment : DaggerFragment() {
         executePendingBindings()
     }.root
 
-    /** Subscribe to events from groups. After add groups to tabs, subscribe for single event from products &
-     * bind products to list
-     * */
-//    private fun bindGroupsAndProducts(groups: TabLayout, productsMenu: RecyclerView) {
-//        // Subscribe to events from group
-//        viewModel.groups().observe(viewLifecycleOwner, Observer {
-//            // Add groups to tabs
-//            groupsToTabs(groups, it)
-//            // Add products to list
-//            val products = viewModel.products()
-//            products.observe(viewLifecycleOwner, Observer {
-//                adapterToProducts(productsMenu, it)
-//                // Unsubscribe from events for products
-////                products.removeObservers(viewLifecycleOwner)
-//            })
-//        })
-//    }
+    override fun onResume() {
+        super.onResume()
 
-    /** Setup tabs with groups & save local copy */
+        restoreScrollPosition(products_menu)
+    }
+
+    /** Setup groups to tabs & save local copy */
     private fun groupsToTabs(groups: TabLayout) {
-        /** Clear tabs from view & local copy */
-        groups.removeAllTabs()
-        groupTabs.clear()
         viewModel.groups().observe(viewLifecycleOwner, Observer {
+            /** Clear tabs from view & local copy */
+            groups.removeAllTabs()
+            groupTabs.clear()
             /** Set tabs to view & local copy */
             it.forEach {
                 val tab = groups.newTab().apply {
@@ -88,17 +76,13 @@ class MenuFragment : DaggerFragment() {
             Log.d("Menu", "Add groups to tabs: ${groupTabs.count()}")
         })
     }
-    /** Set adapter for products & restore scroll position */
+    /** Create adapter for products & set data to it */
     private fun adapterToProducts(): BindRVAdapter<Product> {
         val adapter = BindRVAdapter<Product>(R.layout.product_menu_item, viewModel)
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            Log.d("Menu", "Set list to adapter: ${it.count()}")
+            Log.d("Menu", "Set list to adapter for products_menu: ${it.count()}")
         })
-//        productsMenu.swapAdapter(BindRVAdapter(data, R.layout.product_menu_item, viewModel), true)
-//        Log.d("Menu", "Set adapter to products_menu with items count: ${data.count()}")
-        // Set scroll position
-//        restoreScrollPosition(productsMenu)
         Log.d("Menu", "Set adapter to products_menu")
         return adapter
     }
@@ -173,11 +157,6 @@ class MenuFragment : DaggerFragment() {
     private fun restoreScrollPosition(list: RecyclerView) {
         list.post { list.smoothScrollBy(0, viewModel.scrollPosition) }
         Log.d("Menu", "Restore scroll position for products_menu: ${viewModel.scrollPosition}")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        restoreScrollPosition(products_menu)
     }
 
 }
