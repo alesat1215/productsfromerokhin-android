@@ -175,4 +175,9 @@ class MenuFragment : DaggerFragment() {
         Log.d("Menu", "Restore scroll position for products_menu: ${viewModel.scrollPosition}")
     }
 
+    override fun onResume() {
+        super.onResume()
+        restoreScrollPosition(products_menu)
+    }
+
 }
