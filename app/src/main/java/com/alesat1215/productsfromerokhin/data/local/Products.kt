@@ -30,9 +30,6 @@ data class Product(
     val inCart: List<ProductInCart>
 ) {
     fun productInCart() = ProductInCart(productDB?.name, productDB?.consist, productDB?.img, productDB?.price)//, count)
-    fun tmp() {
-        inCart.count()
-    }
 }
 
 /**
