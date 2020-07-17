@@ -55,10 +55,17 @@ class MenuFragment : DaggerFragment() {
         restoreScrollPosition(products_menu)
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        saveScrollPosition(products_menu)
+    }
+
     /** Set groups to tabs */
     private fun groupsToTabs(groups: TabLayout) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
             tabSelected = false
+            val selected = groups.selectedTabPosition
             // Clear tabs from view
             groups.removeAllTabs()
             // Set tabs to view
@@ -70,10 +77,19 @@ class MenuFragment : DaggerFragment() {
                 groups.addTab(tab)
             }
             Log.d("Menu", "Add groups to tabs: ${groups.tabCount}")
+            tabSelected = true
             /** Fix scroll position for first item.
              * Need for correct scroll position when groups are updates in this screen */
-            if (groups.selectedTabPosition == 0) groups_menu?.scrollTo(0, 0)
-            tabSelected = true
+//            if (groups.selectedTabPosition == 0) groups.scrollTo(0, 0)
+            groups.post {
+                tabSelected = false
+                val group = groups.getTabAt(selected)
+                group?.select()
+                tabSelected = true
+                Log.d("Menu", "Reselect group: ${group?.text}")
+            }
+//            Log.d("Menu", "Scroll tab: ${groups.scrollX}")
+//            tabSelected = true
         })
     }
     /** Create adapter for products & set data to it */
@@ -82,6 +98,7 @@ class MenuFragment : DaggerFragment() {
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Log.d("Menu", "Set list to adapter for products_menu: ${it.count()}")
+//            restoreScrollPosition(list)
         })
         Log.d("Menu", "Set adapter to products_menu")
         return adapter
@@ -104,21 +121,26 @@ class MenuFragment : DaggerFragment() {
                     // Found group with text
                     group = groups_menu.tabWithText(product?.productDB?.group)
                     // Disable scrolling in tab select listener
-                    tabSelected = false
+//                    tabSelected = false
                     // Select tab
-                    group?.select()
-                    Log.d("Menu", "Change group to: ${group?.text}")
+                    groups_menu?.post {
+                        tabSelected = false
+                        group?.select()
+                        tabSelected = true
+                        Log.d("Menu", "Change group to: ${group?.text}")
+                    }
+//                    Log.d("Menu", "Change group to: ${group?.text}")
                     // Enable scrolling in tab select listener
-                    tabSelected = true
+//                    tabSelected = true
                 }
             }
 
-            /** Save scroll position */
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                // Save position when scroll stop
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) saveScrollPosition(recyclerView)
-            }
+//            /** Save scroll position */
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                // Save position when scroll stop
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) saveScrollPosition(recyclerView)
+//            }
         })
     }
 
