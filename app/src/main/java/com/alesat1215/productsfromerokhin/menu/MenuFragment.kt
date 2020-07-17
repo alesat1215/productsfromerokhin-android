@@ -82,15 +82,7 @@ class MenuFragment : DaggerFragment() {
             // Enable scrolling in tab select listener
             tabSelected = true
             // Select tab
-            groups.post {
-                // Disable scrolling in tab select listener
-                tabSelected = false
-                val group = groups.getTabAt(selected)
-                group?.select()
-                // Enable scrolling in tab select listener
-                tabSelected = true
-                Log.d("Menu", "Select group after update: ${group?.text}")
-            }
+            selectGroup(groups.getTabAt(selected), groups)
         })
     }
     /** Create adapter for products & set data to it */
@@ -118,20 +110,24 @@ class MenuFragment : DaggerFragment() {
                 val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.getItem(index)
                 // Switch group if needed
                 if (group?.text != product?.productDB?.group)  {
-                    // Found group with text
+                    // Found tab with text
                     group = groups_menu?.tabWithText(product?.productDB?.group)
                     // Select tab
-                    groups_menu?.post {
-                        // Disable scrolling in tab select listener
-                        tabSelected = false
-                        group?.select()
-                        // Enable scrolling in tab select listener
-                        tabSelected = true
-                        Log.d("Menu", "Change group to: ${group?.text}")
-                    }
+                    selectGroup(group, groups_menu)
                 }
             }
         })
+    }
+
+    private fun selectGroup(group: TabLayout.Tab?, groups: TabLayout) {
+        groups.post {
+            // Disable scrolling in tab select listener
+            tabSelected = false
+            group?.select()
+            // Enable scrolling in tab select listener
+            tabSelected = true
+            Log.d("Menu", "Change group to: ${group?.text}")
+        }
     }
 
     /** Scroll to first product with current group id. Only for click on tab event */
