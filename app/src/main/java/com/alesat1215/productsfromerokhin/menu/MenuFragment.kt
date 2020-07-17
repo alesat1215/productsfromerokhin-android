@@ -64,8 +64,10 @@ class MenuFragment : DaggerFragment() {
     /** Set groups to tabs */
     private fun groupsToTabs(groups: TabLayout) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
-            tabSelected = false
+            // Save selected tab position
             val selected = groups.selectedTabPosition
+            // Disable scrolling in tab select listener
+            tabSelected = false
             // Clear tabs from view
             groups.removeAllTabs()
             // Set tabs to view
@@ -77,19 +79,18 @@ class MenuFragment : DaggerFragment() {
                 groups.addTab(tab)
             }
             Log.d("Menu", "Add groups to tabs: ${groups.tabCount}")
+            // Enable scrolling in tab select listener
             tabSelected = true
-            /** Fix scroll position for first item.
-             * Need for correct scroll position when groups are updates in this screen */
-//            if (groups.selectedTabPosition == 0) groups.scrollTo(0, 0)
+            // Select tab
             groups.post {
+                // Disable scrolling in tab select listener
                 tabSelected = false
                 val group = groups.getTabAt(selected)
                 group?.select()
+                // Enable scrolling in tab select listener
                 tabSelected = true
-                Log.d("Menu", "Reselect group: ${group?.text}")
+                Log.d("Menu", "Select group after update: ${group?.text}")
             }
-//            Log.d("Menu", "Scroll tab: ${groups.scrollX}")
-//            tabSelected = true
         })
     }
     /** Create adapter for products & set data to it */
@@ -98,7 +99,6 @@ class MenuFragment : DaggerFragment() {
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Log.d("Menu", "Set list to adapter for products_menu: ${it.count()}")
-//            restoreScrollPosition(list)
         })
         Log.d("Menu", "Set adapter to products_menu")
         return adapter
@@ -119,28 +119,18 @@ class MenuFragment : DaggerFragment() {
                 // Switch group if needed
                 if (group?.text != product?.productDB?.group)  {
                     // Found group with text
-                    group = groups_menu.tabWithText(product?.productDB?.group)
-                    // Disable scrolling in tab select listener
-//                    tabSelected = false
+                    group = groups_menu?.tabWithText(product?.productDB?.group)
                     // Select tab
                     groups_menu?.post {
+                        // Disable scrolling in tab select listener
                         tabSelected = false
                         group?.select()
+                        // Enable scrolling in tab select listener
                         tabSelected = true
                         Log.d("Menu", "Change group to: ${group?.text}")
                     }
-//                    Log.d("Menu", "Change group to: ${group?.text}")
-                    // Enable scrolling in tab select listener
-//                    tabSelected = true
                 }
             }
-
-//            /** Save scroll position */
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                // Save position when scroll stop
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) saveScrollPosition(recyclerView)
-//            }
         })
     }
 
@@ -167,12 +157,12 @@ class MenuFragment : DaggerFragment() {
         })
     }
 
-    /** Save state to viewModel for list */
+    /** Save scroll position for products_menu */
     private fun saveScrollPosition(list: RecyclerView) {
         viewModel.scrollPosition = list.computeVerticalScrollOffset()
         Log.d("Menu", "Save scroll position for products_menu: ${viewModel.scrollPosition}")
     }
-    /** Restore state from viewModel for list */
+    /** Restore scroll position for products_menu */
     private fun restoreScrollPosition(list: RecyclerView) {
         list.post { list.smoothScrollBy(0, viewModel.scrollPosition) }
         Log.d("Menu", "Restore scroll position for products_menu: ${viewModel.scrollPosition}")
