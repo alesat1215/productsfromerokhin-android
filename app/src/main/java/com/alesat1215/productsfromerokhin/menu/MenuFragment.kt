@@ -58,6 +58,7 @@ class MenuFragment : DaggerFragment() {
     /** Set groups to tabs */
     private fun groupsToTabs(groups: TabLayout) {
         viewModel.groups().observe(viewLifecycleOwner, Observer {
+            tabSelected = false
             // Clear tabs from view
             groups.removeAllTabs()
             // Set tabs to view
@@ -72,6 +73,7 @@ class MenuFragment : DaggerFragment() {
             /** Fix scroll position for first item.
              * Need for correct scroll position when groups are updates in this screen */
             if (groups.selectedTabPosition == 0) groups_menu?.scrollTo(0, 0)
+            tabSelected = true
         })
     }
     /** Create adapter for products & set data to it */
