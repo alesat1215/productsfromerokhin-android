@@ -81,7 +81,7 @@ class MenuFragment : DaggerFragment() {
             Log.d("Menu", "Add groups to tabs: ${groups.tabCount}")
             // Enable scrolling in tab select listener
             tabSelected = true
-            // Select tab
+            // Restore selected tab
             selectGroup(groups.getTabAt(selected), groups)
         })
     }
