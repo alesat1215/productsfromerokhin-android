@@ -29,10 +29,9 @@ class MenuViewModel @Inject constructor(
 
     fun delProductFromCart(product: Product) {
         viewModelScope.launch {
-            if (product.inCart.isNotEmpty()) {
-                val product2 = product.inCart.first()
-                repository.delProductFromCart(product2)
-                Log.d("Menu", "Del from cart: ${product2.name}")
+            product.inCart.firstOrNull()?.also {
+                repository.delProductFromCart(it)
+                Log.d("Menu", "Del from cart: ${it.name}")
             }
         }
     }
