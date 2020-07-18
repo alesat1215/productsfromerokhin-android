@@ -11,7 +11,7 @@
             type="com.alesat1215.productsfromerokhin.data.local.Product" />
         <variable
             name="viewModel"
-            type="com.alesat1215.productsfromerokhin.menu.MenuViewModel" />
+            type="com.alesat1215.productsfromerokhin.util.CartManager" />
     </data>
 
     <androidx.cardview.widget.CardView
