@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="data"
             type="com.alesat1215.productsfromerokhin.data.local.Product" />
@@ -85,6 +86,7 @@
                 android:layout_marginStart="8dp"
                 android:background="#FFFFFF"
                 android:contentDescription="@string/del_button_description"
+                android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
                 android:onClick="@{() -> viewModel.delProductFromCart(data)}"
                 app:layout_constraintBottom_toBottomOf="@+id/productImageContainer_menu"
                 app:layout_constraintStart_toEndOf="@+id/productImageContainer_menu"
@@ -97,6 +99,7 @@
                 android:layout_marginStart="8dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
                 android:text="@{Integer.toString(data.inCart.size())}"
                 app:layout_constraintBottom_toBottomOf="@+id/del_menu"
                 app:layout_constraintStart_toEndOf="@+id/del_menu"
