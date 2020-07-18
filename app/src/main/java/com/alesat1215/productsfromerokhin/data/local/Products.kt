@@ -1,9 +1,6 @@
 package com.alesat1215.productsfromerokhin.data.local
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.Fts4
-import androidx.room.Relation
+import androidx.room.*
 
 /**
  * Model for Product with count in cart
@@ -29,7 +26,7 @@ data class Product(
     )
     val inCart: List<ProductInCart>
 ) {
-    fun productInCart() = ProductInCart(productDB?.name, productDB?.consist, productDB?.img, productDB?.price)//, count)
+    fun productInCart() = ProductInCart(name = productDB?.name, consist = productDB?.consist, img = productDB?.img, price = productDB?.price)//, count)
 }
 
 /**
@@ -62,6 +59,8 @@ data class GroupDB(
 @Fts4
 @Entity
 data class ProductInCart(
+    @PrimaryKey(autoGenerate = true)
+    var rowid: Int = 0,
     val name: String? = null,
     val consist: String? = null,
     val img: String? = null,

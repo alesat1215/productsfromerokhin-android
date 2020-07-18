@@ -28,6 +28,12 @@ class MenuViewModel @Inject constructor(
     }
 
     fun delProductFromCart(product: Product) {
-        Log.d("Menu", "Del from cart: ${product.productDB?.name}")
+        viewModelScope.launch {
+            if (product.inCart.isNotEmpty()) {
+                val product2 = product.inCart.first()
+                repository.delProductFromCart(product2)
+                Log.d("Menu", "Del from cart: ${product2.name}")
+            }
+        }
     }
 }
