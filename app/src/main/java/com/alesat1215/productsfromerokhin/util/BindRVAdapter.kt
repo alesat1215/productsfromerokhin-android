@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 /** View holder for data binding */
 class BindViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 
-/** Adapter for binding items from dataSet to vhLayout */
+/** Adapter for binding data from item & viewModel to vhLayout */
 class BindRVAdapter<T>(private val vhLayout: Int, private val viewModel: ViewModel? = null):
     ListAdapter<T, BindViewHolder>(DiffCallback<T>()) {
 
