@@ -24,6 +24,8 @@ interface IProductsRepository {
     val productsInCart: LiveData<List<Product>>
     /** Add product to cart */
     suspend fun addProductToCart(product: ProductInCart)
+    /** Del product from cart */
+    suspend fun delProductFromCart(product: ProductInCart)
 }
 
 /** Repository for products, groups & titles.
@@ -46,7 +48,6 @@ class ProductsRepository @Inject constructor(
     /** @return LiveData with titles from Room only once */
     private val titles by lazy { db.productsDao().titles() }
     /** @return LiveData with products in cart from Room only once */
-//    override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
     override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
 
     /** Get products & update Room from remote database if needed */
@@ -69,6 +70,10 @@ class ProductsRepository @Inject constructor(
 
     override suspend fun addProductToCart(product: ProductInCart) = withContext(Dispatchers.IO) {
         db.productsDao().insertProductInCart(product)
+    }
+
+    override suspend fun delProductFromCart(product: ProductInCart) = withContext(Dispatchers.IO) {
+        db.productsDao().deleteProductFromCart(product)
     }
 
     /** Update Room from remote database if needed */

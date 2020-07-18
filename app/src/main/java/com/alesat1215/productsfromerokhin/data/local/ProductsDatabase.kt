@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.alesat1215.productsfromerokhin.data.IRemoteData
+import java.sql.RowId
 
 @Dao
 interface ProductsDao {
@@ -39,6 +40,8 @@ interface ProductsDao {
     fun insertTitles(titles: Titles)
     @Insert(entity = ProductInCart::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProductInCart(product: ProductInCart)
+    @Delete
+    suspend fun deleteProductFromCart(product: ProductInCart)
 
     /** Clear products, groups & titles */
     @Transaction
