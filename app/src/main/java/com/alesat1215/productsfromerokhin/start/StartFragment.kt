@@ -43,7 +43,7 @@ class StartFragment : DaggerFragment() {
 
     /** Create adapter for list with predicate for dataSet */
     private fun adapterToProducts(predicate: ((Product) -> Boolean)? = null): BindRVAdapter<Product> {
-        val adapter = BindRVAdapter<Product>(R.layout.product_start_item)
+        val adapter = BindRVAdapter<Product>(R.layout.product_start_item, viewModel)
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Log.d("Menu", "Set list to adapter for products in start: ${it.count()}")

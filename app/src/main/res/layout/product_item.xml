@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="data"
+            type="com.alesat1215.productsfromerokhin.data.local.Product" />
+        <variable
+            name="viewModel"
+            type="com.alesat1215.productsfromerokhin.util.CartManager" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="8dp">
+
+        <ImageView
+            android:id="@+id/inCartMarker"
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/in_cart_marker_description"
+            android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@color/colorAccent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/productImageContainer_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/inCartMarker"
+            app:layout_constraintTop_toBottomOf="@+id/name_menu">
+
+            <ImageView
+                android:id="@+id/productImage_menu"
+                android:layout_width="120dp"
+                android:layout_height="97dp"
+                android:contentDescription="@string/product_image_description"
+                android:scaleType="fitXY"
+                app:fb_image="@{data.productDB.img}"
+                tools:src="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/name_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{data.productDB.name ?? ``}"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@+id/inCartMarker"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/full_names" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/priceContainer_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:cardBackgroundColor="?attr/colorButtonNormal"
+            app:cardCornerRadius="10dp"
+            app:contentPadding="8dp"
+            app:layout_constraintStart_toEndOf="@+id/productImageContainer_menu"
+            app:layout_constraintTop_toTopOf="@+id/productImageContainer_menu">
+
+            <TextView
+                android:id="@+id/price_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{(data.productDB.price.toString() ?? ``) + ' ' + @string/rub_kg}"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="250 ₽/kg" />
+        </androidx.cardview.widget.CardView>
+
+        <ImageButton
+            android:id="@+id/del_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="#FFFFFF"
+            android:contentDescription="@string/del_button_description"
+            android:onClick="@{() -> viewModel.delProductFromCart(data)}"
+            android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/productImageContainer_menu"
+            app:layout_constraintStart_toEndOf="@+id/productImageContainer_menu"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
+        <TextView
+            android:id="@+id/count_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{Integer.toString(data.inCart.size())}"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/del_menu"
+            app:layout_constraintStart_toEndOf="@+id/del_menu"
+            app:layout_constraintTop_toTopOf="@+id/del_menu"
+            tools:text="5" />
+
+        <ImageButton
+            android:id="@+id/add_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="#FFFFFF"
+            android:contentDescription="@string/add_button_description"
+            android:onClick="@{() -> viewModel.addProductToCart(data)}"
+            app:layout_constraintBottom_toBottomOf="@+id/productImageContainer_menu"
+            app:layout_constraintStart_toEndOf="@+id/count_menu"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
