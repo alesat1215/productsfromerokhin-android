@@ -23,17 +23,32 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp">
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp">
 
+
+            <ImageView
+                android:id="@+id/inCartMarker"
+                android:layout_width="8dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/in_cart_marker_description"
+                android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@color/colorAccent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/productImageContainer_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="0dp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/inCartMarker"
                 app:layout_constraintTop_toBottomOf="@+id/name_menu">
 
                 <ImageView
@@ -50,11 +65,12 @@
                 android:id="@+id/name_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="@{data.productDB.name ?? ``}"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/inCartMarker"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/full_names" />
 
@@ -86,8 +102,8 @@
                 android:layout_marginStart="8dp"
                 android:background="#FFFFFF"
                 android:contentDescription="@string/del_button_description"
-                android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
                 android:onClick="@{() -> viewModel.delProductFromCart(data)}"
+                android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@+id/productImageContainer_menu"
                 app:layout_constraintStart_toEndOf="@+id/productImageContainer_menu"
                 app:srcCompat="@android:drawable/ic_menu_add" />
@@ -97,10 +113,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:text="@{Integer.toString(data.inCart.size())}"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
-                android:text="@{Integer.toString(data.inCart.size())}"
                 app:layout_constraintBottom_toBottomOf="@+id/del_menu"
                 app:layout_constraintStart_toEndOf="@+id/del_menu"
                 app:layout_constraintTop_toTopOf="@+id/del_menu"
