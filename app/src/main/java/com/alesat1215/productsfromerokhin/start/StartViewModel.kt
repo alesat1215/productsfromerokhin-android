@@ -7,11 +7,12 @@ import androidx.lifecycle.ViewModel
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
 import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.start.StartTitle.*
+import com.alesat1215.productsfromerokhin.util.CartManager
 import javax.inject.Inject
 
 class StartViewModel @Inject constructor(
-    private val repository: IProductsRepository
-) : ViewModel() {
+    override val repository: IProductsRepository
+) : CartManager() {
 
     /** Save state for lists to remember scroll position */
     val recyclerViewState = mutableMapOf<Int, Parcelable>()
