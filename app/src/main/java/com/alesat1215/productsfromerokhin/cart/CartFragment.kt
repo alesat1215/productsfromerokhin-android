@@ -27,8 +27,13 @@ class CartFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FragmentCartBinding.inflate(inflater, container, false).apply {
+        // Set view model to layout
+        viewModel = this@CartFragment.viewModel
         // Set adapter to products
         productsCart.adapter = adapterToProducts()
+        // Set lifecycleOwner for LiveData in layout
+        lifecycleOwner = this@CartFragment
+        executePendingBindings()
     }.root
 
     /** @return adapter for products & set data to it */
