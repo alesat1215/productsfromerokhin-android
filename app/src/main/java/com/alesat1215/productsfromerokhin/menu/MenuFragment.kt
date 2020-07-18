@@ -87,7 +87,7 @@ class MenuFragment : DaggerFragment() {
     }
     /** Create adapter for products & set data to it */
     private fun adapterToProducts(): BindRVAdapter<Product> {
-        val adapter = BindRVAdapter<Product>(R.layout.product_menu_item, viewModel)
+        val adapter = BindRVAdapter<Product>(R.layout.menu_item, viewModel)
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Log.d("Menu", "Set list to adapter for products_menu: ${it.count()}")
