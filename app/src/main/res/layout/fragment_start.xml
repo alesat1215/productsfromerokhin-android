@@ -110,7 +110,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productsTitleFrame_start"
-                tools:listitem="@layout/product_start_item" />
+                tools:listitem="@layout/start_item" />
 
             <TextView
                 android:id="@+id/productsTitle2_start"
@@ -135,7 +135,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productsTitle2_start"
-                tools:listitem="@layout/product_start_item" />
+                tools:listitem="@layout/start_item" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
