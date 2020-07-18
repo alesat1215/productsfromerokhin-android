@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.cart
 
+import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
 import com.alesat1215.productsfromerokhin.util.CartManager
 import javax.inject.Inject
@@ -9,4 +10,8 @@ class CartViewModel @Inject constructor(
 ) : CartManager() {
     /** Products in cart */
     fun products() = repository.productsInCart
+
+    fun totalInCart() = Transformations.map(products()) {
+        it.map { it.inCart }.map { it.map { it.price ?: 0 } }.flatten().sum()
+    }
 }
