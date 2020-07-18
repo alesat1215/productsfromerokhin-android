@@ -12,7 +12,9 @@ data class Product(
     val inCart: List<ProductInCart>
 ) {
     /** @return [ProductInCart] from [ProductDB] */
-    fun productInCart() = ProductInCart(name = productDB?.name, consist = productDB?.consist, img = productDB?.img, price = productDB?.price)//, count)
+    fun productInCart() = ProductInCart(name = productDB?.name, consist = productDB?.consist, img = productDB?.img, price = productDB?.price)
+    /** @return sum of price for products in cart */
+    fun totalInCart() = inCart.map { it.price ?: 0 }.sum()
 }
 
 /** Model for [ProductDB] */
