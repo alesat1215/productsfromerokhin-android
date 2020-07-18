@@ -2,22 +2,7 @@ package com.alesat1215.productsfromerokhin.data.local
 
 import androidx.room.*
 
-/**
- * Model for Product with count in cart
- * */
-//data class Product(
-//    var group: String? = null,
-//    val name: String? = null,
-//    val consist: String? = null,
-//    val img: String? = null,
-//    val price: Int? = null,
-//    val inStart: Boolean = false,
-//    val inStart2: Boolean = false//,
-////    val count: Int = 0
-//) {
-//    fun productInCart() = ProductInCart(name, consist, img, price)//, count)
-//}
-
+/** Model for [Product] with list of [ProductInCart] */
 data class Product(
     @Embedded val productDB: ProductDB? = null,
     @Relation(
@@ -26,12 +11,11 @@ data class Product(
     )
     val inCart: List<ProductInCart>
 ) {
+    /** @return [ProductInCart] from [ProductDB] */
     fun productInCart() = ProductInCart(name = productDB?.name, consist = productDB?.consist, img = productDB?.img, price = productDB?.price)//, count)
 }
 
-/**
- * Model for Product
- * */
+/** Model for [ProductDB] */
 @Fts4
 @Entity
 data class ProductDB(
@@ -44,18 +28,14 @@ data class ProductDB(
     val inStart2: Boolean = false
 )
 
-/**
- * Model for Group
- * */
+/** Model for [GroupDB] */
 @Fts4
 @Entity
 data class GroupDB(
     val name: String? = null
 )
 
-/**
- * Model for Product in cart
- * */
+/** Model for [ProductInCart] in cart */
 @Fts4
 @Entity
 data class ProductInCart(
@@ -64,13 +44,10 @@ data class ProductInCart(
     val name: String? = null,
     val consist: String? = null,
     val img: String? = null,
-    val price: Int? = null//,
-//    val count: Int = 0
+    val price: Int? = null
 )
 
-/**
- * Model for Titles
- * */
+/** Model for [Titles] */
 @Fts4
 @Entity
 data class Titles(
