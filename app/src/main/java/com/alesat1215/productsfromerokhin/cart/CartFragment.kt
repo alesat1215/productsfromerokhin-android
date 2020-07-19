@@ -1,5 +1,7 @@
 package com.alesat1215.productsfromerokhin.cart
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +31,8 @@ class CartFragment : DaggerFragment() {
     ) = FragmentCartBinding.inflate(inflater, container, false).apply {
         // Set view model to layout
         viewModel = this@CartFragment.viewModel
+        // Set fragment to layout
+        fragment = this@CartFragment
         // Set adapter to products
         productsCart.adapter = adapterToProducts()
         // Set lifecycleOwner for LiveData in layout
@@ -41,9 +45,49 @@ class CartFragment : DaggerFragment() {
         val adapter = BindRVAdapter<Product>(R.layout.menu_item, viewModel)
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            Log.d("Menu", "Set list to adapter: ${it.count()}")
+            Log.d("Cart", "Set list to adapter: ${it.count()}")
         })
-        Log.d("Menu", "Set adapter to products_cart")
+        Log.d("Cart", "Set adapter to products_cart")
         return adapter
+    }
+
+    fun confirm() {
+//        val intent = Intent().apply {
+//            action = Intent.ACTION_SEND
+//            putExtra(Intent.EXTRA_TEXT, "textMessage")
+//            type = "text/plain"
+//        }
+        val intent = Intent().apply {
+            action = Intent.ACTION_VIEW
+            `package` = "com.whatsapp"
+            data = Uri.parse("https://api.whatsapp.com/send?phone=79021228236&text=textMessage")
+        }
+        val chooser: Intent = Intent.createChooser(intent, "title")
+        activity?.packageManager?.also {
+            intent.resolveActivity(it)?.also {
+                startActivity(chooser)
+                Log.d("Cart", "Confirm")
+            }
+        }
+    }
+
+    private fun sendViaWhatsApp() {
+        val intent = Intent().apply {
+            action = Intent.ACTION_VIEW
+            `package` = "com.whatsapp"
+            data = Uri.parse("https://api.whatsapp.com/send?phone=79021228236&text=textMessage")
+        }
+        val chooser: Intent = Intent.createChooser(intent, "title")
+        activity?.packageManager?.also {
+            intent.resolveActivity(it)?.also {
+                startActivity(chooser)
+                Log.d("Cart", "Confirm")
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("Cart", "onActivityResult, requestCode: ${requestCode}, resultCode: ${resultCode}")
     }
 }
