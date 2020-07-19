@@ -8,6 +8,9 @@
         <variable
             name="viewModel"
             type="com.alesat1215.productsfromerokhin.cart.CartViewModel" />
+        <variable
+            name="fragment"
+            type="com.alesat1215.productsfromerokhin.cart.CartFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,6 +69,7 @@
             android:layout_marginBottom="8dp"
             android:text="@string/confirm"
             android:enabled="@{viewModel.totalInCart() > 0}"
+            android:onClick="@{() -> fragment.confirm()}"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
