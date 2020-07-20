@@ -136,6 +136,7 @@ class CartFragment : DaggerFragment() {
                 }
                 setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, i: Int ->
                     Log.d("Cart", "CANCEL click")
+                    selectMessenger()
                 }
             }
         }
@@ -149,7 +150,7 @@ class CartFragment : DaggerFragment() {
             putExtra(ContactsContract.Intents.Insert.PHONE, "+79021228236")
             putExtra("finishActivityOnSaveCompleted", true)
         }
-        startActivity(intent)
+        startActivityForResult(intent, 1)
         Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
     }
 
@@ -167,8 +168,26 @@ class CartFragment : DaggerFragment() {
         return null
     }
 
+    private fun selectMessenger() {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "textMessage")
+            type = "text/plain"
+        }
+
+        val chooser: Intent = Intent.createChooser(intent, getString(R.string.select_messenger))
+        activity?.packageManager?.also {
+            intent.resolveActivity(it)?.also {
+                startActivity(chooser)
+                Log.d("Cart", "Select messenger")
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-        Log.d("Cart", "onActivityResult, requestCode: ${requestCode}, resultCode: ${resultCode}")
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            selectMessenger()
+        }
     }
 }
