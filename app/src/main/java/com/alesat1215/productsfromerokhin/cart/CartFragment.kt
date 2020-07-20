@@ -122,7 +122,10 @@ class CartFragment : DaggerFragment() {
 //            startActivity(intent)
 //            Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
             showAlertAddContact()
-        } else Log.d("Cart", "Found contact: ${contact}")
+        } else {
+            Log.d("Cart", "Found contact: ${contact}")
+            selectMessenger()
+        }
     }
 
     private fun showAlertAddContact() {
@@ -175,7 +178,7 @@ class CartFragment : DaggerFragment() {
             type = "text/plain"
         }
 
-        val chooser: Intent = Intent.createChooser(intent, getString(R.string.select_messenger))
+        val chooser: Intent = Intent.createChooser(intent, "")
         activity?.packageManager?.also {
             intent.resolveActivity(it)?.also {
                 startActivity(chooser)

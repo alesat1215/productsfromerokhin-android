@@ -17,6 +17,5 @@
     <string name="confirm">Confirm</string>
     <!--CartFragment-->
     <string name="rub">₽</string>
-    <string name="add_contact">The phone number for the order will be added to the contacts. Click save to select it from the list in the future and send the order</string>
-    <string name="select_messenger">You may send order through Viber, WhatsApp or SMS</string>
+    <string name="add_contact">The phone number for the order will be added to the contacts. Click save to select it from the list in the future and send the order. You may send order through Viber, WhatsApp or SMS</string>
 </resources>
