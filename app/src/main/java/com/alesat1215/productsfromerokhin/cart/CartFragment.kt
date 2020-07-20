@@ -64,7 +64,8 @@ class CartFragment : DaggerFragment() {
 
 
         if (activity?.checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            searchPhoneInContacts()
+//            searchPhoneInContacts()
+            addContact()
             Log.d("Cart", "PERMISSION_GRANTED")
         } else {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
@@ -86,7 +87,8 @@ class CartFragment : DaggerFragment() {
         if (requestCode == 0) {
             if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
                 Log.d("Cart", "PERMISSION_GRANTED")
-                searchPhoneInContacts()
+//                searchPhoneInContacts()
+                addContact()
             }
             else Log.d("Cart", "PERMISSION_DENIED")
         }
@@ -107,15 +109,32 @@ class CartFragment : DaggerFragment() {
         }
     }
 
-    private fun searchPhoneInContacts() {
+    private fun addContact() {
+        val contact = searchPhoneInContacts()
+        if (contact == null) {
+            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+                type = ContactsContract.RawContacts.CONTENT_TYPE
+                putExtra(ContactsContract.Intents.Insert.NAME, getString(R.string.app_name))
+                putExtra(ContactsContract.Intents.Insert.PHONE, "+79021228236")
+                putExtra("finishActivityOnSaveCompleted", true)
+            }
+            startActivity(intent)
+            Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
+        } else Log.d("Cart", "Found contact: ${contact}")
+    }
+
+    private fun searchPhoneInContacts(): String? {
         val uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode("+79021228236"))
         val projection = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
         context?.contentResolver?.query(uri, projection, null, null, null)?.also {
             if (it.moveToFirst()) {
-                Log.d("Cart", "Contact: ${it.getString(0)}")
+                val contact = it.getString(0)
+                Log.d("Cart", "Contact found: ${contact}")
+                return contact
             } else Log.d("Cart", "Contact not found")
             it.close()
         }
+        return null
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
