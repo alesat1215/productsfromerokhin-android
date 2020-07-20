@@ -7,7 +7,6 @@ import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +16,8 @@ import com.alesat1215.productsfromerokhin.databinding.FragmentCartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import dagger.android.support.DaggerFragment
 import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import javax.inject.Inject
 
@@ -112,15 +113,44 @@ class CartFragment : DaggerFragment() {
     private fun addContact() {
         val contact = searchPhoneInContacts()
         if (contact == null) {
-            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-                type = ContactsContract.RawContacts.CONTENT_TYPE
-                putExtra(ContactsContract.Intents.Insert.NAME, getString(R.string.app_name))
-                putExtra(ContactsContract.Intents.Insert.PHONE, "+79021228236")
-                putExtra("finishActivityOnSaveCompleted", true)
-            }
-            startActivity(intent)
-            Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
+//            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+//                type = ContactsContract.RawContacts.CONTENT_TYPE
+//                putExtra(ContactsContract.Intents.Insert.NAME, getString(R.string.app_name))
+//                putExtra(ContactsContract.Intents.Insert.PHONE, "+79021228236")
+//                putExtra("finishActivityOnSaveCompleted", true)
+//            }
+//            startActivity(intent)
+//            Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
+            showAlertAddContact()
         } else Log.d("Cart", "Found contact: ${contact}")
+    }
+
+    private fun showAlertAddContact() {
+        val dialog = activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setMessage(R.string.add_contact)
+                setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
+                    Log.d("Cart", "OK click")
+                    showContact()
+                }
+                setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, i: Int ->
+                    Log.d("Cart", "CANCEL click")
+                }
+            }
+        }
+        dialog?.show()
+    }
+
+    private fun showContact() {
+        val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+            type = ContactsContract.RawContacts.CONTENT_TYPE
+            putExtra(ContactsContract.Intents.Insert.NAME, getString(R.string.app_name))
+            putExtra(ContactsContract.Intents.Insert.PHONE, "+79021228236")
+            putExtra("finishActivityOnSaveCompleted", true)
+        }
+        startActivity(intent)
+        Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
     }
 
     private fun searchPhoneInContacts(): String? {
