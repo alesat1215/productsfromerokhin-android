@@ -2,6 +2,7 @@ package com.alesat1215.productsfromerokhin.di
 
 import android.content.Context
 import com.alesat1215.productsfromerokhin.App
+import com.alesat1215.productsfromerokhin.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -12,6 +13,7 @@ import javax.inject.Singleton
 @Component(modules = [
     AppModule::class,
     AndroidSupportInjectionModule::class,
+    ActivityModule::class,
     LoadModule::class,
     StartModule::class,
     MenuModule::class,
