@@ -5,8 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +17,9 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 /**
@@ -217,6 +218,20 @@ class CartFragment : DaggerFragment() {
         }
         // Show alert
         dialog?.show()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Set visible clear cart button
+        (activity as? AppCompatActivity)?.toolbar?.menu?.findItem(R.id.clearCart)?.isVisible = true
+        Log.d("Cart", "Clear cart button visible")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Set invisible clear cart button
+        (activity as? AppCompatActivity)?.toolbar?.menu?.findItem(R.id.clearCart)?.isVisible = false
+        Log.d("Cart", "Clear cart button invisible")
     }
 }
 
