@@ -10,8 +10,12 @@ class CartViewModel @Inject constructor(
 ) : CartManager() {
     /** Products in cart */
     fun products() = repository.productsInCart
-
+    /** Sum for order */
     fun totalInCart() = Transformations.map(products()) {
         it.map { it.totalInCart() }.sum()
+    }
+    /** Text for message */
+    fun order() = Transformations.map(products()) {
+        it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
     }
 }
