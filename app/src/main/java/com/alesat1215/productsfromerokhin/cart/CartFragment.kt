@@ -30,7 +30,7 @@ class CartFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by activityViewModels<CartViewModel> { viewModelFactory }
 
-    private val PERMISSION_REQUEST = 0
+    private val CONTACTS_PERMISSION_REQUEST = 0
     private val ADD_CONTACT_REQUEST = 1
 
     override fun onCreateView(
@@ -59,17 +59,17 @@ class CartFragment : DaggerFragment() {
         return adapter
     }
 
-    fun confirm() {
+    fun send() {
         // Check permission for contacts
         if (activity?.checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            addContact()
+            checkContact()
             Log.d("Cart", "PERMISSION_GRANTED")
         } else {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSION_REQUEST)
+                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), CONTACTS_PERMISSION_REQUEST)
                 Log.d("Cart", "PERMISSION rationale true")
             } else {
-                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSION_REQUEST)
+                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), CONTACTS_PERMISSION_REQUEST)
                 Log.d("Cart", "PERMISSION rationale false")
             }
         }
@@ -81,11 +81,11 @@ class CartFragment : DaggerFragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST) {
+        // Search phone for order in contacts if permission is granted or show select messenger
+        if (requestCode == CONTACTS_PERMISSION_REQUEST) {
             if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
                 Log.d("Cart", "PERMISSION_GRANTED")
-//                searchPhoneInContacts()
-                addContact()
+                checkContact()
             }
             else {
                 Log.d("Cart", "PERMISSION_DENIED")
@@ -93,6 +93,93 @@ class CartFragment : DaggerFragment() {
             }
         }
     }
+
+    /** Check phone number for order in contacts */
+    private fun checkContact() {
+        if (!isPhoneNumberInContacts()) {
+            showAlertAddContact()
+        } else {
+            selectMessenger()
+        }
+    }
+    /** Show instruction for save number for order in contacts */
+    private fun showAlertAddContact() {
+        // Build alert
+        val dialog = activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setMessage(R.string.add_contact)
+                // Show contact card for positive button
+                setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
+                    Log.d("Cart", "OK click")
+                    addContact()
+                }
+                // Show select messenger for negative button
+                setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, i: Int ->
+                    Log.d("Cart", "CANCEL click")
+                    selectMessenger()
+                }
+            }
+        }
+        // Show alert
+        dialog?.show()
+    }
+    /** Show contact card whits name & number for saving */
+    private fun addContact(number: String = "+79021228236") {
+        // Build intent for add contact with app name & phone number for order
+        val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+            type = ContactsContract.RawContacts.CONTENT_TYPE
+            putExtra(ContactsContract.Intents.Insert.NAME, getString(R.string.app_name))
+            putExtra(ContactsContract.Intents.Insert.PHONE, number)
+            putExtra("finishActivityOnSaveCompleted", true)
+        }
+        // For show select messenger after result
+        startActivityForResult(intent, ADD_CONTACT_REQUEST)
+        Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
+    }
+
+    /** Check phone for order in contacts */
+    private fun isPhoneNumberInContacts(number: String = "+79021228236"): Boolean {
+        val uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(number))
+        val projection = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
+        // Request to contacts by phone number
+        val cursor = context?.contentResolver?.query(uri, projection, null, null, null)?.also {
+            if (it.moveToFirst()) {
+                val contact = it.getString(0)
+                Log.d("Cart", "Contact found: ${contact}")
+                return true
+            } else Log.d("Cart", "Contact not found")
+        }
+        cursor?.close()
+        // Phone number for order not found in contacts
+        return false
+    }
+    /** Show chooser for send order */
+    private fun selectMessenger() {
+        // Create intent
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "textMessage")
+            type = "text/plain"
+        }
+        // Show chooser
+        val chooser: Intent = Intent.createChooser(intent, "")
+        activity?.packageManager?.also {
+            intent.resolveActivity(it)?.also {
+                startActivity(chooser)
+                Log.d("Cart", "Select messenger")
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Show select messenger after add phone number for order to contacts
+        if (requestCode == ADD_CONTACT_REQUEST) {
+            selectMessenger()
+        }
+    }
+}
 
 //    private fun sendViaWhatsApp() {
 //        val intent = Intent().apply {
@@ -108,88 +195,3 @@ class CartFragment : DaggerFragment() {
 //            }
 //        }
 //    }
-
-    private fun addContact() {
-        val contact = searchPhoneInContacts()
-        if (contact == null) {
-//            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-//                type = ContactsContract.RawContacts.CONTENT_TYPE
-//                putExtra(ContactsContract.Intents.Insert.NAME, getString(R.string.app_name))
-//                putExtra(ContactsContract.Intents.Insert.PHONE, "+79021228236")
-//                putExtra("finishActivityOnSaveCompleted", true)
-//            }
-//            startActivity(intent)
-//            Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
-            showAlertAddContact()
-        } else {
-            Log.d("Cart", "Found contact: ${contact}")
-            selectMessenger()
-        }
-    }
-
-    private fun showAlertAddContact() {
-        val dialog = activity?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.apply {
-                setMessage(R.string.add_contact)
-                setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
-                    Log.d("Cart", "OK click")
-                    showContact()
-                }
-                setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, i: Int ->
-                    Log.d("Cart", "CANCEL click")
-                    selectMessenger()
-                }
-            }
-        }
-        dialog?.show()
-    }
-
-    private fun showContact() {
-        val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-            type = ContactsContract.RawContacts.CONTENT_TYPE
-            putExtra(ContactsContract.Intents.Insert.NAME, getString(R.string.app_name))
-            putExtra(ContactsContract.Intents.Insert.PHONE, "+79021228236")
-            putExtra("finishActivityOnSaveCompleted", true)
-        }
-        startActivityForResult(intent, ADD_CONTACT_REQUEST)
-        Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
-    }
-
-    private fun searchPhoneInContacts(): String? {
-        val uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode("+79021228236"))
-        val projection = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
-        context?.contentResolver?.query(uri, projection, null, null, null)?.also {
-            if (it.moveToFirst()) {
-                val contact = it.getString(0)
-                Log.d("Cart", "Contact found: ${contact}")
-                return contact
-            } else Log.d("Cart", "Contact not found")
-            it.close()
-        }
-        return null
-    }
-
-    private fun selectMessenger() {
-        val intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "textMessage")
-            type = "text/plain"
-        }
-
-        val chooser: Intent = Intent.createChooser(intent, "")
-        activity?.packageManager?.also {
-            intent.resolveActivity(it)?.also {
-                startActivity(chooser)
-                Log.d("Cart", "Select messenger")
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == ADD_CONTACT_REQUEST) {
-            selectMessenger()
-        }
-    }
-}
