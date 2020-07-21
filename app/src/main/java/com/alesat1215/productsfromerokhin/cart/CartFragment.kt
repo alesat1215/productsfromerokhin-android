@@ -156,20 +156,34 @@ class CartFragment : DaggerFragment() {
     }
     /** Show chooser for send order */
     private fun selectMessenger() {
-        // Create intent
-        val intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "textMessage")
-            type = "text/plain"
-        }
-        // Show chooser
-        val chooser: Intent = Intent.createChooser(intent, "")
-        activity?.packageManager?.also {
-            intent.resolveActivity(it)?.also {
-                startActivity(chooser)
-                Log.d("Cart", "Select messenger")
-            }
-        }
+        val order = viewModel.order()
+        val total = viewModel.totalInCart()
+        // Get text for order
+        order.observe(viewLifecycleOwner, Observer { orderText ->
+            // Unsubscribe from events
+            order.removeObservers(viewLifecycleOwner)
+            // Get text for total
+            total.observe(viewLifecycleOwner, Observer {
+                // Unsubscribe from events
+                total.removeObservers(viewLifecycleOwner)
+                // Create text for message
+                val message = "$orderText${getString(R.string.total)} $it ${getString(R.string.rub)}"
+                // Create intent
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, message)
+                    type = "text/plain"
+                }
+                // Show chooser
+                val chooser: Intent = Intent.createChooser(intent, "")
+                activity?.packageManager?.also {
+                    intent.resolveActivity(it)?.also {
+                        startActivity(chooser)
+                        Log.d("Cart", "Select messenger")
+                    }
+                }
+            })
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
