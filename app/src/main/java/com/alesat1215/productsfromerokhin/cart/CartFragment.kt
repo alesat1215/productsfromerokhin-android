@@ -32,6 +32,7 @@ class CartFragment : DaggerFragment() {
 
     private val CONTACTS_PERMISSION_REQUEST = 0
     private val ADD_CONTACT_REQUEST = 1
+    private val CHOOSER_REQUEST = 2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -178,7 +179,7 @@ class CartFragment : DaggerFragment() {
                 val chooser: Intent = Intent.createChooser(intent, "")
                 activity?.packageManager?.also {
                     intent.resolveActivity(it)?.also {
-                        startActivity(chooser)
+                        startActivityForResult(chooser, CHOOSER_REQUEST)
                         Log.d("Cart", "Select messenger")
                     }
                 }
@@ -192,6 +193,30 @@ class CartFragment : DaggerFragment() {
         if (requestCode == ADD_CONTACT_REQUEST) {
             selectMessenger()
         }
+        if (requestCode == CHOOSER_REQUEST) {
+            clearCart()
+        }
+    }
+
+    private fun clearCart() {
+        // Build alert
+        val dialog = activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setMessage(R.string.clear_cart)
+                // Show contact card for positive button
+                setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                    Log.d("Cart", "Clear cart")
+                    viewModel.clearCart()
+                }
+                // Show select messenger for negative button
+                setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int ->
+                    Log.d("Cart", "CANCEL click")
+                }
+            }
+        }
+        // Show alert
+        dialog?.show()
     }
 }
 

@@ -33,6 +33,8 @@ interface ProductsDao {
     suspend fun insertProductInCart(product: ProductInCart)
     @Delete
     suspend fun deleteProductFromCart(product: ProductInCart)
+    @Query("DELETE FROM productincart")
+    suspend fun clearCart()
 
     /** Clear products, groups & titles */
     @Transaction

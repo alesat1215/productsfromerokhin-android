@@ -26,6 +26,8 @@ interface IProductsRepository {
     suspend fun addProductToCart(product: ProductInCart)
     /** Del product from cart */
     suspend fun delProductFromCart(product: ProductInCart)
+    /** Del products from cart */
+    suspend fun clearCart()
 }
 
 /** Repository for products, groups & titles.
@@ -74,6 +76,10 @@ class ProductsRepository @Inject constructor(
 
     override suspend fun delProductFromCart(product: ProductInCart) = withContext(Dispatchers.IO) {
         db.productsDao().deleteProductFromCart(product)
+    }
+
+    override suspend fun clearCart() = withContext(Dispatchers.IO) {
+        db.productsDao().clearCart()
     }
 
     /** Update Room from remote database if needed */
