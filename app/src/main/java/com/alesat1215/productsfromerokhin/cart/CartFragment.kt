@@ -60,15 +60,8 @@ class CartFragment : DaggerFragment() {
     }
 
     fun confirm() {
-//        val intent = Intent().apply {
-//            action = Intent.ACTION_SEND
-//            putExtra(Intent.EXTRA_TEXT, "textMessage")
-//            type = "text/plain"
-//        }
-
-
+        // Check permission for contacts
         if (activity?.checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-//            searchPhoneInContacts()
             addContact()
             Log.d("Cart", "PERMISSION_GRANTED")
         } else {
@@ -94,24 +87,27 @@ class CartFragment : DaggerFragment() {
 //                searchPhoneInContacts()
                 addContact()
             }
-            else Log.d("Cart", "PERMISSION_DENIED")
-        }
-    }
-
-    private fun sendViaWhatsApp() {
-        val intent = Intent().apply {
-            action = Intent.ACTION_VIEW
-            `package` = "com.whatsapp"
-            data = Uri.parse("https://api.whatsapp.com/send?phone=79021228236&text=textMessage")
-        }
-        val chooser: Intent = Intent.createChooser(intent, "title")
-        activity?.packageManager?.also {
-            intent.resolveActivity(it)?.also {
-                startActivity(chooser)
-                Log.d("Cart", "Confirm")
+            else {
+                Log.d("Cart", "PERMISSION_DENIED")
+                selectMessenger()
             }
         }
     }
+
+//    private fun sendViaWhatsApp() {
+//        val intent = Intent().apply {
+//            action = Intent.ACTION_VIEW
+//            `package` = "com.whatsapp"
+//            data = Uri.parse("https://api.whatsapp.com/send?phone=79021228236&text=textMessage")
+//        }
+//        val chooser: Intent = Intent.createChooser(intent, "title")
+//        activity?.packageManager?.also {
+//            intent.resolveActivity(it)?.also {
+//                startActivity(chooser)
+//                Log.d("Cart", "Confirm")
+//            }
+//        }
+//    }
 
     private fun addContact() {
         val contact = searchPhoneInContacts()
