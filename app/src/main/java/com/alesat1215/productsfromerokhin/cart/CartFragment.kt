@@ -30,6 +30,9 @@ class CartFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by activityViewModels<CartViewModel> { viewModelFactory }
 
+    private val PERMISSION_REQUEST = 0
+    private val ADD_CONTACT_REQUEST = 1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,10 +73,10 @@ class CartFragment : DaggerFragment() {
             Log.d("Cart", "PERMISSION_GRANTED")
         } else {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), 0)
+                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSION_REQUEST)
                 Log.d("Cart", "PERMISSION rationale true")
             } else {
-                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), 0)
+                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSION_REQUEST)
                 Log.d("Cart", "PERMISSION rationale false")
             }
         }
@@ -85,7 +88,7 @@ class CartFragment : DaggerFragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 0) {
+        if (requestCode == PERMISSION_REQUEST) {
             if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
                 Log.d("Cart", "PERMISSION_GRANTED")
 //                searchPhoneInContacts()
@@ -153,7 +156,7 @@ class CartFragment : DaggerFragment() {
             putExtra(ContactsContract.Intents.Insert.PHONE, "+79021228236")
             putExtra("finishActivityOnSaveCompleted", true)
         }
-        startActivityForResult(intent, 1)
+        startActivityForResult(intent, ADD_CONTACT_REQUEST)
         Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
     }
 
@@ -189,7 +192,7 @@ class CartFragment : DaggerFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
+        if (requestCode == ADD_CONTACT_REQUEST) {
             selectMessenger()
         }
     }
