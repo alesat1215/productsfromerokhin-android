@@ -5,10 +5,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.alesat1215.productsfromerokhin.cart.CartViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -23,6 +25,22 @@ class MainActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         nav_view.setupWithNavController(findNavController(R.id.nav_host_fragment))
+        setupBadge(nav_view)
+    }
+
+    private fun setupBadge(nav_view: BottomNavigationView) {
+        viewModel.products().observe(this, Observer {
+            val badge = nav_view.getOrCreateBadge(R.id.cartFragment)
+            if (it.isEmpty()) {
+                badge.isVisible = false
+                badge.clearNumber()
+                Log.d("Cart", "Clear badge")
+            } else {
+                badge.isVisible = true
+                badge.number = it.count()
+                Log.d("Cart", "Set cart badge: ${it.count()}")
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
