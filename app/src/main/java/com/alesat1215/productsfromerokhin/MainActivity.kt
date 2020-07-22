@@ -28,13 +28,13 @@ class MainActivity : DaggerAppCompatActivity() {
         setupBadge(nav_view)
     }
 
-    private fun setupBadge(nav_view: BottomNavigationView) {
+    private fun setupBadge(navigationView: BottomNavigationView) {
         viewModel.products().observe(this, Observer {
-            val badge = nav_view.getOrCreateBadge(R.id.cartFragment)
+            val badge = navigationView.getOrCreateBadge(R.id.cartFragment)
             if (it.isEmpty()) {
                 badge.isVisible = false
                 badge.clearNumber()
-                Log.d("Cart", "Clear badge")
+                Log.d("Cart", "Clear cart badge")
             } else {
                 badge.isVisible = true
                 badge.number = it.count()
