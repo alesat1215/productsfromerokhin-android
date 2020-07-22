@@ -32,7 +32,7 @@ class ProductsRepositoryTest {
     private lateinit var dbFBFetchLimit: RateLimiter
 
     private val products: LiveData<List<Product>> = MutableLiveData(remoteDataMockTest().products().map {
-        Product(it.group, it.name, it.consist, it.img, it.price, it.inStart, it.inStart2)
+        Product(it, emptyList())
     })
     private val groups: LiveData<List<GroupDB>> = MutableLiveData(remoteDataMockTest().groups())
     private val titles: LiveData<Titles> = MutableLiveData(remoteDataMockTest().titles())

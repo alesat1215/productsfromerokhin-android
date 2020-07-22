@@ -22,7 +22,7 @@ class StartViewModelTest {
     private lateinit var viewModel: StartViewModel
     private val data by lazy { remoteDataMockTest() }
     private val products by lazy { data.products().map {
-        Product(it.group, it.name, it.consist, it.img, it.price, it.inStart, it.inStart2)
+        Product(it, emptyList())
     } }
 
     @get:Rule
@@ -55,7 +55,7 @@ class StartViewModelTest {
         var products = listOf<Product>()
         viewModel.products().observeForever { products = it }
         assertEquals(products, this.products)
-        val predicate: (Product) -> Boolean = { it.name == "product_1" }
+        val predicate: (Product) -> Boolean = { it.productDB?.name == "product_1" }
         viewModel.products(predicate).observeForever { products = it }
         assertEquals(products, this.products.filter(predicate))
     }

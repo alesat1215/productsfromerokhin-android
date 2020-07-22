@@ -23,7 +23,7 @@ class MenuViewModelTest {
     private lateinit var viewModel: MenuViewModel
     private val data by lazy { remoteDataMockTest() }
     private val products by lazy { data.products().map {
-        Product(it.group, it.name, it.consist, it.img, it.price, it.inStart, it.inStart2)
+        Product(it, emptyList())
     } }
 
     @get:Rule
