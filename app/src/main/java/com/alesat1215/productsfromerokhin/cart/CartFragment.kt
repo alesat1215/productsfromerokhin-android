@@ -222,16 +222,20 @@ class CartFragment : DaggerFragment() {
 
     override fun onStart() {
         super.onStart()
-        // Set visible clear cart button
-        (activity as? AppCompatActivity)?.toolbar?.menu?.findItem(R.id.clearCart)?.isVisible = true
-        Log.d("Cart", "Clear cart button visible")
+        // Clear cart button visible only for not empty cart
+        viewModel.products().observe(viewLifecycleOwner, Observer { clearCartButton(it.isNotEmpty()) })
     }
 
     override fun onStop() {
         super.onStop()
-        // Set invisible clear cart button
-        (activity as? AppCompatActivity)?.toolbar?.menu?.findItem(R.id.clearCart)?.isVisible = false
-        Log.d("Cart", "Clear cart button invisible")
+        // Set clear cart button invisible
+        clearCartButton(false)
+    }
+
+    /** Setup clear cart button visible */
+    private fun clearCartButton(visible: Boolean) {
+        (activity as? AppCompatActivity)?.toolbar?.menu?.findItem(R.id.clearCart)?.isVisible = visible
+        Log.d("Cart", "Clear cart button visible: $visible")
     }
 }
 
