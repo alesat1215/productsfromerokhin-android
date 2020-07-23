@@ -5,6 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
 import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.remoteDataMockAndroidTest
 import org.junit.After
@@ -19,10 +20,6 @@ import org.junit.runner.RunWith
 class ProductsDatabaseTest2 {
     private lateinit var dao: ProductsDao
     private lateinit var db: ProductsDatabase
-    private val data by lazy { remoteDataMockAndroidTest() }
-    private val products by lazy { data.products().map {
-        Product(it, emptyList())
-    } }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -49,13 +46,13 @@ class ProductsDatabaseTest2 {
         dao.products().observeForever { products = it }
         dao.groups().observeForever { groups = it }
         dao.titles().observeForever { titles = it }
-        dao.update(data)
-        assertEquals(products, this.products)
-        assertEquals(groups, data.groups())
-        assertEquals(titles?.title, data.title)
-        assertEquals(titles?.img, data.img)
-        assertEquals(titles?.imgTitle, data.imgTitle)
-        assertEquals(titles?.productsTitle, data.productsTitle)
-        assertEquals(titles?.productsTitle2, data.productsTitle2)
+        dao.update(RemoteDataMockAndroidTest.data)
+        assertEquals(products, RemoteDataMockAndroidTest.productsEmptyCart)
+        assertEquals(groups, RemoteDataMockAndroidTest.data.groups())
+        assertEquals(titles?.title, RemoteDataMockAndroidTest.data.title)
+        assertEquals(titles?.img, RemoteDataMockAndroidTest.data.img)
+        assertEquals(titles?.imgTitle, RemoteDataMockAndroidTest.data.imgTitle)
+        assertEquals(titles?.productsTitle, RemoteDataMockAndroidTest.data.productsTitle)
+        assertEquals(titles?.productsTitle2, RemoteDataMockAndroidTest.data.productsTitle2)
     }
 }
