@@ -2,10 +2,10 @@ package com.alesat1215.productsfromerokhin.menu
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.local.GroupDB
 import com.alesat1215.productsfromerokhin.data.local.Product
-import com.alesat1215.productsfromerokhin.remoteDataMockTest
 import org.junit.Before
 import org.junit.Test
 
@@ -21,18 +21,14 @@ class MenuViewModelTest {
     @Mock
     private lateinit var repository: ProductsRepository
     private lateinit var viewModel: MenuViewModel
-    private val data by lazy { remoteDataMockTest() }
-    private val products by lazy { data.products().map {
-        Product(it, emptyList())
-    } }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-        `when`(repository.groups()).thenReturn(MutableLiveData(data.groups()))
-        `when`(repository.products()).thenReturn(MutableLiveData(products))
+        `when`(repository.groups()).thenReturn(MutableLiveData(RemoteDataMockTest.data.groups()))
+        `when`(repository.products()).thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
         viewModel = MenuViewModel(repository)
     }
 
@@ -40,13 +36,13 @@ class MenuViewModelTest {
     fun products() {
         var products = listOf<Product>()
         viewModel.products().observeForever { products = it }
-        assertEquals(products, this.products)
+        assertEquals(products, RemoteDataMockTest.productsNotEmptyCart)
     }
 
     @Test
     fun groups() {
         var groups = listOf<GroupDB>()
         viewModel.groups().observeForever { groups = it }
-        assertEquals(groups, data.groups())
+        assertEquals(groups, RemoteDataMockTest.data.groups())
     }
 }
