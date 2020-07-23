@@ -6,21 +6,6 @@ import com.alesat1215.productsfromerokhin.data.RemoteData
 import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.data.local.ProductInCart
 
-fun remoteDataMockTest() = RemoteData(
-    "Title",
-    "Img",
-    "ImgTitle",
-    "ProductsTitle",
-    "ProductsTitle2",
-    listOf(
-        GroupRemote("group_1").apply { products = products123Test() },
-        GroupRemote("group_2").apply { products = products456Test() }
-    )
-)
-
-fun products123Test() = listOf(ProductRemote("product_1"), ProductRemote("product_2"), ProductRemote("product_3"))
-fun products456Test() = listOf(ProductRemote("product_4"), ProductRemote("product_5"), ProductRemote("product_6"))
-
 object RemoteDataMockTest {
     val data = RemoteData(
         "Title",
