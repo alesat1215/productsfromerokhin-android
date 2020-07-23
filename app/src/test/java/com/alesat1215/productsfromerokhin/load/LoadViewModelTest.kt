@@ -4,8 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.local.Product
-import com.alesat1215.productsfromerokhin.remoteDataMockTest
 import org.junit.Test
 
 import org.junit.Assert.*
