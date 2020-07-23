@@ -1,18 +1,19 @@
 package com.alesat1215.productsfromerokhin.data
 
-import androidx.lifecycle.LiveData
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import org.junit.Test
-import com.alesat1215.productsfromerokhin.remoteDataMockTest
 import com.google.firebase.database.FirebaseDatabase
 
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -31,11 +32,8 @@ class ProductsRepositoryTest {
     @Mock
     private lateinit var dbFBFetchLimit: RateLimiter
 
-    private val products: LiveData<List<Product>> = MutableLiveData(remoteDataMockTest().products().map {
-        Product(it, emptyList())
-    })
-    private val groups: LiveData<List<GroupDB>> = MutableLiveData(remoteDataMockTest().groups())
-    private val titles: LiveData<Titles> = MutableLiveData(remoteDataMockTest().titles())
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
@@ -43,16 +41,25 @@ class ProductsRepositoryTest {
         `when`(dbFB.database).thenReturn(mock(FirebaseDatabase::class.java))
         `when`(dbFBFetchLimit.shouldFetch()).thenReturn(true)
         `when`(db.productsDao()).thenReturn(mock(ProductsDao::class.java))
-        `when`(db.productsDao().products()).thenReturn(products)
-        `when`(db.productsDao().groups()).thenReturn(groups)
-        `when`(db.productsDao().titles()).thenReturn(titles)
+        `when`(db.productsDao().products()).thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
+        `when`(db.productsDao().groups()).thenReturn(MutableLiveData(RemoteDataMockTest.data.groups()))
+        `when`(db.productsDao().titles()).thenReturn(MutableLiveData(RemoteDataMockTest.data.titles()))
     }
 
     @Test
     fun productsGroupsTitles() {
         val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
-        assertEquals(repo.products(), products)
-        assertEquals(repo.groups(), groups)
-        assertEquals(repo.titles(), titles)
+        var products = emptyList<Product>()
+        var productsInCart = emptyList<Product>()
+        var groups = emptyList<GroupDB>()
+        var titles: Titles? = null
+        repo.products().observeForever { products = it }
+        repo.productsInCart.observeForever { productsInCart = it }
+        repo.groups().observeForever { groups = it }
+        repo.titles().observeForever { titles = it }
+        assertEquals(products, RemoteDataMockTest.productsNotEmptyCart)
+        assertEquals(productsInCart, RemoteDataMockTest.productsNotEmptyCart)
+        assertEquals(groups, RemoteDataMockTest.data.groups())
+        assertEquals(titles, RemoteDataMockTest.data.titles())
     }
 }
