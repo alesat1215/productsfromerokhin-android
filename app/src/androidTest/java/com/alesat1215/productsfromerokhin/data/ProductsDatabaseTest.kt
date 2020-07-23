@@ -39,7 +39,7 @@ class ProductsDatabaseTest2 {
     }
 
     @Test
-    fun updateAndRead() {
+    fun updateReadClearProducts() {
         var products = listOf<Product>()
         var groups = listOf<GroupDB>()
         var titles: Titles? = null
@@ -54,6 +54,10 @@ class ProductsDatabaseTest2 {
         assertEquals(titles?.imgTitle, RemoteDataMockAndroidTest.data.imgTitle)
         assertEquals(titles?.productsTitle, RemoteDataMockAndroidTest.data.productsTitle)
         assertEquals(titles?.productsTitle2, RemoteDataMockAndroidTest.data.productsTitle2)
+        dao.clearBeforeUpdate()
+        assertTrue(products.isEmpty())
+        assertTrue(groups.isEmpty())
+        assertNull(titles)
     }
 
     @Test
