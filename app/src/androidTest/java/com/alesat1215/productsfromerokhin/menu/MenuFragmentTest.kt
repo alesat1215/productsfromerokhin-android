@@ -51,10 +51,10 @@ class MenuFragmentTest {
 
 //    @Test
 //    fun onScroll() {
-//        val group = data.groups!!.first().name
-//        val group2 = data.groups!!.last().name
+//        val group = RemoteDataMockAndroidTest.data.groups().first().name
+//        val group2 = RemoteDataMockAndroidTest.data.groups().last().name
 //        val startPosition = 0
-//        val bottomPosition = data.products().count() - 1
+//        val bottomPosition = RemoteDataMockAndroidTest.data.products().count() - 1
 //        // Scroll bottom
 //        onView(withText(group)).check(matches(isSelected()))
 //        onView(withId(R.id.products_menu)).perform(RecyclerViewActions.scrollToPosition<BindViewHolder>(bottomPosition))
