@@ -8,6 +8,9 @@
         <variable
             name="viewModel"
             type="com.alesat1215.productsfromerokhin.profile.ProfileViewModel" />
+        <variable
+            name="fragment"
+            type="com.alesat1215.productsfromerokhin.profile.ProfileFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,10 +33,11 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.profile.name}"
-                    android:hint="@string/name" />
+                    android:hint="@string/name"
+                    android:text="@{viewModel.profile.name}" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.cardview.widget.CardView>
@@ -53,10 +57,11 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.profile.phone}"
-                    android:hint="@string/phone" />
+                    android:hint="@string/phone"
+                    android:text="@{viewModel.profile.phone}" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
 
@@ -75,10 +80,11 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.profile.address}"
-                    android:hint="@string/address" />
+                    android:hint="@string/address"
+                    android:text="@{viewModel.profile.address}" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
 
@@ -87,6 +93,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/save"
+            android:onClick="@{() -> fragment.save()}"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

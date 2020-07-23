@@ -56,10 +56,13 @@ interface ProductsDao {
     fun profile(): LiveData<Profile>
     @Insert(entity = Profile::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertProfile(profile: Profile)
-    @Update
-    fun updateProfile(profile: Profile)
     @Query("DELETE FROM profile")
     fun clearProfile()
+    @Transaction
+    fun updateProfile(profile: Profile) {
+        clearProfile()
+        insertProfile(profile)
+    }
 }
 
 @Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class, Profile::class], version = 1, exportSchema = false)

@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Profile(
     @PrimaryKey(autoGenerate = true)
-    val rowid: Int = 0,
+    var rowid: Int = 0,
     val name: String = "",
     val phone: String = "",
     val address: String = ""
