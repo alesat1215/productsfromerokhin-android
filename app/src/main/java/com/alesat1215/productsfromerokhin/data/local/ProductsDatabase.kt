@@ -50,9 +50,19 @@ interface ProductsDao {
     fun clearGroups()
     @Query("DELETE FROM titles")
     fun clearTitles()
+
+    // Profile
+    @Query("SELECT rowid, * FROM profile LIMIT 1")
+    fun profile(): LiveData<Profile>
+    @Insert(entity = Profile::class, onConflict = OnConflictStrategy.REPLACE)
+    fun insertProfile(profile: Profile)
+    @Update
+    fun updateProfile(profile: Profile)
+    @Query("DELETE FROM profile")
+    fun clearProfile()
 }
 
-@Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class], version = 1, exportSchema = false)
+@Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class, Profile::class], version = 1, exportSchema = false)
 abstract class ProductsDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
 }

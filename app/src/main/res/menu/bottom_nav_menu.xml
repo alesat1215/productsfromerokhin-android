@@ -15,7 +15,7 @@
         android:contentDescription="@string/cart"
         android:title="@string/cart" />
     <item
-        android:id="@+id/profile"
+        android:id="@+id/profileFragment"
         android:contentDescription="@string/profile"
         android:title="@string/profile" />
     <item
