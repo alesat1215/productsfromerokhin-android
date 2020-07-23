@@ -14,12 +14,24 @@ class ProductsRepositoryMock @Inject constructor() : IProductsRepository {
     private val data by lazy { remoteDataMockAndroidTest() }
 
     override fun products() = MutableLiveData(data.products().map {
-        Product(it.group, it.name, it.consist, it.img, it.price, it.inStart, it.inStart2)
+        Product(it, listOf(ProductInCart(name = it.name)))
     })
 
     override fun titles() = MutableLiveData(data.titles())
 
     override fun groups() = MutableLiveData(data.groups())
 
-    override val productsInCart = MutableLiveData<List<ProductInCart>>(emptyList())
+    override val productsInCart = MutableLiveData<List<Product>>(emptyList())
+
+    override suspend fun addProductToCart(product: ProductInCart) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun delProductFromCart(product: ProductInCart) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun clearCart() {
+        TODO("Not yet implemented")
+    }
 }
