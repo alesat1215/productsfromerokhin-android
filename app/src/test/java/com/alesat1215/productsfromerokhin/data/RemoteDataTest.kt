@@ -1,14 +1,13 @@
 package com.alesat1215.productsfromerokhin.data
 
-import com.alesat1215.productsfromerokhin.products123Test
-import com.alesat1215.productsfromerokhin.remoteDataMockTest
+import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import org.junit.Test
 
 import org.junit.Assert.*
 
 class RemoteDataTest {
 
-    private val remoteData by lazy { remoteDataMockTest() }
+    private val remoteData by lazy { RemoteDataMockTest.data }
 
     //RemoteData
     @Test
@@ -45,7 +44,7 @@ class RemoteDataTest {
     @Test
     fun productsDB() {
         val groupName = "groupName"
-        val products = products123Test()
+        val products = RemoteDataMockTest.products123Test()
         val group = GroupRemote("groupName", products)
         val productsDB = group.productsDB()
         productsDB.withIndex().forEach {
