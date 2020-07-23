@@ -7,7 +7,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
 import com.alesat1215.productsfromerokhin.data.local.*
-import com.alesat1215.productsfromerokhin.remoteDataMockAndroidTest
 import org.junit.After
 import org.junit.Before
 
