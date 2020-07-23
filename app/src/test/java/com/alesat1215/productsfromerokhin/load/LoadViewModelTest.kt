@@ -2,6 +2,7 @@ package com.alesat1215.productsfromerokhin.load
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.remoteDataMockTest
@@ -20,10 +21,6 @@ class LoadViewModelTest {
     @Mock
     private lateinit var repository: ProductsRepository
     private lateinit var viewModel: LoadViewModel
-    private val data by lazy { remoteDataMockTest() }
-    private val products by lazy { data.products().map {
-        Product(it, emptyList())
-    } }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -47,7 +44,7 @@ class LoadViewModelTest {
     fun loadCompleteNotEmptyData() {
         // Repository return not empty list of products
         `when`(repository.products())
-            .thenReturn(MutableLiveData(products))
+            .thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
         var result = false
         viewModel.loadComplete().observeForever { result = it }
         assertTrue(result)
