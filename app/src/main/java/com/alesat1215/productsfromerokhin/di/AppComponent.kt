@@ -18,6 +18,7 @@ import javax.inject.Singleton
     StartModule::class,
     MenuModule::class,
     CartModule::class,
+    ProfileModule::class,
     RepositoryModule::class
 ])
 interface AppComponent : AndroidInjector<App> {
