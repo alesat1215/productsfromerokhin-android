@@ -21,7 +21,7 @@ class ProductsDatabaseTest2 {
     private lateinit var db: ProductsDatabase
     private val data by lazy { remoteDataMockAndroidTest() }
     private val products by lazy { data.products().map {
-        Product(it, listOf(ProductInCart(name = it.name)))
+        Product(it, emptyList())
     } }
 
     @get:Rule
