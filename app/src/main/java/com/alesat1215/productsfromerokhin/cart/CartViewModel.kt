@@ -14,7 +14,7 @@ class CartViewModel @Inject constructor(
     fun products() = repository.productsInCart
     /** Sum for order */
     fun totalInCart() = Transformations.map(products()) {
-        it.map { it.totalInCart() }.sum()
+        it.map { it.priceSumInCart() }.sum()
     }
     /** Text for message */
     fun order() = Transformations.map(products()) {

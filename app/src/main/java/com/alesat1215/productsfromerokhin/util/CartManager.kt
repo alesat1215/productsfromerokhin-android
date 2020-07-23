@@ -13,7 +13,7 @@ abstract class CartManager: ViewModel() {
 
     fun addProductToCart(product: Product) {
         viewModelScope.launch {
-            repository.addProductToCart(product.productInCart())
+            repository.addProductToCart(product.asProductInCart())
             Log.d("Menu", "Add to cart: ${product.productDB?.name}")
         }
     }

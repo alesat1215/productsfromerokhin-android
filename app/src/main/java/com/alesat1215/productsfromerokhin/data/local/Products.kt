@@ -12,12 +12,12 @@ data class Product(
     val inCart: List<ProductInCart>
 ) {
     /** @return [ProductInCart] from [ProductDB] */
-    fun productInCart() = ProductInCart(name = productDB?.name)
+    fun asProductInCart() = ProductInCart(name = productDB?.name)
     /** @return total sum of price for products in cart */
-    fun totalInCart() = (productDB?.price ?: 0) * inCart.count()
+    fun priceSumInCart() = (productDB?.price ?: 0) * inCart.count()
     /** @return text for order with: name | price * count = sum | */
     fun textForOrder() =
-        "${productDB?.name.orEmpty()} | ${productDB?.price ?: 0} * ${inCart.count()} = ${totalInCart()} |"
+        "${productDB?.name.orEmpty()} | ${productDB?.price ?: 0} * ${inCart.count()} = ${priceSumInCart()} |"
 }
 
 /** Model for [ProductDB] */
