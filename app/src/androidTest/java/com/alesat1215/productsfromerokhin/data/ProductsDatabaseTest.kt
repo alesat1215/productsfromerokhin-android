@@ -55,4 +55,22 @@ class ProductsDatabaseTest2 {
         assertEquals(titles?.productsTitle, RemoteDataMockAndroidTest.data.productsTitle)
         assertEquals(titles?.productsTitle2, RemoteDataMockAndroidTest.data.productsTitle2)
     }
+
+    @Test
+    fun insertDeleteClearCart() {
+        var products = listOf<Product>()
+        // Insert
+        dao.products().observeForever { products = it }
+        dao.update(RemoteDataMockAndroidTest.data)
+        assertTrue(products.isNotEmpty())
+        products.forEach { assertTrue(it.inCart.isEmpty()) }
+        RemoteDataMockAndroidTest.productsForCart.forEach { dao.insertProductInCart(it) }
+        products.forEach { assertTrue(it.inCart.isNotEmpty()) }
+        // Delete
+        dao.deleteProductFromCart(products.first().inCart.first())
+        assertTrue(products.first().inCart.isEmpty())
+        // Clear
+        dao.clearCart()
+        products.forEach { assertTrue(it.inCart.isEmpty()) }
+    }
 }

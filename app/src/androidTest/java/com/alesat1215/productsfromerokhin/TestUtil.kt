@@ -56,4 +56,6 @@ object RemoteDataMockAndroidTest {
     val productsEmptyCart by lazy { data.products().map {
         Product(it, emptyList())
     } }
+
+    val productsForCart by lazy { productsEmptyCart.map { it.asProductInCart() } }
 }
