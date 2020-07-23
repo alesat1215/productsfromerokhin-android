@@ -30,11 +30,11 @@ interface ProductsDao {
     @Insert(entity = Titles::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertTitles(titles: Titles)
     @Insert(entity = ProductInCart::class, onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProductInCart(product: ProductInCart)
+    fun insertProductInCart(product: ProductInCart)
     @Delete
-    suspend fun deleteProductFromCart(product: ProductInCart)
+    fun deleteProductFromCart(product: ProductInCart)
     @Query("DELETE FROM productincart")
-    suspend fun clearCart()
+    fun clearCart()
 
     /** Clear products, groups & titles */
     @Transaction
