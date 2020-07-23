@@ -30,6 +30,8 @@ interface IProductsRepository {
     suspend fun clearCart()
     /** Get delivery info */
     val profile: LiveData<Profile>
+    /** Update profile data in db */
+    suspend fun updateProfile(profile: Profile)
 }
 
 /** Repository for products, groups & titles.
@@ -55,6 +57,10 @@ class ProductsRepository @Inject constructor(
     override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
     /** @return LiveData with delivery info from Room only once */
     override val profile by lazy { db.productsDao().profile() }
+
+    override suspend fun updateProfile(profile: Profile) = withContext(Dispatchers.IO) {
+        db.productsDao().updateProfile(profile)
+    }
 
     /** Get products & update Room from remote database if needed */
     override fun products(): LiveData<List<Product>> {
