@@ -10,14 +10,14 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import org.junit.Test
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.runBlocking
 
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -31,6 +31,8 @@ class ProductsRepositoryTest {
     private lateinit var db: ProductsDatabase
     @Mock
     private lateinit var dbFBFetchLimit: RateLimiter
+
+    private var productInCart = false
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -61,5 +63,17 @@ class ProductsRepositoryTest {
         assertEquals(productsInCart, RemoteDataMockTest.productsNotEmptyCart)
         assertEquals(groups, RemoteDataMockTest.data.groups())
         assertEquals(titles, RemoteDataMockTest.data.titles())
+    }
+
+    @Test
+    fun cart() = runBlocking {
+        val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
+        val product = ProductInCart()
+        repo.addProductToCart(product)
+        verify(db.productsDao()).insertProductInCart(product)
+        repo.delProductFromCart(product)
+        verify(db.productsDao()).deleteProductFromCart(product)
+        repo.clearCart()
+        verify(db.productsDao()).clearCart()
     }
 }
