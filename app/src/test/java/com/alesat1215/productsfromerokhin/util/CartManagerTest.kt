@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.util
 
+import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.local.Product
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +49,10 @@ class CartManagerTest {
     }
 
     @Test
-    fun delProductFromCart() {
+    fun delProductFromCart() = runBlocking {
+        val product = RemoteDataMockTest.productsNotEmptyCart.first()
+        `when`(repository.delProductFromCart(product.asProductInCart())).thenReturn(Unit)
+        cartManager.delProductFromCart(product)
+        verify(repository).delProductFromCart(product.inCart.first())
     }
 }
