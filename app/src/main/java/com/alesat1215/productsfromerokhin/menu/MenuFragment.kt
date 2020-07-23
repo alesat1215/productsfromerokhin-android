@@ -119,8 +119,8 @@ class MenuFragment : DaggerFragment() {
         })
     }
 
-    private fun selectGroup(group: TabLayout.Tab?, groups: TabLayout) {
-        groups.post {
+    private fun selectGroup(group: TabLayout.Tab?, groups: TabLayout?) {
+        groups?.post {
             // Disable scrolling in tab select listener
             tabSelected = false
             group?.select()
