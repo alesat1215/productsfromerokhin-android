@@ -20,6 +20,10 @@ class CartViewModel @Inject constructor(
     fun order() = Transformations.map(products()) {
         it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
     }
+    /** Delivery info for message */
+    fun delivery() = Transformations.map(repository.profile) {
+        "${System.lineSeparator()}${System.lineSeparator()}${it.name}${System.lineSeparator()}${it.phone}${System.lineSeparator()}${it.address}"
+    }
 
     fun clearCart() {
         viewModelScope.launch { repository.clearCart() }

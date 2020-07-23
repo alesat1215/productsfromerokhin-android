@@ -160,30 +160,36 @@ class CartFragment : DaggerFragment() {
     private fun selectMessenger() {
         val order = viewModel.order()
         val total = viewModel.totalInCart()
+        val delivery = viewModel.delivery()
         // Get text for order
         order.observe(viewLifecycleOwner, Observer { orderText ->
             // Unsubscribe from events
             order.removeObservers(viewLifecycleOwner)
             // Get text for total
-            total.observe(viewLifecycleOwner, Observer {
+            total.observe(viewLifecycleOwner, Observer { sum ->
                 // Unsubscribe from events
                 total.removeObservers(viewLifecycleOwner)
-                // Create text for message
-                val message = "$orderText${getString(R.string.total)} $it ${getString(R.string.rub)}"
-                // Create intent
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, message)
-                    type = "text/plain"
-                }
-                // Show chooser
-                val chooser: Intent = Intent.createChooser(intent, "")
-                activity?.packageManager?.also {
-                    intent.resolveActivity(it)?.also {
-                        startActivityForResult(chooser, CHOOSER_REQUEST)
-                        Log.d("Cart", "Select messenger")
+                // Get delivery info
+                delivery.observe(viewLifecycleOwner, Observer {
+                    // Unsubscribe from events
+                    delivery.removeObservers(viewLifecycleOwner)
+                    // Create text for message
+                    val message = "$orderText${getString(R.string.total)} $sum ${getString(R.string.rub)}$it"
+                    // Create intent
+                    val intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, message)
+                        type = "text/plain"
                     }
-                }
+                    // Show chooser
+                    val chooser: Intent = Intent.createChooser(intent, "")
+                    activity?.packageManager?.also {
+                        intent.resolveActivity(it)?.also {
+                            startActivityForResult(chooser, CHOOSER_REQUEST)
+                            Log.d("Cart", "Select messenger")
+                        }
+                    }
+                })
             })
         })
     }
