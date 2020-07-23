@@ -2,9 +2,9 @@ package com.alesat1215.productsfromerokhin.start
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.local.Product
-import com.alesat1215.productsfromerokhin.remoteDataMockTest
 import org.junit.Before
 import org.junit.Test
 
@@ -20,18 +20,14 @@ class StartViewModelTest {
     @Mock
     private lateinit var repository: ProductsRepository
     private lateinit var viewModel: StartViewModel
-    private val data by lazy { remoteDataMockTest() }
-    private val products by lazy { data.products().map {
-        Product(it, emptyList())
-    } }
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-        `when`(repository.titles()).thenReturn(MutableLiveData(data.titles()))
-        `when`(repository.products()).thenReturn(MutableLiveData(products))
+        `when`(repository.titles()).thenReturn(MutableLiveData(RemoteDataMockTest.data.titles()))
+        `when`(repository.products()).thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
         viewModel = StartViewModel(repository)
     }
 
@@ -39,24 +35,24 @@ class StartViewModelTest {
     fun title() {
         var title: String? = null
         viewModel.title(StartTitle.TITLE).observeForever { title = it }
-        assertEquals(title, data.title)
+        assertEquals(title, RemoteDataMockTest.data.title)
         viewModel.title(StartTitle.IMG).observeForever { title = it }
-        assertEquals(title, data.img)
+        assertEquals(title, RemoteDataMockTest.data.img)
         viewModel.title(StartTitle.IMGTITLE).observeForever { title = it }
-        assertEquals(title, data.imgTitle)
+        assertEquals(title, RemoteDataMockTest.data.imgTitle)
         viewModel.title(StartTitle.PRODUCTS).observeForever { title = it }
-        assertEquals(title, data.productsTitle)
+        assertEquals(title, RemoteDataMockTest.data.productsTitle)
         viewModel.title(StartTitle.PRODUCTS2).observeForever { title = it }
-        assertEquals(title, data.productsTitle2)
+        assertEquals(title, RemoteDataMockTest.data.productsTitle2)
     }
 
     @Test
     fun products() {
         var products = listOf<Product>()
         viewModel.products().observeForever { products = it }
-        assertEquals(products, this.products)
+        assertEquals(products, RemoteDataMockTest.productsNotEmptyCart)
         val predicate: (Product) -> Boolean = { it.productDB?.name == "product_1" }
         viewModel.products(predicate).observeForever { products = it }
-        assertEquals(products, this.products.filter(predicate))
+        assertEquals(products, RemoteDataMockTest.productsNotEmptyCart.filter(predicate))
     }
 }
