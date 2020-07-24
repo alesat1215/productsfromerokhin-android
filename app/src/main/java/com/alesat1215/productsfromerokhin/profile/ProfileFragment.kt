@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.alesat1215.productsfromerokhin.data.local.Profile
 import com.alesat1215.productsfromerokhin.databinding.FragmentProfileBinding
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -36,6 +35,7 @@ class ProfileFragment : DaggerFragment() {
             profile_phone.text.toString(),
             profile_address.text.toString()
         )
+        view?.clearFocus()
     }
 
 }
