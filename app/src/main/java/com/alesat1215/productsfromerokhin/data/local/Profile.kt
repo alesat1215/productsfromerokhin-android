@@ -15,6 +15,7 @@ data class Profile(
     val phone: String = "",
     val address: String = ""
 ) {
+    /** @return delivery info for message */
     fun delivery(): String {
         // Return empty string for empty profile
         if (name.isEmpty() and phone.isEmpty() and address.isEmpty()) return ""
