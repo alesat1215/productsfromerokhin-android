@@ -4,6 +4,7 @@ import com.alesat1215.productsfromerokhin.data.GroupRemote
 import com.alesat1215.productsfromerokhin.data.ProductRemote
 import com.alesat1215.productsfromerokhin.data.RemoteData
 import com.alesat1215.productsfromerokhin.data.local.Product
+import com.alesat1215.productsfromerokhin.data.local.Profile
 
 object RemoteDataMockAndroidTest {
     val data = RemoteData(
@@ -35,3 +36,5 @@ object RemoteDataMockAndroidTest {
 
     val productsForCart by lazy { productsEmptyCart.map { it.asProductInCart() } }
 }
+
+fun profileMockAndroidTest() = Profile(name = "name", phone = "phone", address = "address")
