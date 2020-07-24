@@ -49,6 +49,11 @@ class CartViewModelTest {
 
     @Test
     fun order() {
+        var order = ""
+        viewModel.order().observeForever { order = it }
+        RemoteDataMockTest.productsNotEmptyCart.forEach {
+            assertTrue(order.contains(it.textForOrder()))
+        }
     }
 
     @Test
