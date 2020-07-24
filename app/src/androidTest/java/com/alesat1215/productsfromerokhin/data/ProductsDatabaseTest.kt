@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
 import com.alesat1215.productsfromerokhin.data.local.*
+import com.alesat1215.productsfromerokhin.profileMockAndroidTest
 import org.junit.After
 import org.junit.Before
 
@@ -75,5 +76,16 @@ class ProductsDatabaseTest2 {
         // Clear
         dao.clearCart()
         products.forEach { assertTrue(it.inCart.isEmpty()) }
+    }
+
+    @Test
+    fun updateProfile() {
+        val profile = profileMockAndroidTest()
+        var result: Profile? = null
+        dao.profile().observeForever { result = it }
+        dao.updateProfile(profile)
+        assertEquals(result?.name, profile.name)
+        assertEquals(result?.phone, profile.phone)
+        assertEquals(result?.address, profile.address)
     }
 }
