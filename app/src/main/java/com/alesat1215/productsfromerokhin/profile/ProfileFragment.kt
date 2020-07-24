@@ -1,6 +1,7 @@
 package com.alesat1215.productsfromerokhin.profile
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -37,7 +38,10 @@ class ProfileFragment : DaggerFragment() {
             profile_phone.text.toString(),
             profile_address.text.toString()
         )
-        Toast.makeText(context, R.string.profile_saved, Toast.LENGTH_SHORT).show()
+        // Show alert in center about saving
+        Toast.makeText(context, R.string.profile_saved, Toast.LENGTH_SHORT).apply {
+            setGravity(Gravity.CENTER, 0, 0)
+        }.show()
     }
 
     override fun onStop() {
