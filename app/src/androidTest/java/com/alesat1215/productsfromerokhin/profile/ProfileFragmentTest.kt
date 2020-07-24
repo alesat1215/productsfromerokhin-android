@@ -3,8 +3,8 @@ package com.alesat1215.productsfromerokhin.profile
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.alesat1215.productsfromerokhin.R
 import org.junit.Before
 import org.junit.Test
@@ -20,15 +20,13 @@ class ProfileFragmentTest {
 
     @Test
     fun checkViews() {
-        onView(ViewMatchers.withId(R.id.profile_name))
+        onView(withId(R.id.profile_name))
             .check(matches(isDisplayed()))
-        onView(ViewMatchers.withId(R.id.profile_phone))
+        onView(withId(R.id.profile_phone))
             .check(matches(isDisplayed()))
-        onView(ViewMatchers.withId(R.id.profile_address))
+        onView(withId(R.id.profile_address))
             .check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun save() {
+        onView(withId(R.id.save))
+            .check(matches(isDisplayed()))
     }
 }
