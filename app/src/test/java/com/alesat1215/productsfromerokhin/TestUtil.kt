@@ -20,8 +20,8 @@ object RemoteDataMockTest {
         )
     )
 
-    fun products123Test() = listOf(ProductRemote("product_1"), ProductRemote("product_2"), ProductRemote("product_3"))
-    fun products456Test() = listOf(ProductRemote("product_4"), ProductRemote("product_5"), ProductRemote("product_6"))
+    fun products123Test() = listOf(ProductRemote("product_1", price = 1), ProductRemote("product_2", price = 1), ProductRemote("product_3", price = 1))
+    fun products456Test() = listOf(ProductRemote("product_4", price = 1), ProductRemote("product_5", price = 1), ProductRemote("product_6", price = 1))
 
     val productsNotEmptyCart by lazy { data.products().map { Product(it, listOf(ProductInCart(name = it.name))) } }
 }
