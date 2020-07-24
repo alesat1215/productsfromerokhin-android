@@ -1,9 +1,13 @@
 package com.alesat1215.productsfromerokhin.profile
 
+import android.content.Context
+import android.inputmethodservice.InputMethodService
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -42,12 +46,22 @@ class ProfileFragment : DaggerFragment() {
         Toast.makeText(context, R.string.profile_saved, Toast.LENGTH_SHORT).apply {
             setGravity(Gravity.CENTER, 0, 0)
         }.show()
+
+        hideKeyboard()
     }
 
     override fun onStop() {
         super.onStop()
         // For hide keyboard when navigate to destination
-        view?.clearFocus()
+        hideKeyboard()
+    }
+
+    private fun hideKeyboard() {
+        view?.also {
+            (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
+                ?.hideSoftInputFromWindow(it.windowToken, 0)
+            Log.d("Profile", "Hide keyboard")
+        }
     }
 
 }
