@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/confirm_cart"
+            app:layout_constraintBottom_toTopOf="@+id/send_cart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -61,7 +61,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/confirm_cart"
+            android:id="@+id/send_cart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
