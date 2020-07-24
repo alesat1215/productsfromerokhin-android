@@ -22,7 +22,15 @@ class CartViewModel @Inject constructor(
     }
     /** Delivery info for message */
     fun delivery() = Transformations.map(repository.profile) {
-        "${System.lineSeparator()}${System.lineSeparator()}${it.name}${System.lineSeparator()}${it.phone}${System.lineSeparator()}${it.address}"
+        // Return empty string for empty profile
+        if (it.name.isEmpty() and it.phone.isEmpty() and it.address.isEmpty()) return@map ""
+        // Build delivery info from not empty profile
+        val separator = System.lineSeparator()
+        var result = ""
+        result += separator + separator + it.name
+        result += (if (result.last().toString() != separator && it.phone.isNotEmpty()) separator else "") + it.phone
+        result += (if (result.last().toString() != separator && it.address.isNotEmpty()) separator else "") + it.address
+        result
     }
 
     fun clearCart() {
