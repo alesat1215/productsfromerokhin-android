@@ -21,17 +21,7 @@ class CartViewModel @Inject constructor(
         it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
     }
     /** Delivery info for message */
-    fun delivery() = Transformations.map(repository.profile) {
-        // Return empty string for empty profile
-        if (it.name.isEmpty() and it.phone.isEmpty() and it.address.isEmpty()) return@map ""
-        // Build delivery info from not empty profile
-        val separator = System.lineSeparator()
-        var result = ""
-        result += separator + separator + it.name
-        result += (if (result.last().toString() != separator && it.phone.isNotEmpty()) separator else "") + it.phone
-        result += (if (result.last().toString() != separator && it.address.isNotEmpty()) separator else "") + it.address
-        result
-    }
+    fun delivery() = Transformations.map(repository.profile) { it.delivery() }
 
     fun clearCart() {
         viewModelScope.launch { repository.clearCart() }

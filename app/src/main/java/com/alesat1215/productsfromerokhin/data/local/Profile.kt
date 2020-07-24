@@ -14,4 +14,16 @@ data class Profile(
     val name: String = "",
     val phone: String = "",
     val address: String = ""
-)
+) {
+    fun delivery(): String {
+        // Return empty string for empty profile
+        if (name.isEmpty() and phone.isEmpty() and address.isEmpty()) return ""
+        // Build delivery info from not empty profile
+        val separator = System.lineSeparator()
+        var result = ""
+        result += separator + separator + name
+        result += (if (result.last().toString() != separator && phone.isNotEmpty()) separator else "") + phone
+        result += (if (result.last().toString() != separator && address.isNotEmpty()) separator else "") + address
+        return result
+    }
+}
