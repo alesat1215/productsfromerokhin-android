@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.alesat1215.productsfromerokhin.data.IRemoteData
+import com.alesat1215.productsfromerokhin.data.Instruction
 
 @Dao
 interface ProductsDao {
@@ -63,9 +64,17 @@ interface ProductsDao {
         clearProfile()
         insertProfile(profile)
     }
+
+    // Tutorial
+    @Query("SELECT * FROM instruction")
+    fun instructions(): LiveData<List<Instruction>>
+    @Insert(entity = Instruction::class, onConflict = OnConflictStrategy.REPLACE)
+    fun insertInstructions(instructions: List<Instruction>)
+    @Query("DELETE FROM instruction")
+    fun clearInstructions()
 }
 
-@Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class, Profile::class], version = 1, exportSchema = false)
+@Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class, Profile::class, Instruction::class], version = 1, exportSchema = false)
 abstract class ProductsDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
 }
