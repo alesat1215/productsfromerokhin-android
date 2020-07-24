@@ -10,9 +10,9 @@ interface RemoteConfigRepository {
     fun fetchAndActivate(onSuccess: () -> Unit) {
         remoteConfig.fetchAndActivate().addOnCompleteListener {
             if (it.isSuccessful) {
-                Log.d("Tutorial", "Remote config fetched: ${it.result}")
+                Log.d("Remote config", "Remote config fetched: ${it.result}")
                 onSuccess()
-            } else Log.d("Tutorial", "Fetch remote config failed")
+            } else Log.d("Remote config", "Fetch remote config failed")
         }
     }
 }

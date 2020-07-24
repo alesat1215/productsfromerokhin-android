@@ -37,24 +37,20 @@ class TutorialRepository @Inject constructor(
         updateDB()
         return instructions
     }
-
+    /** Update Room from remote config if needed */
     private fun updateDB() {
+        // Return if limit is over
         if (!dbUpdateLimiter.shouldFetch()) return
+        // Fetch data from remote config
         fetchAndActivate {
+            // Update data in Room
             GlobalScope.launch(Dispatchers.IO) {
+                // Get instructions from JSON
                 val remoteInstructions = gson.fromJson(remoteConfig.getString(INSTRUCTIONS_KEY), Array<Instruction>::class.java).asList()
                 Log.d("Tutorial", "Fetch instructions from remote config: ${remoteInstructions.count()}")
+                // Update Room
                 db.productsDao().updateInstructions(remoteInstructions)
             }
         }
     }
-
-//    private fun fetchAndActivate(onSuccess: () -> Unit) {
-//        remoteConfig.fetchAndActivate().addOnCompleteListener {
-//            if (it.isSuccessful) {
-//                Log.d("Tutorial", "Remote config fetched: ${it.result}")
-//                onSuccess()
-//            } else Log.d("Tutorial", "Fetch remote config failed")
-//        }
-//    }
 }
