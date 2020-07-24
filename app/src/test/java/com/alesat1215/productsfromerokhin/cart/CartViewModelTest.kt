@@ -13,7 +13,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -43,6 +42,9 @@ class CartViewModelTest {
 
     @Test
     fun totalInCart() {
+        var total = 0
+        viewModel.totalInCart().observeForever { total = it }
+        assertEquals(total, RemoteDataMockTest.sumInProductsNotEmptyCart)
     }
 
     @Test
