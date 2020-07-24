@@ -19,7 +19,7 @@
         android:contentDescription="@string/profile"
         android:title="@string/profile" />
     <item
-        android:id="@+id/more"
+        android:id="@+id/tutorialFragment"
         android:contentDescription="@string/more"
         android:title="@string/more" />
 </menu>
