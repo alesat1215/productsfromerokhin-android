@@ -3,8 +3,10 @@ package com.alesat1215.productsfromerokhin.profile
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.databinding.FragmentProfileBinding
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -35,6 +37,7 @@ class ProfileFragment : DaggerFragment() {
             profile_phone.text.toString(),
             profile_address.text.toString()
         )
+        Toast.makeText(context, R.string.profile_saved, Toast.LENGTH_SHORT).show()
     }
 
     override fun onStop() {
