@@ -33,6 +33,11 @@ class MainActivityTest {
         // Navigate to start
         onView(withContentDescription(R.string.start)).perform(click())
         onView(withId(R.id.startFragment)).check(matches(isDisplayed()))
-
+        // Navigate to cart
+        onView(withContentDescription(R.string.cart)).perform(click())
+        onView(withId(R.id.cartFragment)).check(matches(isDisplayed()))
+        // Navigate to profile
+        onView(withContentDescription(R.string.profile)).perform(click())
+        onView(withId(R.id.profileFragment)).check(matches(isDisplayed()))
     }
 }
