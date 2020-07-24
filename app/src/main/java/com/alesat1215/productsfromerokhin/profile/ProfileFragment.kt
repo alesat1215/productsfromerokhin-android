@@ -35,6 +35,11 @@ class ProfileFragment : DaggerFragment() {
             profile_phone.text.toString(),
             profile_address.text.toString()
         )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // For hide keyboard when navigate to destination
         view?.clearFocus()
     }
 
