@@ -20,10 +20,11 @@ object RemoteDataMockTest {
         )
     )
 
-    fun products123Test() = listOf(ProductRemote("product_1", price = 1), ProductRemote("product_2", price = 1), ProductRemote("product_3", price = 1))
-    fun products456Test() = listOf(ProductRemote("product_4", price = 1), ProductRemote("product_5", price = 1), ProductRemote("product_6", price = 1))
+    fun products123Test() = listOf(ProductRemote("product_1", price = 1), ProductRemote("product_2", price = 2), ProductRemote("product_3", price = 3))
+    fun products456Test() = listOf(ProductRemote("product_4", price = 4), ProductRemote("product_5", price = 5), ProductRemote("product_6", price = 6))
 
     val productsNotEmptyCart by lazy { data.products().map { Product(it, listOf(ProductInCart(name = it.name))) } }
+    val sumInProductsNotEmptyCart by lazy { productsNotEmptyCart.map { it.priceSumInCart() }.sum() }
 }
 
 fun profileMockTest() = Profile(name = "name", phone = "phone", address = "address")
