@@ -6,6 +6,8 @@ import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.TimeUnit
@@ -37,4 +39,12 @@ object AppModule {
     @DBfb
     @Provides
     fun limiter() = RateLimiter(1, TimeUnit.MINUTES)
+
+    @Singleton
+    @Provides
+    fun remoteConfig() = FirebaseRemoteConfig.getInstance()
+
+    @Singleton
+    @Provides
+    fun gson() = GsonBuilder().create()
 }
