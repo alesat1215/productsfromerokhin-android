@@ -1,7 +1,6 @@
 package com.alesat1215.productsfromerokhin.profile
 
 import android.content.Context
-import android.inputmethodservice.InputMethodService
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
