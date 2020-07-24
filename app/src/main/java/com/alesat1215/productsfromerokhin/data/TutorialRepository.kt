@@ -28,6 +28,8 @@ class TutorialRepository @Inject constructor(
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
+    /** Key for instructions in remote config */
+    private val INSTRUCTIONS_KEY = "instructions"
     /** Get instructions from Room only once */
     private val instructions by lazy { db.productsDao().instructions() }
 
@@ -40,7 +42,7 @@ class TutorialRepository @Inject constructor(
         if (!dbUpdateLimiter.shouldFetch()) return
         fetchAndActivate {
             GlobalScope.launch(Dispatchers.IO) {
-                val remoteInstructions = gson.fromJson(remoteConfig.getString("instructions"), Array<Instruction>::class.java).asList()
+                val remoteInstructions = gson.fromJson(remoteConfig.getString(INSTRUCTIONS_KEY), Array<Instruction>::class.java).asList()
                 Log.d("Tutorial", "Fetch instructions from remote config: ${remoteInstructions.count()}")
                 db.productsDao().updateInstructions(remoteInstructions)
             }
