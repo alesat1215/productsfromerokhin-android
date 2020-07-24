@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.local.*
+import com.alesat1215.productsfromerokhin.profileMockTest
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -46,6 +47,7 @@ class ProductsRepositoryTest {
         `when`(db.productsDao().products()).thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
         `when`(db.productsDao().groups()).thenReturn(MutableLiveData(RemoteDataMockTest.data.groups()))
         `when`(db.productsDao().titles()).thenReturn(MutableLiveData(RemoteDataMockTest.data.titles()))
+        `when`(db.productsDao().profile()).thenReturn(MutableLiveData(profileMockTest()))
     }
 
     @Test
@@ -75,5 +77,17 @@ class ProductsRepositoryTest {
         verify(db.productsDao()).deleteProductFromCart(product)
         repo.clearCart()
         verify(db.productsDao()).clearCart()
+    }
+
+    @Test
+    fun profile() = runBlocking {
+        val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
+        // Get profile
+        var profile: Profile? = null
+        repo.profile.observeForever { profile = it }
+        assertEquals(profile, profileMockTest())
+        // Update profile
+        repo.updateProfile(profile!!)
+        verify(db.productsDao()).updateProfile(profile!!)
     }
 }
