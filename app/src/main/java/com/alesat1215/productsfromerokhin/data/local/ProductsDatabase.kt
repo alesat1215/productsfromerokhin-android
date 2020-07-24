@@ -72,6 +72,11 @@ interface ProductsDao {
     fun insertInstructions(instructions: List<Instruction>)
     @Query("DELETE FROM instruction")
     fun clearInstructions()
+    @Transaction
+    fun updateInstructions(instructions: List<Instruction>) {
+        clearInstructions()
+        insertInstructions(instructions)
+    }
 }
 
 @Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class, Profile::class, Instruction::class], version = 1, exportSchema = false)
