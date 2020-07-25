@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.load
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.alesat1215.productsfromerokhin.R
+import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -38,16 +40,32 @@ class LoadFragment : DaggerFragment() {
     private fun setupLoadingAnimation() {
         // Hide BottomNavigationView
         activity?.nav_view?.visibility = View.GONE
-        // Subscribe to trigger of data loading
-        viewModel.loadComplete().observe(viewLifecycleOwner, Observer {
-            if (it) {
-                // For non empty data navigate to destination
-                findNavController().navigate(R.id.action_loadFragment_to_startFragment)
-                // Show BottomNavigationView
-                activity?.nav_view?.visibility = View.VISIBLE
-                Log.d("Load", "Load complete")
-            }
-        })
+
+        if (tutorialIsRead()) {
+            // Subscribe to trigger of data loading
+            viewModel.loadCompleteProducts().observe(viewLifecycleOwner, Observer {
+                if (it) {
+                    // For non empty data navigate to destination
+                    findNavController().navigate(R.id.action_loadFragment_to_startFragment)
+                    // Show BottomNavigationView
+                    activity?.nav_view?.visibility = View.VISIBLE
+                    Log.d("Load", "Load products complete")
+                }
+            })
+        } else {
+            viewModel.loadCompleteTutorial().observe(viewLifecycleOwner, Observer {
+                if (it) {
+                    findNavController().navigate(R.id.action_loadFragment_to_tutorialFragment)
+                    Log.d("Load", "Load tutorial complete")
+                }
+            })
+        }
     }
+
+    private fun tutorialIsRead() =
+        (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, MODE_PRIVATE)
+            ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
+            Log.d("Load", "Tutorial is read: $it")
+        }
 
 }
