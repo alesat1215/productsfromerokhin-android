@@ -24,7 +24,7 @@ class TutorialRepository @Inject constructor(
     /** Room database */
     private val db: ProductsDatabase,
     /** Limiting the frequency of update database */
-    @DBfb private val dbUpdateLimiter: RateLimiter,
+    @DBfb override val limiter: RateLimiter,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
@@ -40,7 +40,7 @@ class TutorialRepository @Inject constructor(
     /** Update Room from remote config if needed */
     private fun updateDB() {
         // Return if limit is over
-        if (!dbUpdateLimiter.shouldFetch()) return
+        if (!limiter.shouldFetch()) return
         // Fetch data from remote config
         fetchAndActivate {
             // Update data in Room
