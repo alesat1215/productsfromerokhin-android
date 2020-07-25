@@ -37,7 +37,6 @@ class TutorialFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         pager_tutorial.adapter = ViewPagerAdapter<Instruction>(this) { InstructionFragment() }
         setDataToPagerAdapter()
     }
@@ -64,8 +63,11 @@ class InstructionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.takeIf { it.containsKey(ViewPagerAdapter.ARGUMENT_KEY) }?.apply {
-            text_instruction.text = getParcelable<Instruction>(ViewPagerAdapter.ARGUMENT_KEY)?.text
+        arguments?.takeIf { it.containsKey(ViewPagerAdapter.ITEM) }?.apply {
+            text_instruction.text = getParcelable<Instruction>(ViewPagerAdapter.ITEM)?.text
+        }
+        arguments?.takeIf { it.containsKey(ViewPagerAdapter.IS_LAST) }?.apply {
+            Log.d("Tutorial", "Is last: ${getBoolean(ViewPagerAdapter.IS_LAST)}")
         }
     }
 }
