@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.alesat1215.productsfromerokhin.MainActivity
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.util.ViewPagerAdapter
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_instruction.*
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 import javax.inject.Inject
@@ -63,6 +66,8 @@ class InstructionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         arguments?.takeIf { it.containsKey(ViewPagerAdapter.ITEM) }?.apply {
             text_instruction.text = getParcelable<Instruction>(ViewPagerAdapter.ITEM)?.text
         }
@@ -71,5 +76,20 @@ class InstructionFragment : Fragment() {
             Log.d("Tutorial", "Last instruction: ${getBoolean(ViewPagerAdapter.IS_LAST)}")
             ok_instruction.visibility = if (isLast) View.VISIBLE else View.INVISIBLE
         }
+        ok_instruction.setOnClickListener {
+            findNavController().navigate(R.id.action_tutorialFragment_to_startFragment)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Hide BottomNavigationView
+        activity?.nav_view?.visibility = View.GONE
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Show BottomNavigationView
+        activity?.nav_view?.visibility = View.VISIBLE
     }
 }

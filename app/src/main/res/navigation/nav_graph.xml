@@ -40,5 +40,11 @@
         android:id="@+id/tutorialFragment"
         android:name="com.alesat1215.productsfromerokhin.tutorial.TutorialFragment"
         android:label="fragment_tutorial"
-        tools:layout="@layout/fragment_tutorial" />
+        tools:layout="@layout/fragment_tutorial" >
+        <action
+            android:id="@+id/action_tutorialFragment_to_startFragment"
+            app:destination="@id/startFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
