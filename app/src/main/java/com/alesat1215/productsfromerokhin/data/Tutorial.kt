@@ -1,17 +1,19 @@
 package com.alesat1215.productsfromerokhin.data
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Fts4
-import com.alesat1215.productsfromerokhin.data.local.GroupDB
+import kotlinx.android.parcel.Parcelize
 
 data class Tutorial(
     val instructions: List<Instruction> = emptyList()
 )
 
 /** Model for [Instruction] */
+@Parcelize
 @Fts4
 @Entity
 data class Instruction(
     val text: String = "",
     val img_path: String = ""
-)
+) : Parcelable
