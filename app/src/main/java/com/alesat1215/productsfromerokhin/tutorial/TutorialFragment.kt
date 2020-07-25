@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Instruction
+import com.alesat1215.productsfromerokhin.databinding.FragmentTutorialBinding
 import com.alesat1215.productsfromerokhin.util.ViewPagerAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 import javax.inject.Inject
@@ -28,16 +30,15 @@ class TutorialFragment : DaggerFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        pager_tutorial.adapter = ViewPagerAdapter<Instruction>(this) { InstructionFragment() }
+    ) = FragmentTutorialBinding.inflate(inflater, container, false).apply {
+        // Set adapter to pager
+        pagerTutorial.adapter = ViewPagerAdapter<Instruction>(this@TutorialFragment) { InstructionFragment() }
         setDataToPagerAdapter()
-    }
+        // Set tubs for pager
+        TabLayoutMediator(tabsTutorial, pagerTutorial) { tab, position ->
+            Log.d("Tutorial", "$position")
+        }.attach()
+    }.root
 
     private fun setDataToPagerAdapter() {
         viewModel.instructions().observe(viewLifecycleOwner, Observer {
