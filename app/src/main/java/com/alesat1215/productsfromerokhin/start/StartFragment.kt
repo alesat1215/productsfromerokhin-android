@@ -3,6 +3,7 @@ package com.alesat1215.productsfromerokhin.start
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -12,6 +13,7 @@ import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start.*
 import javax.inject.Inject
 
@@ -56,6 +58,8 @@ class StartFragment : DaggerFragment() {
         super.onResume()
 
         restoreScrollPosition()
+        // Show BottomNavigationView
+        activity?.nav_view?.visibility = View.VISIBLE
     }
 
     override fun onPause() {

@@ -13,7 +13,6 @@ import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.databinding.FragmentInstructionBinding
 import com.alesat1215.productsfromerokhin.util.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_instruction.*
 
 /**
  * [InstructionFragment] subclass of [Fragment].
@@ -54,13 +53,7 @@ class InstructionFragment : Fragment() {
         // Hide BottomNavigationView
         activity?.nav_view?.visibility = View.GONE
     }
-
-    override fun onStop() {
-        super.onStop()
-        // Show BottomNavigationView
-        activity?.nav_view?.visibility = View.VISIBLE
-    }
-
+    /** Keys for saving status for read tutorial */
     companion object {
         const val SHARED_PREFS = "com.alesat1215.productsfromerokhin"
         const val IS_READ = "IS_READ"

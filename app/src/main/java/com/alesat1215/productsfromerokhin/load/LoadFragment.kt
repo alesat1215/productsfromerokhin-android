@@ -42,26 +42,26 @@ class LoadFragment : DaggerFragment() {
         activity?.nav_view?.visibility = View.GONE
 
         if (tutorialIsRead()) {
-            // Subscribe to trigger of data loading
+            // Subscribe to trigger of products loading
             viewModel.loadCompleteProducts().observe(viewLifecycleOwner, Observer {
                 if (it) {
-                    // For non empty data navigate to destination
+                    // For non empty products navigate to destination
                     findNavController().navigate(R.id.action_loadFragment_to_startFragment)
-                    // Show BottomNavigationView
-                    activity?.nav_view?.visibility = View.VISIBLE
                     Log.d("Load", "Load products complete")
                 }
             })
         } else {
+            // Subscribe to trigger of tutorial loading
             viewModel.loadCompleteTutorial().observe(viewLifecycleOwner, Observer {
                 if (it) {
+                    // For non empty tutorials navigate to destination
                     findNavController().navigate(R.id.action_loadFragment_to_tutorialFragment)
                     Log.d("Load", "Load tutorial complete")
                 }
             })
         }
     }
-
+    /** Check tutorial read */
     private fun tutorialIsRead() =
         (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, MODE_PRIVATE)
             ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
