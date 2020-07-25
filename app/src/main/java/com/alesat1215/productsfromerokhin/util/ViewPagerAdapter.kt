@@ -20,9 +20,13 @@ class ViewPagerAdapter<T : Parcelable>(
     override fun getItemCount() = dataSet.count()
 
     override fun createFragment(position: Int) =
-        creator().apply { arguments = Bundle().apply { putParcelable(ARGUMENT_KEY, dataSet.getOrNull(position)) } }
+        creator().apply { arguments = Bundle().apply {
+            putParcelable(ITEM, dataSet.getOrNull(position))
+            putBoolean(IS_LAST, dataSet.isEmpty() || position == dataSet.count() - 1)
+        } }
 
     companion object {
-        const val ARGUMENT_KEY = "ARGUMENT_KEY"
+        const val ITEM = "ITEM"
+        const val IS_LAST = "IS_LAST"
     }
 }
