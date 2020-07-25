@@ -2,8 +2,9 @@
 <layout>
 
     <data>
-        <import type="androidx.navigation.Navigation"/>
-        <import type="com.alesat1215.productsfromerokhin.R"/>
+        <variable
+            name="fragment"
+            type="com.alesat1215.productsfromerokhin.tutorial.InstructionFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +34,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="@android:string/ok"
-            android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_tutorialFragment_to_startFragment)}"
+            android:onClick="@{() -> fragment.finishRead()}"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
