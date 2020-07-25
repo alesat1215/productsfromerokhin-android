@@ -67,7 +67,9 @@ class InstructionFragment : Fragment() {
             text_instruction.text = getParcelable<Instruction>(ViewPagerAdapter.ITEM)?.text
         }
         arguments?.takeIf { it.containsKey(ViewPagerAdapter.IS_LAST) }?.apply {
-            Log.d("Tutorial", "Is last: ${getBoolean(ViewPagerAdapter.IS_LAST)}")
+            val isLast = getBoolean(ViewPagerAdapter.IS_LAST)
+            Log.d("Tutorial", "Last instruction: ${getBoolean(ViewPagerAdapter.IS_LAST)}")
+            ok_instruction.visibility = if (isLast) View.VISIBLE else View.INVISIBLE
         }
     }
 }
