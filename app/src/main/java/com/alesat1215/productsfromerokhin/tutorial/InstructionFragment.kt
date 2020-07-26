@@ -27,7 +27,9 @@ class InstructionFragment : Fragment() {
         fragment = this@InstructionFragment
         // Set text
         arguments?.takeIf { it.containsKey(ViewPagerAdapter.ITEM) }?.apply {
-            textInstruction.text = getParcelable<Instruction>(ViewPagerAdapter.ITEM)?.text
+            val instruction = getParcelable<Instruction>(ViewPagerAdapter.ITEM)
+            titleInstruction.text = instruction?.title
+            textInstruction.text = instruction?.text
         }
         // Set OK button visibility
         arguments?.takeIf { it.containsKey(ViewPagerAdapter.IS_LAST) }?.apply {
