@@ -56,5 +56,9 @@
         android:id="@+id/moreFragment"
         android:name="com.alesat1215.productsfromerokhin.more.MoreFragment"
         android:label="fragment_more"
-        tools:layout="@layout/fragment_more" />
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_tutorialFragment"
+            app:destination="@id/tutorialFragment" />
+    </fragment>
 </navigation>
