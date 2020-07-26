@@ -12,12 +12,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 interface ITutorialRepository : RemoteConfigRepository {
     /** @return instructions for order */
     fun instructions(): LiveData<List<Instruction>>
 }
-
+@Singleton
 class TutorialRepository @Inject constructor(
     /** Firebase remote config */
     override val remoteConfig: FirebaseRemoteConfig,
@@ -28,8 +29,6 @@ class TutorialRepository @Inject constructor(
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
-    /** Key for instructions in remote config */
-    private val INSTRUCTIONS_KEY = "instructions"
     /** Get instructions from Room only once */
     private val instructions by lazy { db.productsDao().instructions() }
 
@@ -46,7 +45,7 @@ class TutorialRepository @Inject constructor(
             // Update data in Room
             GlobalScope.launch(Dispatchers.IO) {
                 // Get instructions from JSON
-                val remoteInstructions = gson.fromJson(remoteConfig.getString(INSTRUCTIONS_KEY), Array<Instruction>::class.java).asList()
+                val remoteInstructions = gson.fromJson(remoteConfig.getString(RemoteConfigRepository.INSTRUCTIONS), Array<Instruction>::class.java).asList()
                 Log.d("Tutorial", "Fetch instructions from remote config: ${remoteInstructions.count()}")
                 // Update Room
                 db.productsDao().updateInstructions(remoteInstructions)

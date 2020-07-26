@@ -19,4 +19,10 @@ interface RemoteConfigRepository {
             }
         }
     }
+    /** Parameters in Firebase remote config */
+    companion object {
+        const val TITLES = "titles"
+        const val PRODUCTS = "products"
+        const val INSTRUCTIONS = "instructions"
+    }
 }
