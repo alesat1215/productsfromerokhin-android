@@ -35,7 +35,7 @@ class TutorialFragment : DaggerFragment() {
         pagerTutorial.adapter = ViewPagerAdapter<Instruction>(this@TutorialFragment) { InstructionFragment() }
         setDataToPagerAdapter()
         // Set tubs for pager
-        TabLayoutMediator(tabsTutorial, pagerTutorial) { tab, position ->
+        TabLayoutMediator(tabsTutorial, pagerTutorial, true) { tab, position ->
             Log.d("Tutorial", "$position")
         }.attach()
     }.root

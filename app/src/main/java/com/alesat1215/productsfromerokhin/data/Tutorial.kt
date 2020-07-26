@@ -14,6 +14,7 @@ data class Tutorial(
 @Fts4
 @Entity
 data class Instruction(
+    val title: String = "",
     val text: String = "",
     val img_path: String = ""
 ) : Parcelable
