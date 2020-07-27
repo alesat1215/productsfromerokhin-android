@@ -7,19 +7,6 @@ import com.alesat1215.productsfromerokhin.data.Instruction
 
 @Dao
 interface ProductsDao {
-
-
-
-    /** Insert products, groups & titles */
-//    @Transaction
-//    fun update(data: IRemoteData) {
-//        insertTitles(data.titles())
-//        insertGroups(data.groups())
-//        insertProducts(data.products())
-//        Log.d("ProductsDao", "db is updated")
-//    }
-
-    // Products
     @Transaction
     @Query("SELECT * FROM productdb")
     fun products(): LiveData<List<Product>>
@@ -42,8 +29,10 @@ interface ProductsDao {
     fun clearProducts()
     @Query("DELETE FROM groupdb")
     fun clearGroups()
+}
 
-    // Titles
+@Dao
+interface TitlesDao {
     @Query("SELECT * FROM titles LIMIT 1")
     fun titles(): LiveData<Titles>
     /** Clear & insert titles */
@@ -57,25 +46,20 @@ interface ProductsDao {
     fun clearTitles()
     @Insert(entity = Titles::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertTitles(titles: Titles)
+}
 
-    // Cart
+@Dao
+interface CartDao {
     @Insert(entity = ProductInCart::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertProductInCart(product: ProductInCart)
     @Delete
     fun deleteProductFromCart(product: ProductInCart)
     @Query("DELETE FROM productincart")
     fun clearCart()
+}
 
-    /** Clear products, groups & titles */
-//    @Transaction
-//    fun clearBeforeUpdate() {
-//        clearProducts()
-//        clearGroups()
-//        clearTitles()
-//        Log.d("ProductsDao", "db is clear")
-//    }
-
-    // Profile
+@Dao
+interface ProfileDao {
     @Query("SELECT rowid, * FROM profile LIMIT 1")
     fun profile(): LiveData<Profile>
     /** Clear & insert profile */
@@ -89,8 +73,10 @@ interface ProductsDao {
     fun insertProfile(profile: Profile)
     @Query("DELETE FROM profile")
     fun clearProfile()
+}
 
-    // Tutorial
+@Dao
+interface InstructionsDao {
     @Query("SELECT * FROM instruction")
     fun instructions(): LiveData<List<Instruction>>
     /** Clear & insert instructions */
@@ -109,5 +95,9 @@ interface ProductsDao {
 @Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class, Profile::class, Instruction::class], version = 1, exportSchema = false)
 abstract class ProductsDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
+    abstract fun titlesDao(): TitlesDao
+    abstract fun cartDao(): CartDao
+    abstract fun profileDao(): ProfileDao
+    abstract fun instructionsDao(): InstructionsDao
 }
 
