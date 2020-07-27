@@ -1,18 +1,16 @@
 package com.alesat1215.productsfromerokhin.tutorial
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.databinding.FragmentTutorialBinding
 import com.alesat1215.productsfromerokhin.util.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 import javax.inject.Inject
@@ -36,13 +34,13 @@ class TutorialFragment : DaggerFragment() {
         setDataToPagerAdapter()
         // Set tubs for pager
         TabLayoutMediator(tabsTutorial, pagerTutorial, true) { tab, position ->
-            Log.d("Tutorial", "$position")
+            Logger.d("$position")
         }.attach()
     }.root
 
     private fun setDataToPagerAdapter() {
         viewModel.instructions().observe(viewLifecycleOwner, Observer {
-            Log.d("Tutorial", "${it}")
+            Logger.d("${it}")
             (pager_tutorial.adapter as? ViewPagerAdapter<Instruction>)?.apply {
                 setData(it)
             }

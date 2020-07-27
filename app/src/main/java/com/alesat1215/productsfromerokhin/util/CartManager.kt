@@ -1,10 +1,10 @@
 package com.alesat1215.productsfromerokhin.util
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
 import com.alesat1215.productsfromerokhin.data.local.Product
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.launch
 
 /** View model with add & del product from cart */
@@ -14,7 +14,7 @@ abstract class CartManager: ViewModel() {
     fun addProductToCart(product: Product) {
         viewModelScope.launch {
             repository.addProductToCart(product.asProductInCart())
-            Log.d("Menu", "Add to cart: ${product.productDB?.name}")
+            Logger.d("Add to cart: ${product.productDB?.name}")
         }
     }
 
@@ -22,7 +22,7 @@ abstract class CartManager: ViewModel() {
         viewModelScope.launch {
             product.inCart.firstOrNull()?.also {
                 repository.delProductFromCart(it)
-                Log.d("Menu", "Del from cart: ${it.name}")
+                Logger.d("Del from cart: ${it.name}")
             }
         }
     }

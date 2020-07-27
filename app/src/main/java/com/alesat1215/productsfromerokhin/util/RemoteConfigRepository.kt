@@ -1,7 +1,7 @@
 package com.alesat1215.productsfromerokhin.util
 
-import android.util.Log
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.orhanobut.logger.Logger
 
 /** Fetch Firebase remote config */
 interface RemoteConfigRepository {
@@ -11,10 +11,10 @@ interface RemoteConfigRepository {
     fun fetchAndActivate(onSuccess: () -> Unit) {
         remoteConfig.fetchAndActivate().addOnCompleteListener {
             if (it.isSuccessful) {
-                Log.d("Remote config", "Remote config fetched: ${it.result}")
+                Logger.d("Remote config fetched: ${it.result}")
                 onSuccess()
             } else {
-                Log.d("Remote config", "Fetch remote config failed")
+                Logger.d("Fetch remote config failed")
                 limiter?.reset()
             }
         }

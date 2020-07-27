@@ -1,7 +1,6 @@
 package com.alesat1215.productsfromerokhin
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -11,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.alesat1215.productsfromerokhin.cart.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -34,17 +34,16 @@ class MainActivity : DaggerAppCompatActivity() {
             if (it.isEmpty()) {
                 badge.isVisible = false
                 badge.clearNumber()
-                Log.d("Cart", "Clear cart badge")
+                Logger.d("Clear cart badge")
             } else {
                 badge.isVisible = true
                 badge.number = it.count()
-                Log.d("Cart", "Set cart badge: ${it.count()}")
+                Logger.d("Set cart badge: ${it.count()}")
             }
         })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        return super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.toollbar_menu, menu)
         return true
     }
@@ -52,7 +51,7 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.clearCart) {
             viewModel.clearCart()
-            Log.d("Cart", "Clear cart")
+            Logger.d("Clear cart")
             return true
         } else return super.onOptionsItemSelected(item)
     }

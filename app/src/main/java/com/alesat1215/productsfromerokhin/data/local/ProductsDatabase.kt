@@ -1,9 +1,9 @@
 package com.alesat1215.productsfromerokhin.data.local
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.alesat1215.productsfromerokhin.data.Instruction
+import com.orhanobut.logger.Logger
 
 @Dao
 interface ProductsDao {
@@ -19,7 +19,7 @@ interface ProductsDao {
         clearGroups()
         insertGroups(groups)
         insertProducts(products)
-        Log.d("Database", "Update products & groups")
+        Logger.d("Update products & groups")
     }
     @Insert(entity = ProductDB::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertProducts(products: List<ProductDB>)
@@ -40,7 +40,7 @@ interface TitlesDao {
     fun updateTitles(titles: Titles) {
         clearTitles()
         insertTitles(titles)
-        Log.d("Database", "Update titles")
+        Logger.d("Update titles")
     }
     @Query("DELETE FROM titles")
     fun clearTitles()
@@ -67,7 +67,7 @@ interface ProfileDao {
     fun updateProfile(profile: Profile) {
         clearProfile()
         insertProfile(profile)
-        Log.d("Database", "Update profile")
+        Logger.d("Update profile")
     }
     @Insert(entity = Profile::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertProfile(profile: Profile)
@@ -84,7 +84,7 @@ interface InstructionsDao {
     fun updateInstructions(instructions: List<Instruction>) {
         clearInstructions()
         insertInstructions(instructions)
-        Log.d("Database", "Update instructions")
+        Logger.d("Update instructions")
     }
     @Insert(entity = Instruction::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertInstructions(instructions: List<Instruction>)

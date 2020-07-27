@@ -2,7 +2,6 @@ package com.alesat1215.productsfromerokhin.profile
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.databinding.FragmentProfileBinding
+import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
@@ -59,7 +59,7 @@ class ProfileFragment : DaggerFragment() {
         view?.also {
             (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
                 ?.hideSoftInputFromWindow(it.windowToken, 0)
-            Log.d("Profile", "Hide keyboard")
+            Logger.d("Hide keyboard")
         }
     }
 

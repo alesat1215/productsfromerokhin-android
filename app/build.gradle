@@ -67,6 +67,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.4'
     // Utils
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.orhanobut:logger:2.2.0'
     // DI
     implementation 'com.google.dagger:dagger-android-support:2.28'
     kapt 'com.google.dagger:dagger-android-processor:2.28'
