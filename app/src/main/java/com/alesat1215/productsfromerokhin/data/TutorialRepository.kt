@@ -30,7 +30,7 @@ class TutorialRepository @Inject constructor(
     private val gson: Gson
 ) : ITutorialRepository {
     /** Get instructions from Room only once */
-    private val instructions by lazy { db.productsDao().instructions() }
+    private val instructions by lazy { db.instructionsDao().instructions() }
 
     override fun instructions(): LiveData<List<Instruction>> {
         updateDB()
@@ -48,7 +48,7 @@ class TutorialRepository @Inject constructor(
                 val remoteInstructions = gson.fromJson(remoteConfig.getString(RemoteConfigRepository.INSTRUCTIONS), Array<Instruction>::class.java).asList()
                 Log.d("Tutorial", "Fetch instructions from remote config: ${remoteInstructions.count()}")
                 // Update Room
-                db.productsDao().updateInstructions(remoteInstructions)
+                db.instructionsDao().updateInstructions(remoteInstructions)
             }
         }
     }

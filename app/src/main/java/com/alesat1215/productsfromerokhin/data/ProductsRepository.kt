@@ -56,14 +56,14 @@ class ProductsRepository @Inject constructor(
     /** @return LiveData with groups from Room only once */
     private val groups by lazy { db.productsDao().groups() }
     /** @return LiveData with titles from Room only once */
-    private val titles by lazy { db.productsDao().titles() }
+    private val titles by lazy { db.titlesDao().titles() }
     /** @return LiveData with products in cart from Room only once */
     override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
     /** @return LiveData with delivery info from Room only once */
-    override val profile by lazy { db.productsDao().profile() }
+    override val profile by lazy { db.profileDao().profile() }
 
     override suspend fun updateProfile(profile: Profile) = withContext(Dispatchers.IO) {
-        db.productsDao().updateProfile(profile)
+        db.profileDao().updateProfile(profile)
     }
 
     /** Get products & update Room from remote database if needed */
@@ -85,15 +85,15 @@ class ProductsRepository @Inject constructor(
     }
 
     override suspend fun addProductToCart(product: ProductInCart) = withContext(Dispatchers.IO) {
-        db.productsDao().insertProductInCart(product)
+        db.cartDao().insertProductInCart(product)
     }
 
     override suspend fun delProductFromCart(product: ProductInCart) = withContext(Dispatchers.IO) {
-        db.productsDao().deleteProductFromCart(product)
+        db.cartDao().deleteProductFromCart(product)
     }
 
     override suspend fun clearCart() = withContext(Dispatchers.IO) {
-        db.productsDao().clearCart()
+        db.cartDao().clearCart()
     }
 
     private fun updateDB() {
@@ -113,7 +113,7 @@ class ProductsRepository @Inject constructor(
                     remoteConfig.getString(RemoteConfigRepository.TITLES),
                     Titles::class.java
                 )
-                db.productsDao().insertTitles(titles)
+                db.titlesDao().insertTitles(titles)
             }
         }
     }
