@@ -113,7 +113,7 @@ class ProductsRepository @Inject constructor(
                     remoteConfig.getString(RemoteConfigRepository.TITLES),
                     Titles::class.java
                 )
-                db.titlesDao().insertTitles(titles)
+                db.titlesDao().updateTitles(titles)
             }
         }
     }
