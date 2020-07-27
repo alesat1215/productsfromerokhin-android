@@ -25,7 +25,7 @@ class TutorialRepository @Inject constructor(
     /** Room database */
     private val db: ProductsDatabase,
     /** Limiting the frequency of update database */
-    @DBfb override val limiter: RateLimiter,
+    override val limiter: RateLimiter,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
