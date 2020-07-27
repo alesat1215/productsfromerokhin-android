@@ -38,7 +38,16 @@ data class ProductDB(
 @Entity
 data class GroupDB(
     val name: String? = null
-)
+) {
+    @Ignore val products: List<ProductDB> = emptyList()
+
+    fun productsWithGroup(): List<ProductDB> {
+        products.forEach { it.group = name }
+        return products
+    }
+}
+
+fun products(groups: List<GroupDB>) = groups.map { it.productsWithGroup() }.flatten()
 
 /** Model for [ProductInCart] in cart */
 @Fts4

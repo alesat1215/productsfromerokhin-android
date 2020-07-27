@@ -3,7 +3,6 @@ package com.alesat1215.productsfromerokhin.data.local
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.alesat1215.productsfromerokhin.data.IRemoteData
 import com.alesat1215.productsfromerokhin.data.Instruction
 
 @Dao
@@ -17,12 +16,18 @@ interface ProductsDao {
     fun titles(): LiveData<Titles>
 
     /** Insert products, groups & titles */
+//    @Transaction
+//    fun update(data: IRemoteData) {
+//        insertTitles(data.titles())
+//        insertGroups(data.groups())
+//        insertProducts(data.products())
+//        Log.d("ProductsDao", "db is updated")
+//    }
     @Transaction
-    fun update(data: IRemoteData) {
-        insertTitles(data.titles())
-        insertGroups(data.groups())
-        insertProducts(data.products())
-        Log.d("ProductsDao", "db is updated")
+    fun updateProducts(groups: List<GroupDB>, products: List<ProductDB>) {
+        insertGroups(groups)
+        insertProducts(products)
+        Log.d("ProductsDao", "Update products")
     }
     @Insert(entity = ProductDB::class, onConflict = OnConflictStrategy.REPLACE)
     fun insertProducts(products: List<ProductDB>)

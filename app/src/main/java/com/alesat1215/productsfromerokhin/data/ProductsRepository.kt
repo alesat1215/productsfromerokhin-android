@@ -7,13 +7,16 @@ import androidx.room.withTransaction
 import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.di.AppModule.DBfb
 import com.alesat1215.productsfromerokhin.util.RateLimiter
+import com.alesat1215.productsfromerokhin.util.RemoteConfigRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.Gson
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface IProductsRepository {
+interface IProductsRepository : RemoteConfigRepository {
     /** Get products & update Room from remote database if needed */
     fun products(): LiveData<List<Product>>
     /** Get titles & update Room from remote database if needed */
@@ -39,13 +42,14 @@ interface IProductsRepository {
  * */
 @Singleton
 class ProductsRepository @Inject constructor(
-    private val authFB: FirebaseAuth,
-    /** Remote database */
-    private val dbFB: DatabaseReference,
+    /** Firebase remote config */
+    override val remoteConfig: FirebaseRemoteConfig,
     /** Room database */
     private val db: ProductsDatabase,
     /** Limiting the frequency of queries to remote database */
-    @DBfb private val dbFBFetchLimit: RateLimiter
+    override val limiter: RateLimiter,
+    /** For parse JSON from remote config */
+    private val gson: Gson
 ) : IProductsRepository {
     /** @return LiveData with products from Room only once */
     private val products by lazy { db.productsDao().products() }
@@ -92,77 +96,99 @@ class ProductsRepository @Inject constructor(
         db.productsDao().clearCart()
     }
 
-    /** Update Room from remote database if needed */
     private fun updateDB() {
         /** Return if limit is over */
-        if(!dbFBFetchLimit.shouldFetch()) return
-        /** Sign in to firebase */
-        signInFB {
-            /** Fetch data from remote database */
-            fetchFB {
-                /** Update data in Room */
-                if (it != null) {
-                    GlobalScope.launch(Dispatchers.IO) {
-                        db.withTransaction {
-                            db.productsDao().clearBeforeUpdate()
-                            db.productsDao().update(it)
-                        }
-                    }
-                } else Log.d("Firebase", "Remote data is null. db is NOT updated")
-            }
-        }
-    }
-
-    /** Sign in as anonymous to firebase & execute onSuccess function */
-    private fun signInFB(onSuccess: () -> Unit) {
-        /** If already sign in execute onSuccess */
-        if (authFB.currentUser != null) {
-            Log.d("Firebase", "Already sign in: ${authFB.currentUser}")
-            onSuccess()
-            return
-        }
-        /** Sign in as anonymous & execute onSuccess.
-         * Reset limiter if sign in failed
-         * */
-        authFB.signInAnonymously().addOnCompleteListener {
-            if (it.isSuccessful) {
-                Log.d("Firebase", "Sign in SUCCESS: ${authFB.currentUser}")
-                onSuccess()
-            } else {
-                dbFBFetchLimit.reset()
-                Log.d("Firebase", "Sign in FAILED: ${it.exception}")
-            }
-        }
-    }
-
-    /** Fetch data from remote database & execute onSuccess function */
-    private fun fetchFB(onSuccess: (IRemoteData?) -> Unit) {
-        /** Connect to remote database */
-        dbFB.database.goOnline()
-        dbFB.addListenerForSingleValueEvent(object : ValueEventListener {
-            /** Disconnect from remote database & reset limiter on error */
-            override fun onCancelled(error: DatabaseError) {
-                dbFBFetchLimit.reset()
-                dbFB.database.goOffline()
-                Log.d("Firebase", error.message)
-            }
-
-            /** Execute onSuccess function & disconnect from remote database */
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val data = snapshot.getValue(RemoteData::class.java)
-                Log.d("Firebase", "Get remote data with " +
-                        "title: ${data?.title}, " +
-                        "imageTitle: ${data?.imgTitle}, " +
-                        "productsTitle: ${data?.productsTitle}, " +
-                        "productsTitle2: ${data?.productsTitle2}, " +
-                        "group: ${data?.groups?.count()}, " +
-                        "products: ${data?.products()?.count()}"
+        if(!limiter.shouldFetch()) return
+        fetchAndActivate {
+            // Update data in Room
+            GlobalScope.launch(Dispatchers.IO) {
+                // Update products
+                val groups = gson.fromJson(
+                    remoteConfig.getString(RemoteConfigRepository.PRODUCTS),
+                    Array<GroupDB>::class.java
+                ).asList()
+                db.productsDao().updateProducts(groups, products(groups))
+                // Update titles
+                val titles = gson.fromJson(
+                    remoteConfig.getString(RemoteConfigRepository.TITLES),
+                    Titles::class.java
                 )
-                onSuccess(data)
-                dbFB.database.goOffline()
+                db.productsDao().insertTitles(titles)
             }
-
-        })
+        }
     }
+
+    /** Update Room from remote database if needed */
+//    private fun updateDB() {
+//        /** Return if limit is over */
+//        if(!dbFBFetchLimit.shouldFetch()) return
+//        /** Sign in to firebase */
+//        signInFB {
+//            /** Fetch data from remote database */
+//            fetchFB {
+//                /** Update data in Room */
+//                if (it != null) {
+//                    GlobalScope.launch(Dispatchers.IO) {
+//                        db.withTransaction {
+//                            db.productsDao().clearBeforeUpdate()
+//                            db.productsDao().update(it)
+//                        }
+//                    }
+//                } else Log.d("Firebase", "Remote data is null. db is NOT updated")
+//            }
+//        }
+//    }
+
+//    /** Sign in as anonymous to firebase & execute onSuccess function */
+//    private fun signInFB(onSuccess: () -> Unit) {
+//        /** If already sign in execute onSuccess */
+//        if (authFB.currentUser != null) {
+//            Log.d("Firebase", "Already sign in: ${authFB.currentUser}")
+//            onSuccess()
+//            return
+//        }
+//        /** Sign in as anonymous & execute onSuccess.
+//         * Reset limiter if sign in failed
+//         * */
+//        authFB.signInAnonymously().addOnCompleteListener {
+//            if (it.isSuccessful) {
+//                Log.d("Firebase", "Sign in SUCCESS: ${authFB.currentUser}")
+//                onSuccess()
+//            } else {
+//                dbFBFetchLimit.reset()
+//                Log.d("Firebase", "Sign in FAILED: ${it.exception}")
+//            }
+//        }
+//    }
+//
+//    /** Fetch data from remote database & execute onSuccess function */
+//    private fun fetchFB(onSuccess: (IRemoteData?) -> Unit) {
+//        /** Connect to remote database */
+//        dbFB.database.goOnline()
+//        dbFB.addListenerForSingleValueEvent(object : ValueEventListener {
+//            /** Disconnect from remote database & reset limiter on error */
+//            override fun onCancelled(error: DatabaseError) {
+//                dbFBFetchLimit.reset()
+//                dbFB.database.goOffline()
+//                Log.d("Firebase", error.message)
+//            }
+//
+//            /** Execute onSuccess function & disconnect from remote database */
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val data = snapshot.getValue(RemoteData::class.java)
+//                Log.d("Firebase", "Get remote data with " +
+//                        "title: ${data?.title}, " +
+//                        "imageTitle: ${data?.imgTitle}, " +
+//                        "productsTitle: ${data?.productsTitle}, " +
+//                        "productsTitle2: ${data?.productsTitle2}, " +
+//                        "group: ${data?.groups?.count()}, " +
+//                        "products: ${data?.products()?.count()}"
+//                )
+//                onSuccess(data)
+//                dbFB.database.goOffline()
+//            }
+//
+//        })
+//    }
 
 }
