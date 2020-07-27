@@ -1,13 +1,12 @@
 package com.alesat1215.productsfromerokhin.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
-import com.alesat1215.productsfromerokhin.di.AppModule.DBfb
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfigRepository
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -46,7 +45,7 @@ class TutorialRepository @Inject constructor(
             GlobalScope.launch(Dispatchers.IO) {
                 // Get instructions from JSON
                 val remoteInstructions = gson.fromJson(remoteConfig.getString(RemoteConfigRepository.INSTRUCTIONS), Array<Instruction>::class.java).asList()
-                Log.d("Tutorial", "Fetch instructions from remote config: ${remoteInstructions.count()}")
+                Logger.d("Fetch instructions from remote config: ${remoteInstructions.count()}")
                 // Update Room
                 db.instructionsDao().updateInstructions(remoteInstructions)
             }

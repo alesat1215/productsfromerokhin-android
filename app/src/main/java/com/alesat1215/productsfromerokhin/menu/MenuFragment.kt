@@ -1,7 +1,6 @@
 package com.alesat1215.productsfromerokhin.menu
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -16,6 +15,7 @@ import com.alesat1215.productsfromerokhin.databinding.FragmentMenuBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import com.alesat1215.productsfromerokhin.util.tabWithText
 import com.google.android.material.tabs.TabLayout
+import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_menu.*
 import javax.inject.Inject
@@ -78,7 +78,7 @@ class MenuFragment : DaggerFragment() {
                 // Set tabs to bar
                 groups.addTab(tab)
             }
-            Log.d("Menu", "Add groups to tabs: ${groups.tabCount}")
+            Logger.d("Add groups to tabs: ${groups.tabCount}")
             // Enable scrolling in tab select listener
             tabSelected = true
             // Restore selected tab
@@ -90,9 +90,9 @@ class MenuFragment : DaggerFragment() {
         val adapter = BindRVAdapter<Product>(R.layout.menu_item, viewModel)
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            Log.d("Menu", "Set list to adapter for products_menu: ${it.count()}")
+            Logger.d("Set list to adapter for products_menu: ${it.count()}")
         })
-        Log.d("Menu", "Set adapter to products_menu")
+        Logger.d("Set adapter to products_menu")
         return adapter
     }
 
@@ -126,7 +126,7 @@ class MenuFragment : DaggerFragment() {
             group?.select()
             // Enable scrolling in tab select listener
             tabSelected = true
-            Log.d("Menu", "Change group to: ${group?.text}")
+            Logger.d("Change group to: ${group?.text}")
         }
     }
 
@@ -144,7 +144,7 @@ class MenuFragment : DaggerFragment() {
                         override fun getVerticalSnapPreference() = SNAP_TO_START
                         // Set scroll position
                     }.apply { targetPosition = position })
-                    Log.d("Menu", "For tab click scroll to position: ${position}, group: ${tab?.text}")
+                    Logger.d("For tab click scroll to position: ${position}, group: ${tab?.text}")
                 }
             }
 
@@ -156,12 +156,12 @@ class MenuFragment : DaggerFragment() {
     /** Save scroll position for products_menu */
     private fun saveScrollPosition(list: RecyclerView) {
         viewModel.scrollPosition = list.computeVerticalScrollOffset()
-        Log.d("Menu", "Save scroll position for products_menu: ${viewModel.scrollPosition}")
+        Logger.d("Save scroll position for products_menu: ${viewModel.scrollPosition}")
     }
     /** Restore scroll position for products_menu */
     private fun restoreScrollPosition(list: RecyclerView) {
         list.post { list.smoothScrollBy(0, viewModel.scrollPosition) }
-        Log.d("Menu", "Restore scroll position for products_menu: ${viewModel.scrollPosition}")
+        Logger.d("Restore scroll position for products_menu: ${viewModel.scrollPosition}")
     }
 
 }

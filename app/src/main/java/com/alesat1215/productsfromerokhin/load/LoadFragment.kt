@@ -2,7 +2,6 @@ package com.alesat1215.productsfromerokhin.load
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment
+import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -47,7 +47,7 @@ class LoadFragment : DaggerFragment() {
                 if (it) {
                     // For non empty products navigate to destination
                     findNavController().navigate(R.id.action_loadFragment_to_startFragment)
-                    Log.d("Load", "Load products complete")
+                    Logger.d("Load products complete")
                 }
             })
         } else {
@@ -56,7 +56,7 @@ class LoadFragment : DaggerFragment() {
                 if (it) {
                     // For non empty tutorials navigate to destination
                     findNavController().navigate(R.id.action_loadFragment_to_tutorialFragment)
-                    Log.d("Load", "Load tutorial complete")
+                    Logger.d("Load tutorial complete")
                 }
             })
         }
@@ -65,7 +65,7 @@ class LoadFragment : DaggerFragment() {
     private fun tutorialIsRead() =
         (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, MODE_PRIVATE)
             ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
-            Log.d("Load", "Tutorial is read: $it")
+            Logger.d("Tutorial is read: $it")
         }
 
 }

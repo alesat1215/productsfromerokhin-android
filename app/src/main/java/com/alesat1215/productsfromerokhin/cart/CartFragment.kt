@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +18,7 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -55,9 +55,9 @@ class CartFragment : DaggerFragment() {
         val adapter = BindRVAdapter<Product>(R.layout.menu_item, viewModel)
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            Log.d("Cart", "Set list to adapter: ${it.count()}")
+            Logger.d("Set list to adapter: ${it.count()}")
         })
-        Log.d("Cart", "Set adapter to products_cart")
+        Logger.d("Set adapter to products_cart")
         return adapter
     }
 
@@ -65,14 +65,14 @@ class CartFragment : DaggerFragment() {
         // Check permission for contacts
         if (activity?.checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             checkContact()
-            Log.d("Cart", "PERMISSION_GRANTED")
+            Logger.d("PERMISSION_GRANTED")
         } else {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                 requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), CONTACTS_PERMISSION_REQUEST)
-                Log.d("Cart", "PERMISSION rationale true")
+                Logger.d("PERMISSION rationale true")
             } else {
                 requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), CONTACTS_PERMISSION_REQUEST)
-                Log.d("Cart", "PERMISSION rationale false")
+                Logger.d("PERMISSION rationale false")
             }
         }
     }
@@ -86,11 +86,11 @@ class CartFragment : DaggerFragment() {
         // Search phone for order in contacts if permission is granted or show select messenger
         if (requestCode == CONTACTS_PERMISSION_REQUEST) {
             if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
-                Log.d("Cart", "PERMISSION_GRANTED")
+                Logger.d("PERMISSION_GRANTED")
                 checkContact()
             }
             else {
-                Log.d("Cart", "PERMISSION_DENIED")
+                Logger.d("PERMISSION_DENIED")
                 selectMessenger()
             }
         }
@@ -113,12 +113,12 @@ class CartFragment : DaggerFragment() {
                 setMessage(R.string.add_contact)
                 // Show contact card for positive button
                 setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
-                    Log.d("Cart", "OK click")
+                    Logger.d("OK click")
                     addContact()
                 }
                 // Show select messenger for negative button
                 setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, i: Int ->
-                    Log.d("Cart", "CANCEL click")
+                    Logger.d("CANCEL click")
                     selectMessenger()
                 }
             }
@@ -137,7 +137,7 @@ class CartFragment : DaggerFragment() {
         }
         // For show select messenger after result
         startActivityForResult(intent, ADD_CONTACT_REQUEST)
-        Log.d("Cart", "Add contact: ${getString(R.string.app_name)}")
+        Logger.d("Add contact: ${getString(R.string.app_name)}")
     }
 
     /** Check phone for order in contacts */
@@ -148,9 +148,9 @@ class CartFragment : DaggerFragment() {
         val cursor = context?.contentResolver?.query(uri, projection, null, null, null)?.also {
             if (it.moveToFirst()) {
                 val contact = it.getString(0)
-                Log.d("Cart", "Contact found: ${contact}")
+                Logger.d("Contact found: ${contact}")
                 return true
-            } else Log.d("Cart", "Contact not found")
+            } else Logger.d("Contact not found")
         }
         cursor?.close()
         // Phone number for order not found in contacts
@@ -186,7 +186,7 @@ class CartFragment : DaggerFragment() {
                     activity?.packageManager?.also {
                         intent.resolveActivity(it)?.also {
                             startActivityForResult(chooser, CHOOSER_REQUEST)
-                            Log.d("Cart", "Select messenger")
+                            Logger.d("Select messenger")
                         }
                     }
                 })
@@ -213,12 +213,12 @@ class CartFragment : DaggerFragment() {
                 setMessage(R.string.clear_cart)
                 // Show contact card for positive button
                 setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                    Log.d("Cart", "Clear cart")
+                    Logger.d("Clear cart")
                     viewModel.clearCart()
                 }
                 // Show select messenger for negative button
                 setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int ->
-                    Log.d("Cart", "CANCEL click")
+                    Logger.d("CANCEL click")
                 }
             }
         }
@@ -241,7 +241,7 @@ class CartFragment : DaggerFragment() {
     /** Setup clear cart button visible */
     private fun clearCartButton(visible: Boolean) {
         (activity as? AppCompatActivity)?.toolbar?.menu?.findItem(R.id.clearCart)?.isVisible = visible
-        Log.d("Cart", "Clear cart button visible: $visible")
+        Logger.d("Clear cart button visible: $visible")
     }
 }
 
