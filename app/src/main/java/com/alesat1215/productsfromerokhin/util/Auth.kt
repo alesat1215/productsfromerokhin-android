@@ -13,23 +13,23 @@ import javax.inject.Singleton
 /** Sign in to FirebaseAuth */
 @Singleton
 class Auth @Inject constructor(
-    private val auth: FirebaseAuth,
-    private val authComplete: AuthComplete
+    private val firebaseAuth: FirebaseAuth,
+    private val authComplete: FirebaseAuthComplete
 ) {
     /** @return result of sign in */
     fun signIn(): LiveData<Result<Unit>> {
         // Already sign in
-        if (auth.currentUser != null) {
-            Logger.d("Already sign in: ${auth.currentUser}")
+        if (firebaseAuth.currentUser != null) {
+            Logger.d("Already sign in: ${firebaseAuth.currentUser}")
             return MutableLiveData(Result.success(Unit))
         }
         // Sign in as anonymous
-        auth.signInAnonymously().addOnCompleteListener(authComplete)
+        firebaseAuth.signInAnonymously().addOnCompleteListener(authComplete)
         return authComplete.authResult()
     }
 }
 /** OnComplete callback for FirebaseAuth */
-class AuthComplete @Inject constructor() : OnCompleteListener<AuthResult> {
+class FirebaseAuthComplete @Inject constructor() : OnCompleteListener<AuthResult> {
     /** Result of sign in */
     private val result = MutableLiveData<Result<Unit>>()
 

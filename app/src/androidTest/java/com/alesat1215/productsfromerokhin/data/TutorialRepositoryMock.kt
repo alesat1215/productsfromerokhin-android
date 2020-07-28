@@ -1,0 +1,17 @@
+package com.alesat1215.productsfromerokhin.data
+
+import androidx.lifecycle.LiveData
+import com.alesat1215.productsfromerokhin.util.RateLimiter
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import javax.inject.Inject
+
+class TutorialRepositoryMock @Inject constructor() : ITutorialRepository {
+    override fun instructions(): LiveData<List<Instruction>> {
+        TODO("Not yet implemented")
+    }
+
+    override val remoteConfig: FirebaseRemoteConfig
+        get() = TODO("Not yet implemented")
+    override val limiter: RateLimiter?
+        get() = TODO("Not yet implemented")
+}

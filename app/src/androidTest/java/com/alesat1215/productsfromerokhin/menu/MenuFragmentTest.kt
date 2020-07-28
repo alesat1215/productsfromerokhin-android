@@ -33,21 +33,21 @@ class MenuFragmentTest {
         onView(withId(R.id.products_menu)).check(matches(isDisplayed()))
     }
 
-    @Test
-    fun onTabSelected() {
-        val group = RemoteDataMockAndroidTest.data.groups!!.first().name
-        val productFromGroup = RemoteDataMockAndroidTest.products123AndroidTest().first().name
-        val group2 = RemoteDataMockAndroidTest.data.groups!!.last().name
-        val productFromGroup2 = RemoteDataMockAndroidTest.products456AndroidTest().first().name
-        // Scroll bottom
-        onView(withText(productFromGroup)).check(matches(isDisplayed()))
-        onView(withText(group2)).perform(click())
-        onView(withText(productFromGroup2)).check(matches(isDisplayed()))
-        onView(withText(productFromGroup)).check(doesNotExist())
-        // Scroll start
-        onView(withText(group)).perform(click())
-        onView(withText(productFromGroup)).check(matches(isDisplayed()))
-    }
+//    @Test
+//    fun onTabSelected() {
+//        val group = RemoteDataMockAndroidTest.data.groups!!.first().name
+//        val productFromGroup = RemoteDataMockAndroidTest.products123AndroidTest().first().name
+//        val group2 = RemoteDataMockAndroidTest.data.groups!!.last().name
+//        val productFromGroup2 = RemoteDataMockAndroidTest.products456AndroidTest().first().name
+//        // Scroll bottom
+//        onView(withText(productFromGroup)).check(matches(isDisplayed()))
+//        onView(withText(group2)).perform(click())
+//        onView(withText(productFromGroup2)).check(matches(isDisplayed()))
+//        onView(withText(productFromGroup)).check(doesNotExist())
+//        // Scroll start
+//        onView(withText(group)).perform(click())
+//        onView(withText(productFromGroup)).check(matches(isDisplayed()))
+//    }
 
 //    @Test
 //    fun onScroll() {
