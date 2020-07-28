@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.orhanobut.logger.Logger
-import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -5,6 +5,7 @@ import com.alesat1215.productsfromerokhin.util.AuthComplete.Companion.UNKNOWN_EX
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
+import com.orhanobut.logger.Logger
 import org.junit.Before
 import org.junit.Test
 
@@ -44,5 +45,23 @@ class AuthCompleteTest {
         authComplete.authResult().observeForever { result = it }
         authComplete.onComplete(task)
         assertTrue(result.isSuccess)
+    }
+
+    @Test
+    fun onCompleteFailed() {
+        `when`(task.isSuccessful).thenReturn(false)
+        // Exception from db
+        val exception = "exception not null"
+        `when`(task.exception).thenReturn(Exception(exception))
+        var result = Result.success(Unit)
+        authComplete.authResult().observeForever { result = it }
+        authComplete.onComplete(task)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull()?.localizedMessage?.contains(exception) ?: false)
+        // Unknown exception
+        `when`(task.exception).thenReturn(null)
+        authComplete.onComplete(task)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull()?.localizedMessage?.contains(UNKNOWN_EXCEPTION) ?: false)
     }
 }
