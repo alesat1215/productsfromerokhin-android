@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class Auth @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val authComplete: FirebaseAuthComplete
+    private val firebaseAuthComplete: FirebaseAuthComplete
 ) {
     /** @return result of sign in */
     fun signIn(): LiveData<Result<Unit>> {
@@ -24,8 +24,8 @@ class Auth @Inject constructor(
             return MutableLiveData(Result.success(Unit))
         }
         // Sign in as anonymous
-        firebaseAuth.signInAnonymously().addOnCompleteListener(authComplete)
-        return authComplete.authResult()
+        firebaseAuth.signInAnonymously().addOnCompleteListener(firebaseAuthComplete)
+        return firebaseAuthComplete.authResult()
     }
 }
 /** OnComplete callback for FirebaseAuth */
