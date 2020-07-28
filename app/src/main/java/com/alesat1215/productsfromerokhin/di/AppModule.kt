@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.GsonBuilder
 import dagger.Module
