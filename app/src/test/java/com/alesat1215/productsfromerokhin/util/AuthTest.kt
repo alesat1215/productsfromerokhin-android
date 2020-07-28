@@ -1,6 +1,7 @@
 package com.alesat1215.productsfromerokhin.util
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -47,12 +48,11 @@ class AuthTest {
     }
 
     @Test
-    fun signInSuccess() {
+    fun signIn() {
         `when`(firebaseAuth.currentUser).thenReturn(null)
         `when`(firebaseAuth.signInAnonymously()).thenReturn(task)
-        `when`(firebaseAuthComplete.authResult()).thenReturn(MutableLiveData(Result.success(Unit)))
-        var result = Result.failure<Unit>(Throwable())
-        auth.signIn().observeForever { result = it }
-        assertTrue(result.isSuccess)
+        val result: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
+        `when`(firebaseAuthComplete.authResult()).thenReturn(result)
+        assertEquals(auth.signIn(), result)
     }
 }
