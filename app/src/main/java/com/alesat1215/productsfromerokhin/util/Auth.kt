@@ -41,9 +41,9 @@ class AuthComplete @Inject constructor() : OnCompleteListener<AuthResult> {
             result.value = Result.success(Unit)
         // Set failure to result
         } else {
-            val exception = p0.exception ?: UNKNOWN_EXCEPTION
+            val exception = p0.exception ?: Exception(UNKNOWN_EXCEPTION)
             Logger.d("Sign in FAILED: $exception")
-            result.value = Result.failure(throw exception)
+            result.value = Result.failure(Throwable(exception))
         }
     }
     /** @return LiveData with result of sign in */
@@ -51,7 +51,7 @@ class AuthComplete @Inject constructor() : OnCompleteListener<AuthResult> {
 
     companion object {
         /** Exception for sign in failure & exception is null */
-        val UNKNOWN_EXCEPTION = Exception("Firebase Auth unknown exception")
+        const val UNKNOWN_EXCEPTION = "Firebase Auth unknown exception"
     }
 
 }
