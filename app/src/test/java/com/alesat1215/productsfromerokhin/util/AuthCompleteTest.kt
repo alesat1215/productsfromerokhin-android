@@ -1,27 +1,23 @@
 package com.alesat1215.productsfromerokhin.util
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.alesat1215.productsfromerokhin.util.AuthComplete.Companion.UNKNOWN_EXCEPTION
+import com.alesat1215.productsfromerokhin.util.FirebaseAuthComplete.Companion.UNKNOWN_EXCEPTION
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
-import com.orhanobut.logger.Logger
-import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.any
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class AuthCompleteTest {
 
-    private val authComplete = AuthComplete()
+    private val authComplete = FirebaseAuthComplete()
     @Mock
     private lateinit var task: Task<AuthResult>
     @Mock
@@ -31,10 +27,6 @@ class AuthCompleteTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @Before
-    fun setUp() {
-    }
 
     @Test
     fun onCompleteSuccess() {

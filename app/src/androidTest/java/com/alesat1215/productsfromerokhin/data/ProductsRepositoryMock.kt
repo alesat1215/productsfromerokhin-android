@@ -1,12 +1,12 @@
 package com.alesat1215.productsfromerokhin.data
 
-import androidx.lifecycle.LiveData
+//import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
-import com.alesat1215.productsfromerokhin.data.local.Product
-import com.alesat1215.productsfromerokhin.data.local.ProductInCart
-import com.alesat1215.productsfromerokhin.data.local.Profile
+//import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
+import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.profileMockAndroidTest
+import com.alesat1215.productsfromerokhin.util.RateLimiter
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,11 +14,11 @@ import javax.inject.Singleton
 @Singleton
 class ProductsRepositoryMock @Inject constructor() : IProductsRepository {
 
-    override fun products() = MutableLiveData(RemoteDataMockAndroidTest.productsEmptyCart)
+    override fun products() = MutableLiveData(emptyList<Product>()) //MutableLiveData(RemoteDataMockAndroidTest.productsEmptyCart)
 
-    override fun titles() = MutableLiveData(RemoteDataMockAndroidTest.data.titles())
+    override fun titles() = MutableLiveData<Titles>() //MutableLiveData(RemoteDataMockAndroidTest.data.titles())
 
-    override fun groups() = MutableLiveData(RemoteDataMockAndroidTest.data.groups())
+    override fun groups() = MutableLiveData<List<GroupDB>>() //MutableLiveData(RemoteDataMockAndroidTest.data.groups())
 
     override val productsInCart = MutableLiveData<List<Product>>(emptyList())
 
@@ -39,4 +39,9 @@ class ProductsRepositoryMock @Inject constructor() : IProductsRepository {
     override suspend fun updateProfile(profile: Profile) {
         TODO("Not yet implemented")
     }
+
+    override val remoteConfig: FirebaseRemoteConfig
+        get() = TODO("Not yet implemented")
+    override val limiter: RateLimiter?
+        get() = TODO("Not yet implemented")
 }

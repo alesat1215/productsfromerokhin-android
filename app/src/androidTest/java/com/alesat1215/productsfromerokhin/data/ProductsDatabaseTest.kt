@@ -38,54 +38,54 @@ class ProductsDatabaseTest2 {
         db.close()
     }
 
-    @Test
-    fun updateReadClearProducts() {
-        var products = listOf<Product>()
-        var groups = listOf<GroupDB>()
-        var titles: Titles? = null
-        dao.products().observeForever { products = it }
-        dao.groups().observeForever { groups = it }
-        dao.titles().observeForever { titles = it }
-        dao.update(RemoteDataMockAndroidTest.data)
-        assertEquals(products, RemoteDataMockAndroidTest.productsEmptyCart)
-        assertEquals(groups, RemoteDataMockAndroidTest.data.groups())
-        assertEquals(titles?.title, RemoteDataMockAndroidTest.data.title)
-        assertEquals(titles?.img, RemoteDataMockAndroidTest.data.img)
-        assertEquals(titles?.imgTitle, RemoteDataMockAndroidTest.data.imgTitle)
-        assertEquals(titles?.productsTitle, RemoteDataMockAndroidTest.data.productsTitle)
-        assertEquals(titles?.productsTitle2, RemoteDataMockAndroidTest.data.productsTitle2)
-        dao.clearBeforeUpdate()
-        assertTrue(products.isEmpty())
-        assertTrue(groups.isEmpty())
-        assertNull(titles)
-    }
-
-    @Test
-    fun insertDeleteClearCart() {
-        var products = listOf<Product>()
-        // Insert
-        dao.products().observeForever { products = it }
-        dao.update(RemoteDataMockAndroidTest.data)
-        assertTrue(products.isNotEmpty())
-        products.forEach { assertTrue(it.inCart.isEmpty()) }
-        RemoteDataMockAndroidTest.productsForCart.forEach { dao.insertProductInCart(it) }
-        products.forEach { assertTrue(it.inCart.isNotEmpty()) }
-        // Delete
-        dao.deleteProductFromCart(products.first().inCart.first())
-        assertTrue(products.first().inCart.isEmpty())
-        // Clear
-        dao.clearCart()
-        products.forEach { assertTrue(it.inCart.isEmpty()) }
-    }
-
-    @Test
-    fun updateProfile() {
-        val profile = profileMockAndroidTest()
-        var result: Profile? = null
-        dao.profile().observeForever { result = it }
-        dao.updateProfile(profile)
-        assertEquals(result?.name, profile.name)
-        assertEquals(result?.phone, profile.phone)
-        assertEquals(result?.address, profile.address)
-    }
+//    @Test
+//    fun updateReadClearProducts() {
+//        var products = listOf<Product>()
+//        var groups = listOf<GroupDB>()
+//        var titles: Titles? = null
+//        dao.products().observeForever { products = it }
+//        dao.groups().observeForever { groups = it }
+//        dao.titles().observeForever { titles = it }
+//        dao.update(RemoteDataMockAndroidTest.data)
+//        assertEquals(products, RemoteDataMockAndroidTest.productsEmptyCart)
+//        assertEquals(groups, RemoteDataMockAndroidTest.data.groups())
+//        assertEquals(titles?.title, RemoteDataMockAndroidTest.data.title)
+//        assertEquals(titles?.img, RemoteDataMockAndroidTest.data.img)
+//        assertEquals(titles?.imgTitle, RemoteDataMockAndroidTest.data.imgTitle)
+//        assertEquals(titles?.productsTitle, RemoteDataMockAndroidTest.data.productsTitle)
+//        assertEquals(titles?.productsTitle2, RemoteDataMockAndroidTest.data.productsTitle2)
+//        dao.clearBeforeUpdate()
+//        assertTrue(products.isEmpty())
+//        assertTrue(groups.isEmpty())
+//        assertNull(titles)
+//    }
+//
+//    @Test
+//    fun insertDeleteClearCart() {
+//        var products = listOf<Product>()
+//        // Insert
+//        dao.products().observeForever { products = it }
+//        dao.update(RemoteDataMockAndroidTest.data)
+//        assertTrue(products.isNotEmpty())
+//        products.forEach { assertTrue(it.inCart.isEmpty()) }
+//        RemoteDataMockAndroidTest.productsForCart.forEach { dao.insertProductInCart(it) }
+//        products.forEach { assertTrue(it.inCart.isNotEmpty()) }
+//        // Delete
+//        dao.deleteProductFromCart(products.first().inCart.first())
+//        assertTrue(products.first().inCart.isEmpty())
+//        // Clear
+//        dao.clearCart()
+//        products.forEach { assertTrue(it.inCart.isEmpty()) }
+//    }
+//
+//    @Test
+//    fun updateProfile() {
+//        val profile = profileMockAndroidTest()
+//        var result: Profile? = null
+//        dao.profile().observeForever { result = it }
+//        dao.updateProfile(profile)
+//        assertEquals(result?.name, profile.name)
+//        assertEquals(result?.phone, profile.phone)
+//        assertEquals(result?.address, profile.address)
+//    }
 }

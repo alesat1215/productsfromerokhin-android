@@ -1,18 +1,19 @@
 package com.alesat1215.productsfromerokhin.di
 
 import com.alesat1215.productsfromerokhin.TestApp
-import com.alesat1215.productsfromerokhin.data.IProductsRepository
-import com.alesat1215.productsfromerokhin.data.ProductsRepositoryMock
+import com.alesat1215.productsfromerokhin.data.*
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Binds
 import dagger.Component
 import dagger.Module
+import dagger.Provides
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 /** Fro UI test with dagger */
 @Singleton
-@Component(modules = [AndroidSupportInjectionModule::class, ActivityModule::class, LoadModule::class, StartModule::class, MenuModule::class, CartModule::class, ProfileModule::class, TestRepositoryModule::class])
+@Component(modules = [AndroidSupportInjectionModule::class, ActivityModule::class, LoadModule::class, StartModule::class, MenuModule::class, CartModule::class, ProfileModule::class, TestRepositoryModule::class, HelpModule::class])
 interface TestAppComponent : AndroidInjector<TestApp>
 
 /** Provide mock repository for UI test */
@@ -20,4 +21,12 @@ interface TestAppComponent : AndroidInjector<TestApp>
 abstract class TestRepositoryModule {
     @Binds
     abstract fun bindProductsRepository(repository: ProductsRepositoryMock): IProductsRepository
+    @Binds
+    abstract fun bindTutorialRepository(repository: TutorialRepositoryMock): ITutorialRepository
+}
+
+@Module
+class HelpModule {
+    @Provides
+    fun firebaseAuth() = FirebaseAuth.getInstance()
 }
