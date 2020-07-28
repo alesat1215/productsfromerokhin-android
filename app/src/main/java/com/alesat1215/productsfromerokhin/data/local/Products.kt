@@ -39,7 +39,7 @@ data class ProductDB(
 data class GroupDB(
     val name: String? = null
 ) {
-    @Ignore val products: List<ProductDB> = emptyList()
+    @Ignore var products: List<ProductDB> = emptyList()
 
     fun productsWithGroup(): List<ProductDB> {
         products.forEach { it.group = name }

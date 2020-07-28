@@ -28,4 +28,32 @@ class ProductsTest {
         assertTrue(product.textForOrder().contains(product.inCart.count().toString()))
         assertTrue(product.textForOrder().contains(product.priceSumInCart().toString()))
     }
+
+    // Group
+    @Test
+    fun productsWithGroup() {
+        val groupName = "group name"
+        val group = GroupDB(name = groupName).apply {
+            products = listOf(ProductDB(), ProductDB())
+        }
+        group.productsWithGroup().forEach {
+            assertEquals(it.group, groupName)
+        }
+    }
+
+    // products
+    @Test
+    fun products() {
+        val groupName1 = "group name 1"
+        val groupName2 = "group name 2"
+        val groups = listOf(
+            GroupDB(groupName1).apply { products = listOf(ProductDB(), ProductDB()) },
+            GroupDB(groupName2).apply { products = listOf(ProductDB(), ProductDB()) }
+        )
+        val result = products(groups)
+        assertEquals(result[0].group, groupName1)
+        assertEquals(result[1].group, groupName1)
+        assertEquals(result[2].group, groupName2)
+        assertEquals(result[3].group, groupName2)
+    }
 }
