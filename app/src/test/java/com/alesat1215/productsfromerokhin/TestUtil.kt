@@ -27,4 +27,6 @@ import com.alesat1215.productsfromerokhin.data.local.Profile
 //    val sumInProductsNotEmptyCart by lazy { productsNotEmptyCart.map { it.priceSumInCart() }.sum() }
 //}
 
+
+
 fun profileMockTest() = Profile(name = "name", phone = "phone", address = "address")

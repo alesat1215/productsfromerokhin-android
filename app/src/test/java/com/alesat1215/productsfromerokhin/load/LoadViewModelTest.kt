@@ -1,10 +1,12 @@
 package com.alesat1215.productsfromerokhin.load
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-//import com.alesat1215.productsfromerokhin.RemoteDataMockTest
+import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.TutorialRepository
+import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.util.Auth
 import org.junit.Test
 
@@ -35,22 +37,40 @@ class LoadViewModelTest {
     }
 
     @Test
-    fun loadCompleteEmptyData() {
+    fun firebaseAuth() {
+        val result: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
+        `when`(auth.signIn()).thenReturn(result)
+        assertEquals(viewModel.firebaseAuth(), result)
+    }
+
+    @Test
+    fun loadCompleteProducts() {
         // Repository return empty list of products
         `when`(repository.products())
             .thenReturn(MutableLiveData(emptyList()))
         var result = true
         viewModel.loadCompleteProducts().observeForever { result = it }
         assertFalse(result)
+        // Repository return not empty list of products
+        `when`(repository.products())
+            .thenReturn(MutableLiveData(listOf(Product(inCart = emptyList()))))
+        result = false
+        viewModel.loadCompleteProducts().observeForever { result = it }
+        assertTrue(result)
     }
 
-//    @Test
-//    fun loadCompleteNotEmptyData() {
-//        // Repository return not empty list of products
-//        `when`(repository.products())
-//            .thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
-//        var result = false
-//        viewModel.loadCompleteProducts().observeForever { result = it }
-//        assertTrue(result)
-//    }
+    @Test
+    fun loadCompleteTutorialEmptyData() {
+        // Repository return empty list of instructions
+        `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(emptyList<Instruction>()))
+        var result = true
+        viewModel.loadCompleteTutorial().observeForever { result = it }
+        assertFalse(result)
+        // Repository return empty list of instructions
+        `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(listOf(Instruction())))
+        result = false
+        viewModel.loadCompleteTutorial().observeForever { result = it }
+        assertTrue(result)
+    }
+
 }
