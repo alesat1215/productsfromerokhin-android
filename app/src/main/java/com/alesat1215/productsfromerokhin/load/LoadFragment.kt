@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -41,6 +42,21 @@ class LoadFragment : DaggerFragment() {
         // Hide BottomNavigationView
         activity?.nav_view?.visibility = View.GONE
 
+        viewModel.firebaseAuth().observe(viewLifecycleOwner, Observer {
+            it.onSuccess { loadData() }
+            it.onFailure { Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show() }
+        })
+
+
+    }
+    /** Check tutorial read */
+    private fun tutorialIsRead() =
+        (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, MODE_PRIVATE)
+            ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
+            Logger.d("Tutorial is read: $it")
+        }
+
+    private fun loadData() {
         if (tutorialIsRead()) {
             // Subscribe to trigger of products loading
             viewModel.loadCompleteProducts().observe(viewLifecycleOwner, Observer {
@@ -61,11 +77,5 @@ class LoadFragment : DaggerFragment() {
             })
         }
     }
-    /** Check tutorial read */
-    private fun tutorialIsRead() =
-        (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, MODE_PRIVATE)
-            ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
-            Logger.d("Tutorial is read: $it")
-        }
 
 }
