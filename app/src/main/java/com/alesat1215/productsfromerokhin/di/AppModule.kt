@@ -22,9 +22,9 @@ object AppModule {
     @Provides
     fun authFB() = FirebaseAuth.getInstance()
 
-    @Singleton
-    @Provides
-    fun dbFB() = FirebaseDatabase.getInstance().reference
+//    @Singleton
+//    @Provides
+//    fun dbFB() = FirebaseDatabase.getInstance().reference
 
     @Singleton
     @Provides
