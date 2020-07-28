@@ -11,38 +11,46 @@ import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** Sign in to FirebaseAuth */
 @Singleton
 class Auth @Inject constructor(
     private val auth: FirebaseAuth,
     private val authComplete: AuthComplete
 ) {
-
+    /** @return result of sign in */
     fun signIn(): LiveData<Result<Unit>> {
+        // Already sign in
         if (auth.currentUser != null) {
             Logger.d("Already sign in: ${auth.currentUser}")
             return MutableLiveData(Result.success(Unit))
         }
+        // Sign in as anonymous
         auth.signInAnonymously().addOnCompleteListener(authComplete)
         return authComplete.authResult()
     }
 }
-
+/** OnComplete callback for FirebaseAuth */
 class AuthComplete @Inject constructor() : OnCompleteListener<AuthResult> {
+    /** Result of sign in */
     private val result = MutableLiveData<Result<Unit>>()
 
     override fun onComplete(p0: Task<AuthResult>) {
+        // Set success to result
         if(p0.isSuccessful) {
             Logger.d("Sign in SUCCESS: ${p0.result.user}")
             result.value = Result.success(Unit)
+        // Set failure to result
         } else {
-            Logger.d("Sign in FAILED: ${p0.exception}")
-            result.value = Result.failure(throw p0.exception ?: UNKNOWN_EXCEPTION)
+            val exception = p0.exception ?: UNKNOWN_EXCEPTION
+            Logger.d("Sign in FAILED: $exception")
+            result.value = Result.failure(throw exception)
         }
     }
-
+    /** @return LiveData with result of sign in */
     fun authResult(): LiveData<Result<Unit>> = result
 
     companion object {
+        /** Exception for sign in failure & exception is null */
         val UNKNOWN_EXCEPTION = Exception("Firebase Auth unknown exception")
     }
 
