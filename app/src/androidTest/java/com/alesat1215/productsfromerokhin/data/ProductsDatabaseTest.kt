@@ -5,21 +5,17 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
 import com.alesat1215.productsfromerokhin.data.local.*
-import com.alesat1215.productsfromerokhin.profileMockAndroidTest
 import org.junit.After
 import org.junit.Before
 
-import org.junit.Assert.*
 import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ProductsDatabaseTest2 {
+class DatabaseTest2 {
     private lateinit var dao: ProductsDao
-    private lateinit var db: ProductsDatabase
+    private lateinit var db: AppDatabase
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -28,7 +24,7 @@ class ProductsDatabaseTest2 {
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
-            context, ProductsDatabase::class.java)
+            context, AppDatabase::class.java)
             .build()
         dao = db.productsDao()
     }

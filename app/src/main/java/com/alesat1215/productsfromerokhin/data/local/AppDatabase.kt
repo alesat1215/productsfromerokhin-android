@@ -93,7 +93,7 @@ interface InstructionsDao {
 }
 
 @Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class, Profile::class, Instruction::class], version = 1, exportSchema = false)
-abstract class ProductsDatabase: RoomDatabase() {
+abstract class AppDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
     abstract fun titlesDao(): TitlesDao
     abstract fun cartDao(): CartDao

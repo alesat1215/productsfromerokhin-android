@@ -2,9 +2,8 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
-import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
+import com.alesat1215.productsfromerokhin.data.local.AppDatabase
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
@@ -27,7 +26,7 @@ class TutorialRepository @Inject constructor(
     /** Firebase remote config */
     private val remoteConfig: RemoteConfig,
     /** Room database */
-    private val db: ProductsDatabase,
+    private val db: AppDatabase,
     /** Limiting the frequency of update database */
     private val limiter: RateLimiter,
     /** For parse JSON from remote config */
