@@ -127,7 +127,7 @@ class ProductsRepository @Inject constructor(
         return Transformations.map(remoteConfigRepository.fetchAndActivate()) {
             it.onSuccess { updateProducts() }
             it.onFailure { Logger.d("Fetch remote config FAILED: ${it.localizedMessage}") }
-            return@map it.map { Unit }
+            it.map { Unit }
         }
     }
 
