@@ -1,9 +1,5 @@
-package com.alesat1215.productsfromerokhin.data.local
+package com.alesat1215.productsfromerokhin.data
 
-import com.alesat1215.productsfromerokhin.data.Group
-import com.alesat1215.productsfromerokhin.data.Product
-import com.alesat1215.productsfromerokhin.data.ProductInCart
-import com.alesat1215.productsfromerokhin.data.ProductInfo
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -72,7 +68,7 @@ class ProductsTest {
                     Product()
                 ) }
         )
-        val result = com.alesat1215.productsfromerokhin.data.products(groups)
+        val result = products(groups)
         assertEquals(result[0].group, groupName1)
         assertEquals(result[1].group, groupName1)
         assertEquals(result[2].group, groupName2)

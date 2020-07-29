@@ -2,8 +2,8 @@ package com.alesat1215.productsfromerokhin.profile
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.Profile
+import com.alesat1215.productsfromerokhin.data.ProfileRepository
 import com.alesat1215.productsfromerokhin.profileMockTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -25,7 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class ProfileViewModelTest {
     @Mock
-    private lateinit var repository: ProductsRepository
+    private lateinit var repository: ProfileRepository
     private lateinit var viewModel: ProfileViewModel
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
