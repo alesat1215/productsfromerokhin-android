@@ -30,7 +30,7 @@ class CartManagerTest {
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
         cartManager = object : CartManager() {
-            override val repository = this@CartManagerTest.repository
+            override val productsRepository = this@CartManagerTest.repository
         }
     }
 
