@@ -5,10 +5,6 @@ import androidx.room.Entity
 import androidx.room.Fts4
 import kotlinx.android.parcel.Parcelize
 
-data class Tutorial(
-    val instructions: List<Instruction> = emptyList()
-)
-
 /** Model for [Instruction] */
 @Parcelize
 @Fts4

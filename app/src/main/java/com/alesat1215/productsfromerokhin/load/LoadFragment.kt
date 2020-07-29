@@ -37,11 +37,11 @@ class LoadFragment : DaggerFragment() {
         setupLoadingAnimation()
     }
 
-    /** When data is loading navigate to destination */
+    /** Sign in to firebase auth & load data */
     private fun setupLoadingAnimation() {
         // Hide BottomNavigationView
         activity?.nav_view?.visibility = View.GONE
-
+        // Sign in firebase
         viewModel.firebaseAuth().observe(viewLifecycleOwner, Observer {
             it.onSuccess { loadData() }
             it.onFailure { Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show() }
@@ -49,13 +49,7 @@ class LoadFragment : DaggerFragment() {
 
 
     }
-    /** Check tutorial read */
-    private fun tutorialIsRead() =
-        (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, MODE_PRIVATE)
-            ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
-            Logger.d("Tutorial is read: $it")
-        }
-
+    /** When data is loading navigate to destination */
     private fun loadData() {
         if (tutorialIsRead()) {
             // Subscribe to trigger of products loading
@@ -77,5 +71,11 @@ class LoadFragment : DaggerFragment() {
             })
         }
     }
+    /** Check tutorial read */
+    private fun tutorialIsRead() =
+        (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, MODE_PRIVATE)
+            ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
+            Logger.d("Tutorial is read: $it")
+        }
 
 }
