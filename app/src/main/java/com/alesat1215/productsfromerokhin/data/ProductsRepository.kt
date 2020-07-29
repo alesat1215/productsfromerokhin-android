@@ -1,17 +1,20 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.local.*
+import com.alesat1215.productsfromerokhin.util.FirebaseOnCompleteLiveData
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfigRepository
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface IProductsRepository : RemoteConfigRepository {
+interface IProductsRepository {
     /** Get products & update Room from remote database if needed */
     fun products(): LiveData<List<Product>>
     /** Get titles & update Room from remote database if needed */
@@ -38,11 +41,11 @@ interface IProductsRepository : RemoteConfigRepository {
 @Singleton
 class ProductsRepository @Inject constructor(
     /** Firebase remote config */
-    override val remoteConfig: FirebaseRemoteConfig,
+    private val remoteConfigRepository: RemoteConfigRepository,
     /** Room database */
     private val db: ProductsDatabase,
     /** Limiting the frequency of queries to remote database */
-    override val limiter: RateLimiter,
+    private val limiter: RateLimiter,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : IProductsRepository {
@@ -94,22 +97,46 @@ class ProductsRepository @Inject constructor(
     private fun updateDB() {
         /** Return if limit is over */
         if(!limiter.shouldFetch()) return
-        fetchAndActivate {
-            // Update data in Room
-            GlobalScope.launch(Dispatchers.IO) {
-                // Update products
-                val groups = gson.fromJson(
-                    remoteConfig.getString(RemoteConfigRepository.PRODUCTS),
-                    Array<GroupDB>::class.java
-                ).asList()
-                db.productsDao().updateProducts(groups, products(groups))
-                // Update titles
-                val titles = gson.fromJson(
-                    remoteConfig.getString(RemoteConfigRepository.TITLES),
-                    Titles::class.java
-                )
-                db.titlesDao().updateTitles(titles)
-            }
+//        fetchAndActivate {
+//            // Update data in Room
+//            GlobalScope.launch(Dispatchers.IO) {
+//                // Update products
+//                val groups = gson.fromJson(
+//                    remoteConfig.getString(RemoteConfigRepository.PRODUCTS),
+//                    Array<GroupDB>::class.java
+//                ).asList()
+//                db.productsDao().updateProducts(groups, products(groups))
+//                // Update titles
+//                val titles = gson.fromJson(
+//                    remoteConfig.getString(RemoteConfigRepository.TITLES),
+//                    Titles::class.java
+//                )
+//                db.titlesDao().updateTitles(titles)
+//            }
+//        }
+        val observer = Observer<Result<Boolean>> {
+            it.onSuccess { updateProducts() }
+            it.onFailure { Logger.d("Products is not update") }
+        }
+        remoteConfigRepository.fetchAndActivate().removeObserver(observer)
+        remoteConfigRepository.fetchAndActivate().observeForever(observer)
+    }
+
+    private fun updateProducts() {
+        // Update data in Room
+        GlobalScope.launch(Dispatchers.IO) {
+            // Update products
+            val groups = gson.fromJson(
+                remoteConfigRepository.remoteConfig.getString(RemoteConfigRepository.PRODUCTS),
+                Array<GroupDB>::class.java
+            ).asList()
+            db.productsDao().updateProducts(groups, products(groups))
+            // Update titles
+            val titles = gson.fromJson(
+                remoteConfigRepository.remoteConfig.getString(RemoteConfigRepository.TITLES),
+                Titles::class.java
+            )
+            db.titlesDao().updateTitles(titles)
         }
     }
 

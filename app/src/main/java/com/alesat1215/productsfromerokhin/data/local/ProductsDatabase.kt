@@ -16,7 +16,7 @@ interface ProductsDao {
     @Transaction
     fun updateProducts(groups: List<GroupDB>, products: List<ProductDB>) {
         clearGroups()
-        clearGroups()
+        clearProducts()
         insertGroups(groups)
         insertProducts(products)
         Logger.d("Update products & groups")
