@@ -1,6 +1,5 @@
-package com.alesat1215.productsfromerokhin.data.local
+package com.alesat1215.productsfromerokhin.data
 
-import com.alesat1215.productsfromerokhin.data.Profile
 import org.junit.Test
 
 import org.junit.Assert.*

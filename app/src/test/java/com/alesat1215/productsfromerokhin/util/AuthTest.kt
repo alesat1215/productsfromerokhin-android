@@ -27,7 +27,7 @@ class AuthTest {
     @Mock
     private lateinit var task: Task<AuthResult>
     @Mock
-    private lateinit var firebaseAuthComplete: FirebaseAuthComplete
+    private lateinit var firebaseOnComplete: FirebaseOnComplete<AuthResult>
 
     private lateinit var auth: Auth
 
@@ -36,7 +36,7 @@ class AuthTest {
 
     @Before
     fun setUp() {
-        auth = Auth(firebaseAuth, firebaseAuthComplete)
+        auth = Auth(firebaseAuth, firebaseOnComplete)
     }
 
     @Test
@@ -52,7 +52,7 @@ class AuthTest {
         `when`(firebaseAuth.currentUser).thenReturn(null)
         `when`(firebaseAuth.signInAnonymously()).thenReturn(task)
         val result: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
-        `when`(firebaseAuthComplete.authResult()).thenReturn(result)
+        `when`(firebaseOnComplete.result()).thenReturn(result)
         assertEquals(auth.signIn(), result)
     }
 }
