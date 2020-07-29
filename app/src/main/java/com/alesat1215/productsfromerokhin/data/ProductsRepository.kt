@@ -55,17 +55,17 @@ class ProductsRepository @Inject constructor(
     /** @return LiveData with products in cart from Room only once */
     override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
 
-    /** Get products & update Room from remote database if needed */
+    /** Get products & update Room from remote config if needed */
     override fun products(): LiveData<List<Product>> {
         return Transformations.switchMap(updateDB()) { products }
     }
 
-    /** Get titles & update Room from remote database if needed */
+    /** Get titles & update Room from remote config if needed */
     override fun titles(): LiveData<Titles> {
         return Transformations.switchMap(updateDB()) { titles }
     }
 
-    /** Get groups & update Room from remote database if needed */
+    /** Get groups & update Room from remote config if needed */
     override fun groups(): LiveData<List<GroupDB>> {
         return Transformations.switchMap(updateDB()) { groups }
     }
