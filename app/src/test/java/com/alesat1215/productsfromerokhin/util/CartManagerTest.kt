@@ -2,7 +2,7 @@ package com.alesat1215.productsfromerokhin.util
 
 //import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.local.ProductInfo
+import com.alesat1215.productsfromerokhin.data.ProductInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
@@ -41,7 +41,8 @@ class CartManagerTest {
 
     @Test
     fun addProductToCart() = runBlocking {
-        val product = ProductInfo(inCart = emptyList())
+        val product =
+            ProductInfo(inCart = emptyList())
         `when`(repository.addProductToCart(product.asProductInCart())).thenReturn(Unit)
         cartManager.addProductToCart(product)
         verify(repository).addProductToCart(product.asProductInCart())

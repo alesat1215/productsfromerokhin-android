@@ -3,7 +3,7 @@ package com.alesat1215.productsfromerokhin.profile
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.local.Profile
+import com.alesat1215.productsfromerokhin.data.Profile
 import com.alesat1215.productsfromerokhin.profileMockTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext

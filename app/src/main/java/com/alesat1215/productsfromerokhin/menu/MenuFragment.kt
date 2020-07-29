@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.data.local.ProductInfo
+import com.alesat1215.productsfromerokhin.data.ProductInfo
 import com.alesat1215.productsfromerokhin.databinding.FragmentMenuBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import com.alesat1215.productsfromerokhin.util.tabWithText

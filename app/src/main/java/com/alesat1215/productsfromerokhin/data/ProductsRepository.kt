@@ -3,7 +3,6 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
@@ -102,7 +101,8 @@ class ProductsRepository @Inject constructor(
                 Array<Group>::class.java
             ).asList()
             // Get products from groups
-            val products = products(groups)
+            val products =
+                products(groups)
             Logger.d("Fetch from remote config groups: ${groups.count()}, products: ${products.count()}")
             // Update products
             db.productsDao().updateProducts(groups, products)

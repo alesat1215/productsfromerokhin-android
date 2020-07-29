@@ -3,7 +3,7 @@ package com.alesat1215.productsfromerokhin.util
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
-import com.alesat1215.productsfromerokhin.data.local.ProductInfo
+import com.alesat1215.productsfromerokhin.data.ProductInfo
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.launch
 

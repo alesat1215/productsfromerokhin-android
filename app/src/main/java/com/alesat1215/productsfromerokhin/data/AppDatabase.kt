@@ -1,8 +1,7 @@
-package com.alesat1215.productsfromerokhin.data.local
+package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.alesat1215.productsfromerokhin.data.Instruction
 import com.orhanobut.logger.Logger
 
 @Dao

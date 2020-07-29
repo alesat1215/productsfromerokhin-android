@@ -2,18 +2,14 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 //import com.alesat1215.productsfromerokhin.RemoteDataMockTest
-import com.alesat1215.productsfromerokhin.data.local.*
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 //import com.google.firebase.database.DatabaseReference
 //import com.google.firebase.database.FirebaseDatabase
 
-import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)

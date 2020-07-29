@@ -1,4 +1,4 @@
-package com.alesat1215.productsfromerokhin.data.local
+package com.alesat1215.productsfromerokhin.data
 
 import androidx.room.*
 
@@ -12,7 +12,8 @@ data class ProductInfo(
     val inCart: List<ProductInCart>
 ) {
     /** @return [ProductInCart] from [Product] */
-    fun asProductInCart() = ProductInCart(name = product?.name)
+    fun asProductInCart() =
+        ProductInCart(name = product?.name)
     /** @return total sum of price for products in cart */
     fun priceSumInCart() = (product?.price ?: 0) * inCart.count()
     /** @return text for order with: name | price * count = sum | */
