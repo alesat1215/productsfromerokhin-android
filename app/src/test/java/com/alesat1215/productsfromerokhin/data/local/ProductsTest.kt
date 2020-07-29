@@ -6,14 +6,14 @@ import org.junit.Assert.*
 
 class ProductsTest {
     // Product
-    private val product = Product(
-        ProductDB(name = "productDB", price = 100),
+    private val product = ProductInfo(
+        Product(name = "productDB", price = 100),
         listOf(ProductInCart(name = "productDB"), ProductInCart(name = "productDB"))
     )
 
     @Test
     fun asProductInCart() {
-        assertEquals(product.productDB?.name, product.asProductInCart().name)
+        assertEquals(product.product?.name, product.asProductInCart().name)
     }
 
     @Test
@@ -23,8 +23,8 @@ class ProductsTest {
 
     @Test
     fun textForOrder() {
-        assertTrue(product.textForOrder().contains(product.productDB?.name.orEmpty()))
-        assertTrue(product.textForOrder().contains(product.productDB?.price.toString()))
+        assertTrue(product.textForOrder().contains(product.product?.name.orEmpty()))
+        assertTrue(product.textForOrder().contains(product.product?.price.toString()))
         assertTrue(product.textForOrder().contains(product.inCart.count().toString()))
         assertTrue(product.textForOrder().contains(product.priceSumInCart().toString()))
     }
@@ -33,8 +33,8 @@ class ProductsTest {
     @Test
     fun productsWithGroup() {
         val groupName = "group name"
-        val group = GroupDB(name = groupName).apply {
-            products = listOf(ProductDB(), ProductDB())
+        val group = Group(name = groupName).apply {
+            products = listOf(Product(), Product())
         }
         group.productsWithGroup().forEach {
             assertEquals(it.group, groupName)
@@ -47,8 +47,8 @@ class ProductsTest {
         val groupName1 = "group name 1"
         val groupName2 = "group name 2"
         val groups = listOf(
-            GroupDB(groupName1).apply { products = listOf(ProductDB(), ProductDB()) },
-            GroupDB(groupName2).apply { products = listOf(ProductDB(), ProductDB()) }
+            Group(groupName1).apply { products = listOf(Product(), Product()) },
+            Group(groupName2).apply { products = listOf(Product(), Product()) }
         )
         val result = products(groups)
         assertEquals(result[0].group, groupName1)

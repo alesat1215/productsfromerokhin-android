@@ -1,25 +1,17 @@
 package com.alesat1215.productsfromerokhin.cart
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 //import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.profileMockTest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Test
 
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 

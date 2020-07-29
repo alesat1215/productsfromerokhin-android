@@ -2,7 +2,7 @@ package com.alesat1215.productsfromerokhin.util
 
 //import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.local.Product
+import com.alesat1215.productsfromerokhin.data.local.ProductInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
@@ -12,7 +12,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -42,7 +41,7 @@ class CartManagerTest {
 
     @Test
     fun addProductToCart() = runBlocking {
-        val product = Product(inCart = emptyList())
+        val product = ProductInfo(inCart = emptyList())
         `when`(repository.addProductToCart(product.asProductInCart())).thenReturn(Unit)
         cartManager.addProductToCart(product)
         verify(repository).addProductToCart(product.asProductInCart())

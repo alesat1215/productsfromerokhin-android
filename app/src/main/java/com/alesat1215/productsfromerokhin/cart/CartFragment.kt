@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.data.local.Product
+import com.alesat1215.productsfromerokhin.data.local.ProductInfo
 import com.alesat1215.productsfromerokhin.databinding.FragmentCartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import dagger.android.support.DaggerFragment
@@ -51,8 +51,8 @@ class CartFragment : DaggerFragment() {
     }.root
 
     /** @return adapter for products & set data to it */
-    private fun adapterToProducts(): BindRVAdapter<Product> {
-        val adapter = BindRVAdapter<Product>(R.layout.menu_item, viewModel)
+    private fun adapterToProducts(): BindRVAdapter<ProductInfo> {
+        val adapter = BindRVAdapter<ProductInfo>(R.layout.menu_item, viewModel)
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Logger.d("Set list to adapter: ${it.count()}")
