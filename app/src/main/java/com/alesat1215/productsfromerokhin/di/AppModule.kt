@@ -2,7 +2,7 @@ package com.alesat1215.productsfromerokhin.di
 
 import android.content.Context
 import androidx.room.Room
-import com.alesat1215.productsfromerokhin.data.local.ProductsDatabase
+import com.alesat1215.productsfromerokhin.data.local.AppDatabase
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -28,7 +28,7 @@ object AppModule {
     @Singleton
     @Provides
     fun db(applicationContext: Context) =
-        Room.databaseBuilder(applicationContext, ProductsDatabase::class.java, "productsDatabase").build()
+        Room.databaseBuilder(applicationContext, AppDatabase::class.java, "productsDatabase").build()
 
     @Qualifier
     @Retention(RUNTIME)

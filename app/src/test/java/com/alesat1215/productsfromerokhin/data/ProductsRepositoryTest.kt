@@ -1,17 +1,12 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 //import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.local.*
-import com.alesat1215.productsfromerokhin.profileMockTest
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 //import com.google.firebase.database.DatabaseReference
-import org.junit.Test
 //import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.runBlocking
 
 import org.junit.Assert.*
 import org.junit.Before
@@ -29,7 +24,7 @@ class ProductsRepositoryTest {
 //    @Mock
 //    private lateinit var dbFB: DatabaseReference
     @Mock
-    private lateinit var db: ProductsDatabase
+    private lateinit var db: AppDatabase
     @Mock
     private lateinit var dbFBFetchLimit: RateLimiter
 

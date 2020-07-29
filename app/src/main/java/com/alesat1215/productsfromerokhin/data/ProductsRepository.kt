@@ -41,7 +41,7 @@ class ProductsRepository @Inject constructor(
     /** Firebase remote config */
     private val remoteConfig: RemoteConfig,
     /** Room database */
-    private val db: ProductsDatabase,
+    private val db: AppDatabase,
     /** Limiting the frequency of queries to remote database */
     private val limiter: RateLimiter,
     /** For parse JSON from remote config */
