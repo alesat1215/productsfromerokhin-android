@@ -16,9 +16,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface ITutorialRepository {
-    /** @return instructions for order */
+    /** @return instructions for order & update Room from remote config if needed */
     fun instructions(): LiveData<List<Instruction>>
 }
+/** Repository for instructions.
+ * Return LiveData from Room & update if needed Room from remote config.
+ * */
 @Singleton
 class TutorialRepository @Inject constructor(
     /** Firebase remote config */
@@ -30,50 +33,35 @@ class TutorialRepository @Inject constructor(
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
+    /** Parameters in Firebase remote config */
+    private val INSTRUCTIONS = "instructions"
     /** Get instructions from Room only once */
     private val instructions by lazy { db.instructionsDao().instructions() }
 
     override fun instructions(): LiveData<List<Instruction>> {
-//        updateDB()
-//        return instructions
         return Transformations.switchMap(updateDB()) { instructions }
     }
     /** Update Room from remote config if needed */
     private fun updateDB(): LiveData<Result<Unit>> {
         // Return if limit is over
         if (!limiter.shouldFetch()) return MutableLiveData(Result.success(Unit))
-        // Fetch data from remote config
-//        fetchAndActivate {
-//            // Update data in Room
-//            GlobalScope.launch(Dispatchers.IO) {
-//                // Get instructions from JSON
-//                val remoteInstructions = gson.fromJson(remoteConfig.getString(RemoteConfigRepository.INSTRUCTIONS), Array<Instruction>::class.java).asList()
-//                Logger.d("Fetch instructions from remote config: ${remoteInstructions.count()}")
-//                // Update Room
-//                db.instructionsDao().updateInstructions(remoteInstructions)
-//            }
-//        }
-//        val observer = Observer<Result<Boolean>> {
-//            it.onSuccess { updateInstructions() }
-//            it.onFailure { Logger.d("Instructions is not update") }
-//        }
-//        remoteConfig.fetchAndActivate().removeObserver(observer)
-//        remoteConfig.fetchAndActivate().observeForever(observer)
+        // Fetch data from remote config & update db
         return Transformations.map(remoteConfig.fetchAndActivate()) {
             it.onSuccess { updateInstructions() }
             it.onFailure { Logger.d("Fetch remote config FAILED: ${it.localizedMessage}") }
             it
         }
     }
-
+    /** Get instructions from remote config & update db in background */
     private fun updateInstructions() {
         // Update data in Room
         GlobalScope.launch(Dispatchers.IO) {
             // Get instructions from JSON
-            val remoteInstructions = gson.fromJson(remoteConfig.firebaseRemoteConfig.getString(RemoteConfig.INSTRUCTIONS), Array<Instruction>::class.java).asList()
+            val remoteInstructions = gson.fromJson(remoteConfig.firebaseRemoteConfig.getString(INSTRUCTIONS), Array<Instruction>::class.java).asList()
             Logger.d("Fetch instructions from remote config: ${remoteInstructions.count()}")
             // Update Room
             db.instructionsDao().updateInstructions(remoteInstructions)
         }
     }
+
 }
