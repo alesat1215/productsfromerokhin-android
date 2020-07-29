@@ -2,28 +2,28 @@ package com.alesat1215.productsfromerokhin.data.local
 
 import androidx.room.*
 
-/** Model for [Product] with list of [ProductInCart] */
-data class Product(
-    @Embedded val productDB: ProductDB? = null,
+/** Model for [ProductInfo] with list of [ProductInCart] */
+data class ProductInfo(
+    @Embedded val product: Product? = null,
     @Relation(
         parentColumn = "name",
         entityColumn = "name"
     )
     val inCart: List<ProductInCart>
 ) {
-    /** @return [ProductInCart] from [ProductDB] */
-    fun asProductInCart() = ProductInCart(name = productDB?.name)
+    /** @return [ProductInCart] from [Product] */
+    fun asProductInCart() = ProductInCart(name = product?.name)
     /** @return total sum of price for products in cart */
-    fun priceSumInCart() = (productDB?.price ?: 0) * inCart.count()
+    fun priceSumInCart() = (product?.price ?: 0) * inCart.count()
     /** @return text for order with: name | price * count = sum | */
     fun textForOrder() =
-        "${productDB?.name.orEmpty()} | ${productDB?.price ?: 0} * ${inCart.count()} = ${priceSumInCart()} |"
+        "${product?.name.orEmpty()} | ${product?.price ?: 0} * ${inCart.count()} = ${priceSumInCart()} |"
 }
 
-/** Model for [ProductDB] */
+/** Model for [Product] */
 @Fts4
 @Entity
-data class ProductDB(
+data class Product(
     var group: String? = null,
     val name: String? = null,
     val consist: String? = null,
@@ -33,21 +33,21 @@ data class ProductDB(
     val inStart2: Boolean = false
 )
 
-/** Model for [GroupDB] */
+/** Model for [Group] with list of products */
 @Fts4
 @Entity
-data class GroupDB(
+data class Group(
     val name: String? = null
 ) {
-    @Ignore var products: List<ProductDB> = emptyList()
+    @Ignore var products: List<Product> = emptyList()
 
-    fun productsWithGroup(): List<ProductDB> {
+    fun productsWithGroup(): List<Product> {
         products.forEach { it.group = name }
         return products
     }
 }
-
-fun products(groups: List<GroupDB>) = groups.map { it.productsWithGroup() }.flatten()
+/** @return products with group name */
+fun products(groups: List<Group>) = groups.map { it.productsWithGroup() }.flatten()
 
 /** Model for [ProductInCart] in cart */
 @Fts4

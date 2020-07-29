@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.TutorialRepository
-import com.alesat1215.productsfromerokhin.data.local.Product
+import com.alesat1215.productsfromerokhin.data.local.ProductInfo
 import com.alesat1215.productsfromerokhin.util.Auth
 import org.junit.Test
 
@@ -53,7 +53,7 @@ class LoadViewModelTest {
         assertFalse(result)
         // Repository return not empty list of products
         `when`(repository.products())
-            .thenReturn(MutableLiveData(listOf(Product(inCart = emptyList()))))
+            .thenReturn(MutableLiveData(listOf(ProductInfo(inCart = emptyList()))))
         result = false
         viewModel.loadCompleteProducts().observeForever { result = it }
         assertTrue(result)

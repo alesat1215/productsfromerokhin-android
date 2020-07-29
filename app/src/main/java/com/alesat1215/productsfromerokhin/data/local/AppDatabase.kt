@@ -8,26 +8,26 @@ import com.orhanobut.logger.Logger
 @Dao
 interface ProductsDao {
     @Transaction
-    @Query("SELECT * FROM productdb")
-    fun products(): LiveData<List<Product>>
-    @Query("SELECT * FROM groupdb")
-    fun groups(): LiveData<List<GroupDB>>
+    @Query("SELECT * FROM product")
+    fun products(): LiveData<List<ProductInfo>>
+    @Query("SELECT * FROM `group`")
+    fun groups(): LiveData<List<Group>>
     /** Clear & insert groups & products */
     @Transaction
-    fun updateProducts(groups: List<GroupDB>, products: List<ProductDB>) {
+    fun updateProducts(groups: List<Group>, products: List<Product>) {
         clearGroups()
         clearProducts()
         insertGroups(groups)
         insertProducts(products)
         Logger.d("Update products & groups")
     }
-    @Insert(entity = ProductDB::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertProducts(products: List<ProductDB>)
-    @Insert(entity = GroupDB::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertGroups(products: List<GroupDB>)
-    @Query("DELETE FROM productdb")
+    @Insert(entity = Product::class, onConflict = OnConflictStrategy.REPLACE)
+    fun insertProducts(products: List<Product>)
+    @Insert(entity = Group::class, onConflict = OnConflictStrategy.REPLACE)
+    fun insertGroups(products: List<Group>)
+    @Query("DELETE FROM product")
     fun clearProducts()
-    @Query("DELETE FROM groupdb")
+    @Query("DELETE FROM `group`")
     fun clearGroups()
 }
 
@@ -92,7 +92,7 @@ interface InstructionsDao {
     fun clearInstructions()
 }
 
-@Database(entities = [ProductDB::class, GroupDB::class, Titles::class, ProductInCart::class, Profile::class, Instruction::class], version = 1, exportSchema = false)
+@Database(entities = [Product::class, Group::class, Titles::class, ProductInCart::class, Profile::class, Instruction::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
     abstract fun titlesDao(): TitlesDao

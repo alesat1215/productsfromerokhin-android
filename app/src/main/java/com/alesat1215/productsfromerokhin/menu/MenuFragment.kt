@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.data.local.Product
+import com.alesat1215.productsfromerokhin.data.local.ProductInfo
 import com.alesat1215.productsfromerokhin.databinding.FragmentMenuBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import com.alesat1215.productsfromerokhin.util.tabWithText
@@ -86,8 +86,8 @@ class MenuFragment : DaggerFragment() {
         })
     }
     /** Create adapter for products & set data to it */
-    private fun adapterToProducts(): BindRVAdapter<Product> {
-        val adapter = BindRVAdapter<Product>(R.layout.menu_item, viewModel)
+    private fun adapterToProducts(): BindRVAdapter<ProductInfo> {
+        val adapter = BindRVAdapter<ProductInfo>(R.layout.menu_item, viewModel)
         viewModel.products().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Logger.d("Set list to adapter for products_menu: ${it.count()}")
@@ -107,11 +107,11 @@ class MenuFragment : DaggerFragment() {
                 /** Visible position */
                 val index = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition() ?: 0
                 /** Current product at position */
-                val product = (recyclerView.adapter as? BindRVAdapter<Product>)?.getItem(index)
+                val product = (recyclerView.adapter as? BindRVAdapter<ProductInfo>)?.getItem(index)
                 // Switch group if needed
-                if (group?.text != product?.productDB?.group)  {
+                if (group?.text != product?.product?.group)  {
                     // Found tab with text
-                    group = groups_menu?.tabWithText(product?.productDB?.group)
+                    group = groups_menu?.tabWithText(product?.product?.group)
                     // Select tab
                     selectGroup(group, groups_menu)
                 }
@@ -137,7 +137,7 @@ class MenuFragment : DaggerFragment() {
                 /** If click on tab */
                 if (tabSelected) {
                     /** Find first product with group id */
-                    val position = viewModel.products().value?.indexOfFirst { it.productDB?.group == tab?.text } ?: 0
+                    val position = viewModel.products().value?.indexOfFirst { it.product?.group == tab?.text } ?: 0
                     /** Scroll to position */
                     products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
                         // Scroll item in top

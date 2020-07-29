@@ -8,7 +8,7 @@
         <import type="android.view.View" />
         <variable
             name="data"
-            type="com.alesat1215.productsfromerokhin.data.local.Product" />
+            type="com.alesat1215.productsfromerokhin.data.local.ProductInfo" />
         <variable
             name="viewModel"
             type="com.alesat1215.productsfromerokhin.util.CartManager" />
@@ -50,7 +50,7 @@
                 android:layout_height="97dp"
                 android:contentDescription="@string/product_image_description"
                 android:scaleType="fitXY"
-                app:fb_image="@{data.productDB.img}"
+                app:fb_image="@{data.product.img}"
                 tools:src="@tools:sample/avatars" />
         </androidx.cardview.widget.CardView>
 
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@{data.productDB.name ?? ``}"
+            android:text="@{data.product.name ?? ``}"
             android:textSize="18sp"
             android:textStyle="bold"
             app:autoSizeTextType="uniform"
@@ -82,7 +82,7 @@
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{(data.productDB.price.toString() ?? ``) + ' ' + @string/rub_kg}"
+                android:text="@{(data.product.price.toString() ?? ``) + ' ' + @string/rub_kg}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="250 ₽/kg" />

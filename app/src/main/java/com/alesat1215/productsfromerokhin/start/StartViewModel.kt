@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
-import com.alesat1215.productsfromerokhin.data.local.Product
+import com.alesat1215.productsfromerokhin.data.local.ProductInfo
 import com.alesat1215.productsfromerokhin.start.StartTitle.*
 import com.alesat1215.productsfromerokhin.util.CartManager
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class StartViewModel @Inject constructor(
         }
 
     /** @return products filtering by predicate */
-    fun products(predicate: ((Product) -> Boolean)? = null): LiveData<List<Product>> {
+    fun products(predicate: ((ProductInfo) -> Boolean)? = null): LiveData<List<ProductInfo>> {
         return if (predicate != null)
             Transformations.map(productsRepository.products()) { it.filter(predicate) }
         else productsRepository.products()

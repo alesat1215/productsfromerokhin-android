@@ -14,13 +14,13 @@ import javax.inject.Singleton
 
 interface IProductsRepository {
     /** Get products & update Room from remote config if needed */
-    fun products(): LiveData<List<Product>>
+    fun products(): LiveData<List<ProductInfo>>
     /** Get titles & update Room from remote config if needed */
     fun titles(): LiveData<Titles>
     /** Get groups & update Room from remote config if needed */
-    fun groups(): LiveData<List<GroupDB>>
+    fun groups(): LiveData<List<Group>>
     /** Get products in cart */
-    val productsInCart: LiveData<List<Product>>
+    val productsInCart: LiveData<List<ProductInfo>>
     /** Add product to cart */
     suspend fun addProductToCart(product: ProductInCart)
     /** Del product from cart */
@@ -56,7 +56,7 @@ class ProductsRepository @Inject constructor(
     override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
 
     /** Get products & update Room from remote config if needed */
-    override fun products(): LiveData<List<Product>> {
+    override fun products(): LiveData<List<ProductInfo>> {
         return Transformations.switchMap(updateDB()) { products }
     }
 
@@ -66,7 +66,7 @@ class ProductsRepository @Inject constructor(
     }
 
     /** Get groups & update Room from remote config if needed */
-    override fun groups(): LiveData<List<GroupDB>> {
+    override fun groups(): LiveData<List<Group>> {
         return Transformations.switchMap(updateDB()) { groups }
     }
 
@@ -99,7 +99,7 @@ class ProductsRepository @Inject constructor(
             // Get groups with products from JSON
             val groups = gson.fromJson(
                 remoteConfig.firebaseRemoteConfig.getString(PRODUCTS),
-                Array<GroupDB>::class.java
+                Array<Group>::class.java
             ).asList()
             // Get products from groups
             val products = products(groups)

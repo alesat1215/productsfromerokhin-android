@@ -3,7 +3,6 @@ package com.alesat1215.productsfromerokhin
 //import com.alesat1215.productsfromerokhin.data.GroupRemote
 //import com.alesat1215.productsfromerokhin.data.ProductRemote
 //import com.alesat1215.productsfromerokhin.data.RemoteData
-import com.alesat1215.productsfromerokhin.data.local.Product
 import com.alesat1215.productsfromerokhin.data.local.Profile
 
 object RemoteDataMockAndroidTest {

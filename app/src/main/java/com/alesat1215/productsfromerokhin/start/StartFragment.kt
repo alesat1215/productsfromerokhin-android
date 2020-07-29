@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.data.local.Product
+import com.alesat1215.productsfromerokhin.data.local.ProductInfo
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import com.orhanobut.logger.Logger
@@ -36,16 +36,16 @@ class StartFragment : DaggerFragment() {
             // Set view model to layout
             viewModel = this@StartFragment.viewModel
             // Set adapters to products
-            productsStart.adapter = adapterToProducts { it.productDB?.inStart ?: false }
-            products2Start.adapter = adapterToProducts { it.productDB?.inStart2 ?: false }
+            productsStart.adapter = adapterToProducts { it.product?.inStart ?: false }
+            products2Start.adapter = adapterToProducts { it.product?.inStart2 ?: false }
             // Set lifecycleOwner for LiveData in layout
             lifecycleOwner = this@StartFragment
             executePendingBindings()
         }.root
 
     /** Create adapter for list with predicate for dataSet */
-    private fun adapterToProducts(predicate: ((Product) -> Boolean)? = null): BindRVAdapter<Product> {
-        val adapter = BindRVAdapter<Product>(R.layout.start_item, viewModel)
+    private fun adapterToProducts(predicate: ((ProductInfo) -> Boolean)? = null): BindRVAdapter<ProductInfo> {
+        val adapter = BindRVAdapter<ProductInfo>(R.layout.start_item, viewModel)
         viewModel.products(predicate).observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Logger.d("Set list to adapter for products in start: ${it.count()}")
