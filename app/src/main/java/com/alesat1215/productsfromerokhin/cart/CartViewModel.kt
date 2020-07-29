@@ -3,15 +3,17 @@ package com.alesat1215.productsfromerokhin.cart
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
+import com.alesat1215.productsfromerokhin.data.IProfileRepository
 import com.alesat1215.productsfromerokhin.util.CartManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CartViewModel @Inject constructor(
-    override val repository: IProductsRepository
+    override val productsRepository: IProductsRepository,
+    private val profileRepository: IProfileRepository
 ) : CartManager() {
     /** Products in cart */
-    fun products() = repository.productsInCart
+    fun products() = productsRepository.productsInCart
     /** Sum for order */
     fun totalInCart() = Transformations.map(products()) {
         it.map { it.priceSumInCart() }.sum()
@@ -21,9 +23,9 @@ class CartViewModel @Inject constructor(
         it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
     }
     /** Delivery info for message */
-    fun delivery() = Transformations.map(repository.profile) { it.delivery() }
+    fun delivery() = Transformations.map(profileRepository.profile) { it.delivery() }
 
     fun clearCart() {
-        viewModelScope.launch { repository.clearCart() }
+        viewModelScope.launch { productsRepository.clearCart() }
     }
 }

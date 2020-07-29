@@ -5,13 +5,13 @@ import com.alesat1215.productsfromerokhin.util.CartManager
 import javax.inject.Inject
 
 class MenuViewModel @Inject constructor(
-    override val repository: IProductsRepository
+    override val productsRepository: IProductsRepository
 ) : CartManager() {
 
     /** Scroll position for products_menu */
     var scrollPosition = 0
 
-    fun products() = repository.products()
+    fun products() = productsRepository.products()
 
-    fun groups() = repository.groups()
+    fun groups() = productsRepository.groups()
 }

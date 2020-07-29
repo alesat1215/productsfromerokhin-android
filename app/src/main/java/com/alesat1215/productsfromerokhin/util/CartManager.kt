@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 
 /** View model with add & del product from cart */
 abstract class CartManager: ViewModel() {
-    abstract val repository: IProductsRepository
+    abstract val productsRepository: IProductsRepository
 
     fun addProductToCart(product: Product) {
         viewModelScope.launch {
-            repository.addProductToCart(product.asProductInCart())
+            productsRepository.addProductToCart(product.asProductInCart())
             Logger.d("Add to cart: ${product.productDB?.name}")
         }
     }
@@ -21,7 +21,7 @@ abstract class CartManager: ViewModel() {
     fun delProductFromCart(product: Product) {
         viewModelScope.launch {
             product.inCart.firstOrNull()?.also {
-                repository.delProductFromCart(it)
+                productsRepository.delProductFromCart(it)
                 Logger.d("Del from cart: ${it.name}")
             }
         }
