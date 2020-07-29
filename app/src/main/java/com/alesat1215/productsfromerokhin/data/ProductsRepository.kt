@@ -1,6 +1,7 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.local.*
@@ -66,20 +67,23 @@ class ProductsRepository @Inject constructor(
 
     /** Get products & update Room from remote database if needed */
     override fun products(): LiveData<List<Product>> {
-        updateDB()
-        return products
+//        updateDB()
+//        return products
+        return Transformations.switchMap(updateDB()) { products }
     }
 
     /** Get titles & update Room from remote database if needed */
     override fun titles(): LiveData<Titles> {
-        updateDB()
-        return titles
+//        updateDB()
+//        return titles
+        return Transformations.switchMap(updateDB()) { titles }
     }
 
     /** Get groups & update Room from remote database if needed */
     override fun groups(): LiveData<List<GroupDB>> {
-        updateDB()
-        return groups
+//        updateDB()
+//        return groups
+        return Transformations.switchMap(updateDB()) { groups }
     }
 
     override suspend fun addProductToCart(product: ProductInCart) = withContext(Dispatchers.IO) {
@@ -94,9 +98,9 @@ class ProductsRepository @Inject constructor(
         db.cartDao().clearCart()
     }
 
-    private fun updateDB() {
+    private fun updateDB(): LiveData<Result<Unit>> {
         /** Return if limit is over */
-        if(!limiter.shouldFetch()) return
+        if(!limiter.shouldFetch()) return MutableLiveData(Result.success(Unit))
 //        fetchAndActivate {
 //            // Update data in Room
 //            GlobalScope.launch(Dispatchers.IO) {
@@ -114,12 +118,17 @@ class ProductsRepository @Inject constructor(
 //                db.titlesDao().updateTitles(titles)
 //            }
 //        }
-        val observer = Observer<Result<Boolean>> {
+//        val observer = Observer<Result<Boolean>> {
+//            it.onSuccess { updateProducts() }
+//            it.onFailure { Logger.d("Products is not update") }
+//        }
+//        remoteConfigRepository.fetchAndActivate().removeObserver(observer)
+//        remoteConfigRepository.fetchAndActivate().observeForever(observer)
+        return Transformations.map(remoteConfigRepository.fetchAndActivate()) {
             it.onSuccess { updateProducts() }
-            it.onFailure { Logger.d("Products is not update") }
+            it.onFailure { Logger.d("Fetch remote config FAILED: ${it.localizedMessage}") }
+            return@map it.map { Unit }
         }
-        remoteConfigRepository.fetchAndActivate().removeObserver(observer)
-        remoteConfigRepository.fetchAndActivate().observeForever(observer)
     }
 
     private fun updateProducts() {
