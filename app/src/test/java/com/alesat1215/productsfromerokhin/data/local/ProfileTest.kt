@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.data.local
 
+import com.alesat1215.productsfromerokhin.data.Profile
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -25,19 +26,29 @@ class ProfileTest {
         assertEquals(profile.delivery(), onlyPhone)
 
         val onlyAddress = separator + separator + address
-        profile = Profile(address = address)
+        profile =
+            Profile(address = address)
         assertEquals(profile.delivery(), onlyAddress)
 
         val nameAddress = separator + separator + name + separator + address
-        profile = Profile(name = name, address = address)
+        profile = Profile(
+            name = name,
+            address = address
+        )
         assertEquals(profile.delivery(), nameAddress)
 
         val namePhone = separator + separator + name + separator + phone
-        profile = Profile(name = name, phone = phone)
+        profile = Profile(
+            name = name,
+            phone = phone
+        )
         assertEquals(profile.delivery(), namePhone)
 
         val phoneAddress = separator + separator + phone + separator + address
-        profile = Profile(phone = phone, address = address)
+        profile = Profile(
+            phone = phone,
+            address = address
+        )
         assertEquals(profile.delivery(), phoneAddress)
     }
 }

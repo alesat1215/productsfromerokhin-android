@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.data.local.ProductInfo
+import com.alesat1215.productsfromerokhin.data.ProductInfo
 import com.alesat1215.productsfromerokhin.databinding.FragmentCartBinding
 import com.alesat1215.productsfromerokhin.util.BindRVAdapter
 import dagger.android.support.DaggerFragment

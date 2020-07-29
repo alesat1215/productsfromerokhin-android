@@ -1,5 +1,9 @@
 package com.alesat1215.productsfromerokhin.data.local
 
+import com.alesat1215.productsfromerokhin.data.Group
+import com.alesat1215.productsfromerokhin.data.Product
+import com.alesat1215.productsfromerokhin.data.ProductInCart
+import com.alesat1215.productsfromerokhin.data.ProductInfo
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -7,8 +11,14 @@ import org.junit.Assert.*
 class ProductsTest {
     // Product
     private val product = ProductInfo(
-        Product(name = "productDB", price = 100),
-        listOf(ProductInCart(name = "productDB"), ProductInCart(name = "productDB"))
+        Product(
+            name = "productDB",
+            price = 100
+        ),
+        listOf(
+            ProductInCart(name = "productDB"),
+            ProductInCart(name = "productDB")
+        )
     )
 
     @Test
@@ -33,8 +43,12 @@ class ProductsTest {
     @Test
     fun productsWithGroup() {
         val groupName = "group name"
-        val group = Group(name = groupName).apply {
-            products = listOf(Product(), Product())
+        val group = Group(name = groupName)
+            .apply {
+            products = listOf(
+                Product(),
+                Product()
+            )
         }
         group.productsWithGroup().forEach {
             assertEquals(it.group, groupName)
@@ -47,10 +61,18 @@ class ProductsTest {
         val groupName1 = "group name 1"
         val groupName2 = "group name 2"
         val groups = listOf(
-            Group(groupName1).apply { products = listOf(Product(), Product()) },
-            Group(groupName2).apply { products = listOf(Product(), Product()) }
+            Group(groupName1)
+                .apply { products = listOf(
+                    Product(),
+                    Product()
+                ) },
+            Group(groupName2)
+                .apply { products = listOf(
+                    Product(),
+                    Product()
+                ) }
         )
-        val result = products(groups)
+        val result = com.alesat1215.productsfromerokhin.data.products(groups)
         assertEquals(result[0].group, groupName1)
         assertEquals(result[1].group, groupName1)
         assertEquals(result[2].group, groupName2)

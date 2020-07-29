@@ -1,8 +1,6 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
-import com.alesat1215.productsfromerokhin.data.local.AppDatabase
-import com.alesat1215.productsfromerokhin.data.local.Profile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

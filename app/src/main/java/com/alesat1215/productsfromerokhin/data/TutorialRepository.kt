@@ -3,7 +3,6 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.alesat1215.productsfromerokhin.data.local.AppDatabase
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson

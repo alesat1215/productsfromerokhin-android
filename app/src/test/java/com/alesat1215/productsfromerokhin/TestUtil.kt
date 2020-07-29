@@ -3,7 +3,7 @@ package com.alesat1215.productsfromerokhin
 //import com.alesat1215.productsfromerokhin.data.GroupRemote
 //import com.alesat1215.productsfromerokhin.data.ProductRemote
 //import com.alesat1215.productsfromerokhin.data.RemoteData
-import com.alesat1215.productsfromerokhin.data.local.Profile
+import com.alesat1215.productsfromerokhin.data.Profile
 
 //object RemoteDataMockTest {
 //    val data = RemoteData(
@@ -27,4 +27,8 @@ import com.alesat1215.productsfromerokhin.data.local.Profile
 
 
 
-fun profileMockTest() = Profile(name = "name", phone = "phone", address = "address")
+fun profileMockTest() = Profile(
+    name = "name",
+    phone = "phone",
+    address = "address"
+)

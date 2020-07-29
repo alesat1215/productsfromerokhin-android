@@ -2,7 +2,7 @@ package com.alesat1215.productsfromerokhin.di
 
 import android.content.Context
 import androidx.room.Room
-import com.alesat1215.productsfromerokhin.data.local.AppDatabase
+import com.alesat1215.productsfromerokhin.data.AppDatabase
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
-import com.alesat1215.productsfromerokhin.data.local.ProductInfo
+import com.alesat1215.productsfromerokhin.data.ProductInfo
 import com.alesat1215.productsfromerokhin.start.StartTitle.*
 import com.alesat1215.productsfromerokhin.util.CartManager
 import javax.inject.Inject
