@@ -42,9 +42,6 @@ class ProductsRepository @Inject constructor(
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : IProductsRepository {
-    /** Parameters in Firebase remote config */
-    private val TITLES = "titles"
-    private val PRODUCTS = "products"
     /** @return LiveData with products from Room only once */
     private val products by lazy { db.productsDao().products() }
     /** @return LiveData with groups from Room only once */
@@ -117,6 +114,12 @@ class ProductsRepository @Inject constructor(
             // Update titles
             db.titlesDao().updateTitles(titles)
         }
+    }
+
+    companion object {
+        /** Parameters in Firebase remote config */
+        const val TITLES = "titles"
+        const val PRODUCTS = "products"
     }
 
 }
