@@ -1,18 +1,22 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
@@ -23,11 +27,13 @@ class ProductsRepositoryTest {
     @Mock
     private lateinit var remoteConfig: RemoteConfig
     @Mock
+    private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
+    @Mock
     private lateinit var db: AppDatabase
     @Mock
     private lateinit var productsDao: ProductsDao
 
-    private val products = listOf(ProductInfo(
+    private val productsInfo = listOf(ProductInfo(
         Product(), listOf(
         ProductInCart()
     )))
@@ -40,34 +46,56 @@ class ProductsRepositoryTest {
 
     private var productInCart = false
 
+    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(mainThreadSurrogate)
 //        `when`(dbFBFetchLimit.shouldFetch()).thenReturn(true)
         `when`(db.productsDao()).thenReturn(productsDao)
-        `when`(db.productsDao().products()).thenReturn(MutableLiveData(products))
+        `when`(db.productsDao().products()).thenReturn(MutableLiveData(productsInfo))
         repository = ProductsRepository(remoteConfig, db, limiter, gson)
 //        `when`(db.productsDao().groups()).thenReturn(MutableLiveData(RemoteDataMockTest.data.groups()))
 //        `when`(db.productsDao().titles()).thenReturn(MutableLiveData(RemoteDataMockTest.data.titles()))
 //        `when`(db.productsDao().profile()).thenReturn(MutableLiveData(profileMockTest()))
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+        mainThreadSurrogate.close()
+    }
+
     @Test
-    fun products() {
+    fun products() = runBlocking {
         // Not update db (limiter)
         `when`(limiter.shouldFetch()).thenReturn(false)
         var result: List<ProductInfo> = emptyList()
         repository.products().observeForever { result = it }
-        assertEquals(result, products)
+        assertEquals(result, productsInfo)
         // Not update db (result onFailure)
         result = emptyList()
         `when`(limiter.shouldFetch()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
         repository.products().observeForever { result = it }
-        assertEquals(result, products)
+        assertEquals(result, productsInfo)
         verify(productsDao, never()).updateProducts(anyList(), anyList())
+        // Update db
+        result = emptyList()
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
+        `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
+        `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
+        val groups = arrayOf(Group())
+        `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
+        val products = emptyList<Product>()
+//        `when`(products(groups.asList())).thenReturn(products)
+        repository.products().observeForever { result = it }
+        assertEquals(result, productsInfo)
+        joinAll()
+        verify(db.productsDao()).updateProducts(groups.asList(), products)
     }
 
 //    @Test
