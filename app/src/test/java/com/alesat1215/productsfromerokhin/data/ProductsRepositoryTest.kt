@@ -1,46 +1,67 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-//import com.alesat1215.productsfromerokhin.RemoteDataMockTest
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.util.RateLimiter
-import com.google.firebase.auth.FirebaseAuth
-//import com.google.firebase.database.DatabaseReference
-//import com.google.firebase.database.FirebaseDatabase
+import com.alesat1215.productsfromerokhin.util.RemoteConfig
+import com.google.gson.Gson
+import org.junit.Before
 
+import org.junit.Assert.*
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class ProductsRepositoryTest {
 
     @Mock
-    private lateinit var authFBMock: FirebaseAuth
-//    @Mock
-//    private lateinit var dbFB: DatabaseReference
+    private lateinit var remoteConfig: RemoteConfig
     @Mock
     private lateinit var db: AppDatabase
     @Mock
-    private lateinit var dbFBFetchLimit: RateLimiter
+    private lateinit var productsDao: ProductsDao
+
+    private val products = listOf(ProductInfo(
+        Product(), listOf(
+        ProductInCart()
+    )))
+    @Mock
+    private lateinit var limiter: RateLimiter
+    @Mock
+    private lateinit var gson: Gson
+
+    private lateinit var repository: ProductsRepository
 
     private var productInCart = false
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-//    @Before
-//    fun setUp() {
-//        `when`(authFBMock.currentUser).thenReturn(mock(FirebaseUser::class.java))
-//        `when`(dbFB.database).thenReturn(mock(FirebaseDatabase::class.java))
+    @Before
+    fun setUp() {
 //        `when`(dbFBFetchLimit.shouldFetch()).thenReturn(true)
-//        `when`(db.productsDao()).thenReturn(mock(ProductsDao::class.java))
-//        `when`(db.productsDao().products()).thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
+        `when`(db.productsDao()).thenReturn(productsDao)
+        `when`(db.productsDao().products()).thenReturn(MutableLiveData(products))
+        repository = ProductsRepository(remoteConfig, db, limiter, gson)
 //        `when`(db.productsDao().groups()).thenReturn(MutableLiveData(RemoteDataMockTest.data.groups()))
 //        `when`(db.productsDao().titles()).thenReturn(MutableLiveData(RemoteDataMockTest.data.titles()))
 //        `when`(db.productsDao().profile()).thenReturn(MutableLiveData(profileMockTest()))
-//    }
-//
+    }
+
+    @Test
+    fun products() {
+        // Not update db
+        `when`(limiter.shouldFetch()).thenReturn(false)
+        var result: List<ProductInfo> = emptyList()
+        repository.products().observeForever { result = it }
+        assertEquals(result, products)
+    }
+
 //    @Test
 //    fun productsGroupsTitles() {
 //        val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
