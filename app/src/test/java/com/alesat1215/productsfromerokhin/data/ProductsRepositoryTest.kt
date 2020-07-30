@@ -12,8 +12,9 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -55,11 +56,18 @@ class ProductsRepositoryTest {
 
     @Test
     fun products() {
-        // Not update db
+        // Not update db (limiter)
         `when`(limiter.shouldFetch()).thenReturn(false)
         var result: List<ProductInfo> = emptyList()
         repository.products().observeForever { result = it }
         assertEquals(result, products)
+        // Not update db (result onFailure)
+        result = emptyList()
+        `when`(limiter.shouldFetch()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
+        repository.products().observeForever { result = it }
+        assertEquals(result, products)
+        verify(productsDao, never()).updateProducts(anyList(), anyList())
     }
 
 //    @Test
