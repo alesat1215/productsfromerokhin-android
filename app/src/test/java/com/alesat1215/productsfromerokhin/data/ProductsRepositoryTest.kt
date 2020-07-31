@@ -178,6 +178,12 @@ class ProductsRepositoryTest {
         verify(db.cartDao()).insertProductInCart(productInCart)
     }
 
+    @Test
+    fun delProductFromCart() = runBlocking {
+        repository.delProductFromCart(productInCart)
+        verify(db.cartDao()).deleteProductFromCart(productInCart)
+    }
+
     //    @Test
 //    fun productsGroupsTitles() {
 //        val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
