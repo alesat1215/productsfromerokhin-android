@@ -21,12 +21,19 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class LoadViewModelTest {
     @Mock
-    private lateinit var repository: ProductsRepository
+    private lateinit var productsRepository: ProductsRepository
     @Mock
     private lateinit var tutorialRepository: TutorialRepository
     @Mock
+    private lateinit var instruction: Instruction
+    private lateinit var instructions: List<Instruction>
+    @Mock
     private lateinit var auth: Auth
     private val authResult: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
+    @Mock
+    private lateinit var productInfo: ProductInfo
+    private lateinit var products: List<ProductInfo>
+
     private lateinit var viewModel: LoadViewModel
 
     @get:Rule
@@ -35,7 +42,11 @@ class LoadViewModelTest {
     @Before
     fun setUp() {
         `when`(auth.signIn()).thenReturn(authResult)
-        viewModel = LoadViewModel(repository, tutorialRepository, auth)
+        products = listOf(productInfo)
+        instructions = listOf(instruction)
+        `when`(productsRepository.products()).thenReturn(MutableLiveData(products))
+        `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(instructions))
+        viewModel = LoadViewModel(productsRepository, tutorialRepository, auth)
     }
 
     @Test
@@ -45,34 +56,14 @@ class LoadViewModelTest {
 
     @Test
     fun loadCompleteProducts() {
-        // Repository return empty list of products
-        `when`(repository.products())
-            .thenReturn(MutableLiveData(emptyList()))
-        var result = true
-        viewModel.loadCompleteProducts().observeForever { result = it }
-        assertFalse(result)
-        // Repository return not empty list of products
-        `when`(repository.products())
-            .thenReturn(MutableLiveData(listOf(
-                ProductInfo(
-                    inCart = emptyList()
-                )
-            )))
-        result = false
+        var result = false
         viewModel.loadCompleteProducts().observeForever { result = it }
         assertTrue(result)
     }
 
     @Test
-    fun loadCompleteTutorialEmptyData() {
-        // Repository return empty list of instructions
-        `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(emptyList<Instruction>()))
-        var result = true
-        viewModel.loadCompleteTutorial().observeForever { result = it }
-        assertFalse(result)
-        // Repository return empty list of instructions
-        `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(listOf(Instruction())))
-        result = false
+    fun loadCompleteTutorial() {
+        var result = false
         viewModel.loadCompleteTutorial().observeForever { result = it }
         assertTrue(result)
     }
