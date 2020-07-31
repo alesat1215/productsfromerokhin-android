@@ -71,7 +71,7 @@ class ProductsRepositoryTest {
     }
 
     @Test
-    fun products() = runBlocking {
+    fun products() {
         // Not update db (limiter)
         `when`(limiter.shouldFetch()).thenReturn(false)
         var result: List<ProductInfo> = emptyList()
@@ -86,6 +86,7 @@ class ProductsRepositoryTest {
         verify(productsDao, never()).updateProducts(anyList(), anyList())
         // Update db
         result = emptyList()
+        `when`(limiter.shouldFetch()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
         `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
