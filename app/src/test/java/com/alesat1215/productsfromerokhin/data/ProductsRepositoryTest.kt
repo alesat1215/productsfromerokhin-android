@@ -22,6 +22,8 @@ import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.Thread.sleep
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class ProductsRepositoryTest {
 
@@ -33,6 +35,8 @@ class ProductsRepositoryTest {
     private lateinit var db: AppDatabase
     @Mock
     private lateinit var productsDao: ProductsDao
+    @Mock
+    private lateinit var titlesDao: TitlesDao
 
     private val productsInfo = listOf(ProductInfo(
         Product(), listOf(
@@ -58,6 +62,7 @@ class ProductsRepositoryTest {
 //        `when`(dbFBFetchLimit.shouldFetch()).thenReturn(true)
         `when`(db.productsDao()).thenReturn(productsDao)
         `when`(db.productsDao().products()).thenReturn(MutableLiveData(productsInfo))
+        `when`(db.titlesDao()).thenReturn(titlesDao)
         repository = ProductsRepository(remoteConfig, db, limiter, gson)
 //        `when`(db.productsDao().groups()).thenReturn(MutableLiveData(RemoteDataMockTest.data.groups()))
 //        `when`(db.productsDao().titles()).thenReturn(MutableLiveData(RemoteDataMockTest.data.titles()))
@@ -89,14 +94,18 @@ class ProductsRepositoryTest {
         `when`(limiter.shouldFetch()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
+        `when`(firebaseRemoteConfig.getString(ProductsRepository.TITLES)).thenReturn("")
         `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
         val groups = arrayOf(Group())
         `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
+        val titles = Titles()
+        `when`(gson.fromJson("", Titles::class.java)).thenReturn(titles)
         val products = emptyList<Product>()
         repository.products().observeForever { result = it }
         assertEquals(result, productsInfo)
         sleep(100)
         verify(db.productsDao()).updateProducts(groups.asList(), products)
+        verify(db.titlesDao()).updateTitles(titles)
     }
 
 //    @Test
