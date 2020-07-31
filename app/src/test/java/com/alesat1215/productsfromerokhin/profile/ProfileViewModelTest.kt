@@ -17,6 +17,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
+import java.lang.Thread.sleep
 
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -52,6 +53,7 @@ class ProfileViewModelTest {
     @Test
     fun updateProfile() = runBlocking {
         viewModel.updateProfile(profile.name, profile.phone, profile.address)
+        sleep(100)
         verify(repository).updateProfile(profile)
     }
 }

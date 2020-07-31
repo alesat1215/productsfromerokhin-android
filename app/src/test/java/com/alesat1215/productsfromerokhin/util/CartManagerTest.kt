@@ -15,6 +15,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
+import java.lang.Thread.sleep
 
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -47,12 +48,14 @@ class CartManagerTest {
     @Test
     fun addProductToCart() = runBlocking {
         cartManager.addProductToCart(productInfo)
+        sleep(100)
         verify(repository).addProductToCart(productInfo.asProductInCart())
     }
 
     @Test
-    fun delProductFromCart() = runBlockingTest {
+    fun delProductFromCart() = runBlocking {
         cartManager.delProductFromCart(productInfo)
+        sleep(100)
         verify(repository).delProductFromCart(productInCart)
     }
 }
