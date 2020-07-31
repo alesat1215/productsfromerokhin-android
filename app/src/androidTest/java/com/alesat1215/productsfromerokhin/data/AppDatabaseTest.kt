@@ -56,7 +56,16 @@ class AppDatabaseTest {
         assertEquals(productsInfo.first().product, product)
     }
 
-//    @Test
+    @Test
+    fun updateTitles() {
+        val titles = Titles(title = "title")
+        var result: Titles? = null
+        titlesDao.titles().observeForever { result = it }
+        titlesDao.updateTitles(titles)
+        assertEquals(result, titles)
+    }
+
+    //    @Test
 //    fun updateReadClearProducts() {
 //        var products = listOf<Product>()
 //        var groups = listOf<GroupDB>()
