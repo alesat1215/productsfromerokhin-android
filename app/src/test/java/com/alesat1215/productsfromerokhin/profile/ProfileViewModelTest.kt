@@ -1,11 +1,9 @@
 package com.alesat1215.productsfromerokhin.profile
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.data.Profile
 import com.alesat1215.productsfromerokhin.data.ProfileRepository
-import com.alesat1215.productsfromerokhin.profileMockTest
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -14,7 +12,6 @@ import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
-import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -28,18 +25,16 @@ class ProfileViewModelTest {
     @Mock
     private lateinit var repository: ProfileRepository
     private lateinit var viewModel: ProfileViewModel
-    @Mock
-    private lateinit var profile: LiveData<Profile>
+    private val profile = Profile(name = "name", phone = "phone", address = "address")
+    private lateinit var profileResult: LiveData<Profile>
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
-
-//    @get:Rule
-//    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        `when`(repository.profile).thenReturn(profile)
+        profileResult = MutableLiveData(profile)
+        `when`(repository.profile).thenReturn(profileResult)
         viewModel = ProfileViewModel(repository)
     }
 
@@ -51,13 +46,11 @@ class ProfileViewModelTest {
 
     @Test
     fun profile() {
-        assertEquals(viewModel.profile, profile)
+        assertEquals(viewModel.profile, profileResult)
     }
 
     @Test
     fun updateProfile() = runBlocking {
-        val profile = profileMockTest()
-        `when`(repository.updateProfile(profile)).thenReturn(Unit)
         viewModel.updateProfile(profile.name, profile.phone, profile.address)
         verify(repository).updateProfile(profile)
     }
