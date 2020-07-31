@@ -6,7 +6,6 @@ import com.alesat1215.productsfromerokhin.util.RateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -50,10 +49,6 @@ class TutorialRepositoryTest {
         `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
         `when`(gson.fromJson("", Array<Instruction>::class.java)).thenReturn(instructions)
         repository = TutorialRepository(remoteConfig, db, limiter, gson)
-    }
-
-    @After
-    fun tearDown() {
     }
 
     @Test
