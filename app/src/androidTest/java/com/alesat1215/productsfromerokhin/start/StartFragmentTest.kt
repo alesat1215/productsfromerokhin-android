@@ -3,18 +3,16 @@ package com.alesat1215.productsfromerokhin.start
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
-import com.alesat1215.productsfromerokhin.util.BindViewHolder
 import org.junit.Before
 
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Thread.sleep
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -23,6 +21,12 @@ class StartFragmentTest {
     @Before
     fun setUp() {
         launchFragmentInContainer<StartFragment>(themeResId = R.style.AppTheme)
+    }
+
+    @Test
+    fun checkViews() {
+        sleep(10000)
+        onView(withId(R.id.title_start)).check(matches(withText("")))
     }
 
 //    @Test
