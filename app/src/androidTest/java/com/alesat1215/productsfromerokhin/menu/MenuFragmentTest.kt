@@ -9,6 +9,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.alesat1215.productsfromerokhin.DataMock
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.util.BindViewHolder
 import org.junit.Before
@@ -16,6 +17,7 @@ import org.junit.Before
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Thread.sleep
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -32,21 +34,21 @@ class MenuFragmentTest {
         onView(withId(R.id.products_menu)).check(matches(isDisplayed()))
     }
 
-//    @Test
-//    fun onTabSelected() {
-//        val group = RemoteDataMockAndroidTest.data.groups!!.first().name
-//        val productFromGroup = RemoteDataMockAndroidTest.products123AndroidTest().first().name
-//        val group2 = RemoteDataMockAndroidTest.data.groups!!.last().name
-//        val productFromGroup2 = RemoteDataMockAndroidTest.products456AndroidTest().first().name
-//        // Scroll bottom
-//        onView(withText(productFromGroup)).check(matches(isDisplayed()))
-//        onView(withText(group2)).perform(click())
-//        onView(withText(productFromGroup2)).check(matches(isDisplayed()))
-//        onView(withText(productFromGroup)).check(doesNotExist())
-//        // Scroll start
-//        onView(withText(group)).perform(click())
-//        onView(withText(productFromGroup)).check(matches(isDisplayed()))
-//    }
+    @Test
+    fun onTabSelected() {
+        val groupFirst = DataMock.groups.first().name
+        val productFirst = DataMock.groups.first().products.first().name
+        val groupLast = DataMock.groups.last().name
+        val productLast = DataMock.groups.last().products.first().name
+        // Scroll bottom
+        onView(withText(productFirst)).check(matches(isDisplayed()))
+        onView(withText(groupLast)).perform(click())
+        onView(withText(productLast)).check(matches(isDisplayed()))
+        onView(withText(productFirst)).check(doesNotExist())
+        // Scroll start
+        onView(withText(groupFirst)).perform(click())
+        onView(withText(productFirst)).check(matches(isDisplayed()))
+    }
 
 //    @Test
 //    fun onScroll() {
