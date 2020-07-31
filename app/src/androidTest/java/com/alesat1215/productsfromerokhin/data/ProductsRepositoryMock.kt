@@ -1,12 +1,7 @@
 package com.alesat1215.productsfromerokhin.data
 
-//import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.DataMock
-//import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
-import com.alesat1215.productsfromerokhin.profileMockAndroidTest
-import com.alesat1215.productsfromerokhin.util.RateLimiter
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,11 +9,11 @@ import javax.inject.Singleton
 @Singleton
 class ProductsRepositoryMock @Inject constructor() : IProductsRepository {
 
-    override fun products() = MutableLiveData(DataMock.products) //MutableLiveData(RemoteDataMockAndroidTest.productsEmptyCart)
+    override fun products() = MutableLiveData(DataMock.products)
 
-    override fun titles() = MutableLiveData<Titles>(DataMock.titles) //MutableLiveData(RemoteDataMockAndroidTest.data.titles())
+    override fun titles() = MutableLiveData<Titles>(DataMock.titles)
 
-    override fun groups() = MutableLiveData<List<Group>>(DataMock.groups) //MutableLiveData(RemoteDataMockAndroidTest.data.groups())
+    override fun groups() = MutableLiveData<List<Group>>(DataMock.groups)
 
     override val productsInCart = MutableLiveData<List<ProductInfo>>(DataMock.products)
 

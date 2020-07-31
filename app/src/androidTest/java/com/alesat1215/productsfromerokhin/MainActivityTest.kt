@@ -39,5 +39,8 @@ class MainActivityTest {
         // Navigate to profile
         onView(withContentDescription(R.string.profile)).perform(click())
         onView(withId(R.id.profileFragment)).check(matches(isDisplayed()))
+        // Navigate to more
+        onView(withContentDescription(R.string.more)).perform(click())
+        onView(withId(R.id.moreFragment)).check(matches(isDisplayed()))
     }
 }
