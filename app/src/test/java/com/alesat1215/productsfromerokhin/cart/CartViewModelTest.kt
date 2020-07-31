@@ -4,13 +4,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.data.ProductInfo
-//import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.Profile
 import com.alesat1215.productsfromerokhin.data.ProfileRepository
-import com.alesat1215.productsfromerokhin.profileMockTest
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -22,6 +22,8 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CartViewModelTest {
     @Mock
@@ -39,26 +41,27 @@ class CartViewModelTest {
 
     private lateinit var viewModel: CartViewModel
 
-//    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-//        Dispatchers.setMain(mainThreadSurrogate)
-//        `when`(repository.productsInCart)
-//            .thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
-//        `when`(repository.profile).thenReturn(MutableLiveData(profileMockTest()))
-//        viewModel = CartViewModel(repository)
+        Dispatchers.setMain(mainThreadSurrogate)
         `when`(productInfo.priceSumInCart()).thenReturn(priceSumInCart)
         `when`(productInfo.textForOrder()).thenReturn(textForOrder)
         products = MutableLiveData(listOf(productInfo))
         `when`(productsRepository.productsInCart).thenReturn(products)
-        `when`(productsRepository.products()).thenReturn(products)
         `when`(profile.delivery()).thenReturn(delivery)
         `when`(profileRepository.profile).thenReturn(MutableLiveData(profile))
         viewModel = CartViewModel(productsRepository, profileRepository)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+        mainThreadSurrogate.close()
     }
 
     @Test
@@ -86,45 +89,6 @@ class CartViewModelTest {
         viewModel.delivery().observeForever { result = it }
         assertEquals(result, delivery)
     }
-
-    //
-//    @After
-//    fun tearDown() {
-//        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
-//        mainThreadSurrogate.close()
-//    }
-//
-//    @Test
-//    fun products() {
-//        var products = emptyList<Product>()
-//        viewModel.products().observeForever { products = it }
-//        assertEquals(products, RemoteDataMockTest.productsNotEmptyCart)
-//    }
-//
-//    @Test
-//    fun totalInCart() {
-//        var total = 0
-//        viewModel.totalInCart().observeForever { total = it }
-//        assertEquals(total, RemoteDataMockTest.sumInProductsNotEmptyCart)
-//    }
-//
-//    @Test
-//    fun order() {
-//        var order = ""
-//        viewModel.order().observeForever { order = it }
-//        RemoteDataMockTest.productsNotEmptyCart.forEach {
-//            assertTrue(order.contains(it.textForOrder()))
-//        }
-//    }
-
-//    @Test
-//    fun delivery() {
-//        var delivery = ""
-//        viewModel.delivery().observeForever { delivery = it }
-//        assertTrue(delivery.contains(profileMockTest().name))
-//        assertTrue(delivery.contains(profileMockTest().phone))
-//        assertTrue(delivery.contains(profileMockTest().address))
-//    }
 
     @Test
     fun clearCart() = runBlocking {
