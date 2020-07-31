@@ -25,7 +25,6 @@ import java.lang.Thread.sleep
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class ProductsRepositoryTest {
-
     @Mock
     private lateinit var remoteConfig: RemoteConfig
     @Mock
