@@ -98,14 +98,16 @@ class CartFragment : DaggerFragment() {
 
     /** Check phone number for order in contacts */
     private fun checkContact() {
-        if (!isPhoneNumberInContacts()) {
-            showAlertAddContact()
-        } else {
-            selectMessenger()
-        }
+        viewModel.phone().observe(viewLifecycleOwner, Observer {
+            if (!isPhoneNumberInContacts(it?.phone.orEmpty())) {
+                showAlertAddContact(it?.phone.orEmpty())
+            } else {
+                selectMessenger()
+            }
+        })
     }
     /** Show instruction for save number for order in contacts */
-    private fun showAlertAddContact() {
+    private fun showAlertAddContact(number: String) {
         // Build alert
         val dialog = activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -114,7 +116,7 @@ class CartFragment : DaggerFragment() {
                 // Show contact card for positive button
                 setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
                     Logger.d("OK click")
-                    addContact()
+                    addContact(number)
                 }
                 // Show select messenger for negative button
                 setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, i: Int ->
@@ -127,7 +129,7 @@ class CartFragment : DaggerFragment() {
         dialog?.show()
     }
     /** Show contact card whits name & number for saving */
-    private fun addContact(number: String = "+79021228236") {
+    private fun addContact(number: String) {
         // Build intent for add contact with app name & phone number for order
         val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
             type = ContactsContract.RawContacts.CONTENT_TYPE
@@ -141,7 +143,7 @@ class CartFragment : DaggerFragment() {
     }
 
     /** Check phone for order in contacts */
-    private fun isPhoneNumberInContacts(number: String = "+79021228236"): Boolean {
+    private fun isPhoneNumberInContacts(number: String): Boolean {
         val uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_FILTER_URI, Uri.encode(number))
         val projection = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
         // Request to contacts by phone number
