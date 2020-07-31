@@ -78,6 +78,15 @@ class AppDatabaseTest {
         assertTrue(result.first().inCart.isEmpty())
     }
 
+    @Test
+    fun updateProfile() {
+        val profile = Profile(name = "name")
+        var result: Profile? = null
+        profileDao.profile().observeForever { result = it }
+        profileDao.updateProfile(profile)
+        assertEquals(result?.name, profile.name)
+    }
+
     //    @Test
 //    fun updateReadClearProducts() {
 //        var products = listOf<Product>()
