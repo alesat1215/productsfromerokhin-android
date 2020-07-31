@@ -67,6 +67,13 @@ class CartViewModelTest {
         assertEquals(result, priceSumInCart)
     }
 
+    @Test
+    fun order() {
+        var result = ""
+        viewModel.order().observeForever { result = it }
+        assertTrue(result.contains(textForOrder))
+    }
+
     //
 //    @After
 //    fun tearDown() {
