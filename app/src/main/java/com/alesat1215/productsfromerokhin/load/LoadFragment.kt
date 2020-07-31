@@ -62,6 +62,7 @@ class LoadFragment : DaggerFragment() {
 //                    Logger.d("Load products complete")
 //                }
 //            })
+            // Subscribe to trigger of phone & products loading
             Transformations.switchMap(viewModel.loadCompletePhone()) {
                 if (it) {
                     Logger.d("Load phone complete")
