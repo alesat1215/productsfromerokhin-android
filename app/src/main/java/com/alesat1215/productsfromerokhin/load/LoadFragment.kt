@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.alesat1215.productsfromerokhin.R
@@ -53,9 +55,23 @@ class LoadFragment : DaggerFragment() {
     private fun loadData() {
         if (tutorialIsRead()) {
             // Subscribe to trigger of products loading
-            viewModel.loadCompleteProducts().observe(viewLifecycleOwner, Observer {
+//            viewModel.loadCompleteProducts().observe(viewLifecycleOwner, Observer {
+//                if (it) {
+//                    // For non empty products navigate to destination
+//                    findNavController().navigate(R.id.action_loadFragment_to_startFragment)
+//                    Logger.d("Load products complete")
+//                }
+//            })
+            Transformations.switchMap(viewModel.loadCompletePhone()) {
                 if (it) {
-                    // For non empty products navigate to destination
+                    Logger.d("Load phone complete")
+                    return@switchMap viewModel.loadCompleteProducts()
+                } else {
+                    return@switchMap MutableLiveData(it)
+                }
+            }.observe(viewLifecycleOwner, Observer {
+                if (it) {
+                    // For non empty phone & products navigate to destination
                     findNavController().navigate(R.id.action_loadFragment_to_startFragment)
                     Logger.d("Load products complete")
                 }
