@@ -2,9 +2,9 @@ package com.alesat1215.productsfromerokhin.cart
 
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.alesat1215.productsfromerokhin.R
@@ -25,17 +25,9 @@ class CartFragmentTest {
 
     @Test
     fun checkViews() {
-        onView(withId(R.id.products_cart))
-            .check(matches(isDisplayed()))
-        onView(withId(R.id.result_text))
-            .check(matches(isDisplayed()))
-        onView(withId(R.id.result_sum))
-            .check(matches(isDisplayed()))
-        onView(withId(R.id.send_cart))
-            .check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun send() {
+        onView(withId(R.id.products_cart)).check(matches(isDisplayed()))
+        onView(withId(R.id.result_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.result_sum)).check(matches(isDisplayed()))
+        onView(withId(R.id.send_cart)).check(matches(isDisplayed()))
     }
 }
