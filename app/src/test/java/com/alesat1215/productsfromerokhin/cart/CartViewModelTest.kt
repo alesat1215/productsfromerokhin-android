@@ -45,14 +45,23 @@ class CartViewModelTest {
 //            .thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
 //        `when`(repository.profile).thenReturn(MutableLiveData(profileMockTest()))
 //        viewModel = CartViewModel(repository)
+        `when`(productInfo.priceSumInCart()).thenReturn(10)
         products = MutableLiveData(listOf(productInfo))
         `when`(productsRepository.productsInCart).thenReturn(products)
+        `when`(productsRepository.products()).thenReturn(products)
         viewModel = CartViewModel(productsRepository, profileRepository)
     }
 
     @Test
     fun products() {
         assertEquals(viewModel.products(), products)
+    }
+
+    @Test
+    fun totalInCart() {
+        var result = 0
+        viewModel.totalInCart().observeForever { result = it }
+        assertEquals(result, 10)
     }
 
     //
