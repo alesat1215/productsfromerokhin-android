@@ -23,6 +23,8 @@ abstract class TestRepositoryModule {
     abstract fun bindProductsRepository(repository: ProductsRepositoryMock): IProductsRepository
     @Binds
     abstract fun bindTutorialRepository(repository: TutorialRepositoryMock): ITutorialRepository
+    @Binds
+    abstract fun bindProfileRepository(repository: ProfileRepositoryMock): IProfileRepository
 }
 
 @Module

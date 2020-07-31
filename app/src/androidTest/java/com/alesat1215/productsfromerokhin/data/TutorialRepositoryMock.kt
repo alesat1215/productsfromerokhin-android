@@ -9,9 +9,4 @@ class TutorialRepositoryMock @Inject constructor() : ITutorialRepository {
     override fun instructions(): LiveData<List<Instruction>> {
         TODO("Not yet implemented")
     }
-
-    override val remoteConfig: FirebaseRemoteConfig
-        get() = TODO("Not yet implemented")
-    override val limiter: RateLimiter?
-        get() = TODO("Not yet implemented")
 }
