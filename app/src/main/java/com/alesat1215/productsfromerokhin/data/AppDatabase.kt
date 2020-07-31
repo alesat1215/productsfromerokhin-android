@@ -91,12 +91,39 @@ interface InstructionsDao {
     fun clearInstructions()
 }
 
-@Database(entities = [Product::class, Group::class, Titles::class, ProductInCart::class, Profile::class, Instruction::class], version = 1, exportSchema = false)
+@Dao
+interface PhoneDao {
+    @Query("SELECT * FROM phonefororder LIMIT 1")
+    fun phone(): LiveData<PhoneForOrder>
+    /** Clear & insert phone */
+    @Transaction
+    fun updatePhone(phoneForOrder: PhoneForOrder) {
+        clearPhone()
+        insertPhone(phoneForOrder)
+        Logger.d("Update phone for order")
+    }
+    @Insert(entity = PhoneForOrder::class, onConflict = OnConflictStrategy.REPLACE)
+    fun insertPhone(phoneForOrder: PhoneForOrder)
+    @Query("DELETE FROM phonefororder")
+    fun clearPhone()
+}
+
+@Database(
+    entities = [
+    Product::class,
+    Group::class,
+    Titles::class,
+    ProductInCart::class,
+    Profile::class,
+    Instruction::class,
+    PhoneForOrder::class
+], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
     abstract fun titlesDao(): TitlesDao
     abstract fun cartDao(): CartDao
     abstract fun profileDao(): ProfileDao
     abstract fun instructionsDao(): InstructionsDao
+    abstract fun phoneDao(): PhoneDao
 }
 

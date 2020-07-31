@@ -11,6 +11,9 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** Repository for products, groups & titles.
+ * Return LiveData from Room & update if needed Room from remote config.
+ * */
 interface IProductsRepository {
     /** Get products & update Room from remote config if needed */
     fun products(): LiveData<List<ProductInfo>>
@@ -28,9 +31,6 @@ interface IProductsRepository {
     suspend fun clearCart()
 }
 
-/** Repository for products, groups & titles.
- * Return LiveData from Room & update if needed Room from remote config.
- * */
 @Singleton
 class ProductsRepository @Inject constructor(
     /** Firebase remote config */
