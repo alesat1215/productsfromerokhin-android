@@ -66,6 +66,7 @@ class ProductsRepositoryTest {
 //        `when`(dbFBFetchLimit.shouldFetch()).thenReturn(true)
         `when`(db.productsDao()).thenReturn(productsDao)
         `when`(db.productsDao().products()).thenReturn(MutableLiveData(productsInfo))
+        `when`(db.productsDao().groups()).thenReturn(MutableLiveData(groups.asList()))
         `when`(db.titlesDao()).thenReturn(titlesDao)
         `when`(db.titlesDao().titles()).thenReturn(MutableLiveData(titles))
         `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
@@ -93,6 +94,7 @@ class ProductsRepositoryTest {
         repository.products().observeForever { result = it }
         assertEquals(result, productsInfo)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
+        verify(db.titlesDao(), never()).updateTitles(titles)
         // Not update db (result onFailure)
         result = emptyList()
         `when`(limiter.shouldFetch()).thenReturn(true)
@@ -100,6 +102,7 @@ class ProductsRepositoryTest {
         repository.products().observeForever { result = it }
         assertEquals(result, productsInfo)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
+        verify(db.titlesDao(), never()).updateTitles(titles)
         // Update db
         result = emptyList()
         `when`(limiter.shouldFetch()).thenReturn(true)
@@ -118,12 +121,15 @@ class ProductsRepositoryTest {
         var result: Titles? = null
         repository.titles().observeForever { result = it }
         assertEquals(result, titles)
+        verify(productsDao, never()).updateProducts(groups.asList(), products)
+        verify(titlesDao, never()).updateTitles(titles)
         // Not update db (result onFailure)
         result = null
         `when`(limiter.shouldFetch()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
         repository.titles().observeForever { result = it }
         assertEquals(result, titles)
+        verify(productsDao, never()).updateProducts(groups.asList(), products)
         verify(titlesDao, never()).updateTitles(titles)
         // Update db
         result = null
@@ -131,6 +137,34 @@ class ProductsRepositoryTest {
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         repository.titles().observeForever { result = it }
         assertEquals(result, titles)
+        sleep(100)
+        verify(db.productsDao()).updateProducts(groups.asList(), products)
+        verify(db.titlesDao()).updateTitles(titles)
+    }
+
+    @Test
+    fun groups() {
+        // Not update db (limiter)
+        `when`(limiter.shouldFetch()).thenReturn(false)
+        var result: List<Group> = emptyList()
+        repository.groups().observeForever { result = it }
+        assertEquals(groups.asList(), result)
+        verify(productsDao, never()).updateProducts(groups.asList(), products)
+        verify(titlesDao, never()).updateTitles(titles)
+        // Not update db (result onFailure)
+        result = emptyList()
+        `when`(limiter.shouldFetch()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
+        repository.groups().observeForever { result = it }
+        assertEquals(groups.asList(), result)
+        verify(productsDao, never()).updateProducts(groups.asList(), products)
+        verify(titlesDao, never()).updateTitles(titles)
+        // Update db
+        result = emptyList()
+        `when`(limiter.shouldFetch()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
+        repository.groups().observeForever { result = it }
+        assertEquals(groups.asList(), result)
         sleep(100)
         verify(db.productsDao()).updateProducts(groups.asList(), products)
         verify(db.titlesDao()).updateTitles(titles)
