@@ -31,8 +31,6 @@ class TutorialRepository @Inject constructor(
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
-    /** Parameters in Firebase remote config */
-    private val INSTRUCTIONS = "instructions"
     /** Get instructions from Room only once */
     private val instructions by lazy { db.instructionsDao().instructions() }
 
@@ -60,6 +58,11 @@ class TutorialRepository @Inject constructor(
             // Update Room
             db.instructionsDao().updateInstructions(remoteInstructions)
         }
+    }
+
+    companion object {
+        /** Parameters in Firebase remote config */
+        const val INSTRUCTIONS = "instructions"
     }
 
 }

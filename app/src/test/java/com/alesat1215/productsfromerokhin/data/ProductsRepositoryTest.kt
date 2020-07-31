@@ -91,6 +91,7 @@ class ProductsRepositoryTest {
         var result: List<ProductInfo> = emptyList()
         repository.products().observeForever { result = it }
         assertEquals(result, productsInfo)
+        sleep(100)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
         verify(db.titlesDao(), never()).updateTitles(titles)
         // Not update db (result onFailure)
@@ -99,6 +100,7 @@ class ProductsRepositoryTest {
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
         repository.products().observeForever { result = it }
         assertEquals(result, productsInfo)
+        sleep(100)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
         verify(db.titlesDao(), never()).updateTitles(titles)
         // Update db
@@ -119,6 +121,7 @@ class ProductsRepositoryTest {
         var result: Titles? = null
         repository.titles().observeForever { result = it }
         assertEquals(result, titles)
+        sleep(100)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
         verify(titlesDao, never()).updateTitles(titles)
         // Not update db (result onFailure)
@@ -127,6 +130,7 @@ class ProductsRepositoryTest {
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
         repository.titles().observeForever { result = it }
         assertEquals(result, titles)
+        sleep(100)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
         verify(titlesDao, never()).updateTitles(titles)
         // Update db
@@ -147,6 +151,7 @@ class ProductsRepositoryTest {
         var result: List<Group> = emptyList()
         repository.groups().observeForever { result = it }
         assertEquals(groups.asList(), result)
+        sleep(100)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
         verify(titlesDao, never()).updateTitles(titles)
         // Not update db (result onFailure)
@@ -155,6 +160,7 @@ class ProductsRepositoryTest {
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
         repository.groups().observeForever { result = it }
         assertEquals(groups.asList(), result)
+        sleep(100)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
         verify(titlesDao, never()).updateTitles(titles)
         // Update db
