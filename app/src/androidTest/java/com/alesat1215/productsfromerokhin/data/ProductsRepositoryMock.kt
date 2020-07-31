@@ -29,14 +29,4 @@ class ProductsRepositoryMock @Inject constructor() : IProductsRepository {
         TODO("Not yet implemented")
     }
 
-//    override val profile = MutableLiveData(profileMockAndroidTest())
-//
-//    override suspend fun updateProfile(profile: Profile) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override val remoteConfig: FirebaseRemoteConfig
-//        get() = TODO("Not yet implemented")
-//    override val limiter: RateLimiter?
-//        get() = TODO("Not yet implemented")
 }
