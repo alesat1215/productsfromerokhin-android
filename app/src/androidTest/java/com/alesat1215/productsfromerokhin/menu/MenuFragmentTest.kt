@@ -17,7 +17,6 @@ import org.junit.Before
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.Thread.sleep
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -50,18 +49,18 @@ class MenuFragmentTest {
         onView(withText(productFirst)).check(matches(isDisplayed()))
     }
 
-//    @Test
-//    fun onScroll() {
-//        val group = RemoteDataMockAndroidTest.data.groups().first().name
-//        val group2 = RemoteDataMockAndroidTest.data.groups().last().name
-//        val startPosition = 0
-//        val bottomPosition = RemoteDataMockAndroidTest.data.products().count() - 1
-//        // Scroll bottom
-//        onView(withText(group)).check(matches(isSelected()))
-//        onView(withId(R.id.products_menu)).perform(RecyclerViewActions.scrollToPosition<BindViewHolder>(bottomPosition))
-//        onView(withText(group2)).check(matches(isSelected()))
-//        // Scroll start
-//        onView(withId(R.id.products_menu)).perform(RecyclerViewActions.scrollToPosition<BindViewHolder>(startPosition))
-//        onView(withText(group)).check(matches(isSelected()))
-//    }
+    @Test
+    fun onScroll() {
+        val groupFirst = DataMock.groups.first().name
+        val groupSecond = DataMock.groups[1].name
+        val startPosition = 0
+        val bottomPosition = DataMock.products.count() - 1
+        // Scroll bottom
+        onView(withText(groupFirst)).check(matches(isSelected()))
+        onView(withId(R.id.products_menu)).perform(RecyclerViewActions.scrollToPosition<BindViewHolder>(bottomPosition))
+        onView(withText(groupSecond)).check(matches(isSelected()))
+        // Scroll start
+        onView(withId(R.id.products_menu)).perform(RecyclerViewActions.scrollToPosition<BindViewHolder>(startPosition))
+        onView(withText(groupFirst)).check(matches(isSelected()))
+    }
 }
