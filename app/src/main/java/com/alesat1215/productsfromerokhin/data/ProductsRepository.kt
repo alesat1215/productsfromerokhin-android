@@ -105,14 +105,14 @@ class ProductsRepository @Inject constructor(
             db.productsDao().updateProducts(groups, products)
 
             // Get titles from JSON
-            val titles = gson.fromJson(
-                remoteConfig.firebaseRemoteConfig.getString(TITLES),
-                Titles::class.java
-            )
-            Logger.d("Fetch from remote config titles: " +
-                    "${titles.title}, ${titles.imgTitle}, ${titles.productsTitle}, ${titles.productsTitle2}, ${titles.img}")
-            // Update titles
-            db.titlesDao().updateTitles(titles)
+//            val titles = gson.fromJson(
+//                remoteConfig.firebaseRemoteConfig.getString(TITLES),
+//                Titles::class.java
+//            )
+//            Logger.d("Fetch from remote config titles: " +
+//                    "${titles.title}, ${titles.imgTitle}, ${titles.productsTitle}, ${titles.productsTitle2}, ${titles.img}")
+//            // Update titles
+//            db.titlesDao().updateTitles(titles)
         }
     }
 

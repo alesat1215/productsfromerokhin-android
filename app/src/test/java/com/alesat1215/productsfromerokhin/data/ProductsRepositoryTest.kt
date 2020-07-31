@@ -20,6 +20,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
+import java.lang.Thread.sleep
 
 @RunWith(MockitoJUnitRunner::class)
 class ProductsRepositoryTest {
@@ -91,10 +92,9 @@ class ProductsRepositoryTest {
         val groups = arrayOf(Group())
         `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
         val products = emptyList<Product>()
-//        `when`(products(groups.asList())).thenReturn(products)
         repository.products().observeForever { result = it }
         assertEquals(result, productsInfo)
-        joinAll()
+        sleep(100)
         verify(db.productsDao()).updateProducts(groups.asList(), products)
     }
 
