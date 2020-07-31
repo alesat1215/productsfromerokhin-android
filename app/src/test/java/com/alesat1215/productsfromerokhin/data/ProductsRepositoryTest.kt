@@ -38,10 +38,14 @@ class ProductsRepositoryTest {
     @Mock
     private lateinit var titlesDao: TitlesDao
 
+    private val groups = arrayOf(Group())
+    private val titles = Titles()
+    private val products = emptyList<Product>()
     private val productsInfo = listOf(ProductInfo(
         Product(), listOf(
         ProductInCart()
     )))
+
     @Mock
     private lateinit var limiter: RateLimiter
     @Mock
@@ -63,6 +67,11 @@ class ProductsRepositoryTest {
         `when`(db.productsDao()).thenReturn(productsDao)
         `when`(db.productsDao().products()).thenReturn(MutableLiveData(productsInfo))
         `when`(db.titlesDao()).thenReturn(titlesDao)
+        `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
+        `when`(firebaseRemoteConfig.getString(ProductsRepository.TITLES)).thenReturn("")
+        `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
+        `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
+        `when`(gson.fromJson("", Titles::class.java)).thenReturn(titles)
         repository = ProductsRepository(remoteConfig, db, limiter, gson)
 //        `when`(db.productsDao().groups()).thenReturn(MutableLiveData(RemoteDataMockTest.data.groups()))
 //        `when`(db.productsDao().titles()).thenReturn(MutableLiveData(RemoteDataMockTest.data.titles()))
@@ -93,14 +102,6 @@ class ProductsRepositoryTest {
         result = emptyList()
         `when`(limiter.shouldFetch()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
-        `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
-        `when`(firebaseRemoteConfig.getString(ProductsRepository.TITLES)).thenReturn("")
-        `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
-        val groups = arrayOf(Group())
-        `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
-        val titles = Titles()
-        `when`(gson.fromJson("", Titles::class.java)).thenReturn(titles)
-        val products = emptyList<Product>()
         repository.products().observeForever { result = it }
         assertEquals(result, productsInfo)
         sleep(100)
@@ -108,7 +109,12 @@ class ProductsRepositoryTest {
         verify(db.titlesDao()).updateTitles(titles)
     }
 
-//    @Test
+    @Test
+    fun titles() {
+        TODO("Not yet implemented")
+    }
+
+    //    @Test
 //    fun productsGroupsTitles() {
 //        val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
 //        var products = emptyList<Product>()
