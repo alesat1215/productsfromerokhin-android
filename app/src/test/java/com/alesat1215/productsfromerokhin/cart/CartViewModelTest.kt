@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.data.ProductInfo
 //import com.alesat1215.productsfromerokhin.RemoteDataMockTest
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
+import com.alesat1215.productsfromerokhin.data.Profile
 import com.alesat1215.productsfromerokhin.data.ProfileRepository
 import com.alesat1215.productsfromerokhin.profileMockTest
 import kotlinx.coroutines.newSingleThreadContext
@@ -32,6 +33,9 @@ class CartViewModelTest {
     private lateinit var products: LiveData<List<ProductInfo>>
     private val priceSumInCart = 10
     private val textForOrder = "textForOrder"
+    @Mock
+    private lateinit var profile: Profile
+    private val delivery = "delivery"
 
     private lateinit var viewModel: CartViewModel
 
@@ -52,6 +56,8 @@ class CartViewModelTest {
         products = MutableLiveData(listOf(productInfo))
         `when`(productsRepository.productsInCart).thenReturn(products)
         `when`(productsRepository.products()).thenReturn(products)
+        `when`(profile.delivery()).thenReturn(delivery)
+        `when`(profileRepository.profile).thenReturn(MutableLiveData(profile))
         viewModel = CartViewModel(productsRepository, profileRepository)
     }
 
@@ -72,6 +78,13 @@ class CartViewModelTest {
         var result = ""
         viewModel.order().observeForever { result = it }
         assertTrue(result.contains(textForOrder))
+    }
+
+    @Test
+    fun delivery() {
+        var result = ""
+        viewModel.delivery().observeForever { result = it }
+        assertEquals(result, delivery)
     }
 
     //
@@ -104,14 +117,14 @@ class CartViewModelTest {
 //        }
 //    }
 
-    @Test
-    fun delivery() {
-        var delivery = ""
-        viewModel.delivery().observeForever { delivery = it }
-        assertTrue(delivery.contains(profileMockTest().name))
-        assertTrue(delivery.contains(profileMockTest().phone))
-        assertTrue(delivery.contains(profileMockTest().address))
-    }
+//    @Test
+//    fun delivery() {
+//        var delivery = ""
+//        viewModel.delivery().observeForever { delivery = it }
+//        assertTrue(delivery.contains(profileMockTest().name))
+//        assertTrue(delivery.contains(profileMockTest().phone))
+//        assertTrue(delivery.contains(profileMockTest().address))
+//    }
 
     @Test
     fun clearCart() = runBlocking {
