@@ -2,10 +2,12 @@ package com.alesat1215.productsfromerokhin.start
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-//import com.alesat1215.productsfromerokhin.RemoteDataMockTest
+import com.alesat1215.productsfromerokhin.data.Product
+import com.alesat1215.productsfromerokhin.data.ProductInfo
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.Titles
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 
 import org.junit.Rule
@@ -20,6 +22,7 @@ class StartViewModelTest {
     @Mock
     private lateinit var repository: ProductsRepository
     private val titles = Titles("title", "img", "imgTitle", "productsTitle", "productsTitle2")
+    private val products = listOf(ProductInfo(Product(name = "name"), emptyList()))
     private lateinit var viewModel: StartViewModel
 
     @get:Rule
@@ -28,7 +31,7 @@ class StartViewModelTest {
     @Before
     fun setUp() {
         `when`(repository.titles()).thenReturn(MutableLiveData(titles))
-//        `when`(repository.products()).thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
+        `when`(repository.products()).thenReturn(MutableLiveData(products))
         viewModel = StartViewModel(repository)
     }
 
@@ -46,14 +49,15 @@ class StartViewModelTest {
         viewModel.title(StartTitle.PRODUCTS2).observeForever { result = it }
         assertEquals(result, titles.productsTitle2)
     }
-//
-//    @Test
-//    fun products() {
-//        var products = listOf<Product>()
-//        viewModel.products().observeForever { products = it }
-//        assertEquals(products, RemoteDataMockTest.productsNotEmptyCart)
-//        val predicate: (Product) -> Boolean = { it.productDB?.name == "product_1" }
-//        viewModel.products(predicate).observeForever { products = it }
-//        assertEquals(products, RemoteDataMockTest.productsNotEmptyCart.filter(predicate))
-//    }
+
+    @Test
+    fun products() {
+        var result: List<ProductInfo> = emptyList()
+        viewModel.products().observeForever { result = it }
+        assertEquals(result, products)
+        viewModel.products { it.product?.inStart2 == true }.observeForever { result = it }
+        assertTrue(result.isEmpty())
+        viewModel.products { it.product?.name == "name" }.observeForever { result = it }
+        assertEquals(result, products)
+    }
 }
