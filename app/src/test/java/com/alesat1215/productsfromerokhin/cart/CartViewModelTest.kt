@@ -30,6 +30,8 @@ class CartViewModelTest {
     @Mock
     private lateinit var productInfo: ProductInfo
     private lateinit var products: LiveData<List<ProductInfo>>
+    private val priceSumInCart = 10
+    private val textForOrder = "textForOrder"
 
     private lateinit var viewModel: CartViewModel
 
@@ -45,7 +47,8 @@ class CartViewModelTest {
 //            .thenReturn(MutableLiveData(RemoteDataMockTest.productsNotEmptyCart))
 //        `when`(repository.profile).thenReturn(MutableLiveData(profileMockTest()))
 //        viewModel = CartViewModel(repository)
-        `when`(productInfo.priceSumInCart()).thenReturn(10)
+        `when`(productInfo.priceSumInCart()).thenReturn(priceSumInCart)
+        `when`(productInfo.textForOrder()).thenReturn(textForOrder)
         products = MutableLiveData(listOf(productInfo))
         `when`(productsRepository.productsInCart).thenReturn(products)
         `when`(productsRepository.products()).thenReturn(products)
@@ -61,7 +64,7 @@ class CartViewModelTest {
     fun totalInCart() {
         var result = 0
         viewModel.totalInCart().observeForever { result = it }
-        assertEquals(result, 10)
+        assertEquals(result, priceSumInCart)
     }
 
     //
