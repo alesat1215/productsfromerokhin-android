@@ -80,7 +80,7 @@ class ProductsRepository @Inject constructor(
     /** Update Room from remote config if needed */
     private fun updateDB(): LiveData<Result<Unit>> {
         /** Return if limit is over */
-        if(!limiter.shouldFetch()) return MutableLiveData(Result.success(Unit))
+        if(limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
         // Fetch data from remote config & update db
         return Transformations.map(remoteConfig.fetchAndActivate()) {
             it.onSuccess { updateProducts() }

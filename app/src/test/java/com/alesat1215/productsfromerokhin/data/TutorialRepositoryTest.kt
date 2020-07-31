@@ -13,7 +13,6 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.Thread.sleep
@@ -54,7 +53,7 @@ class TutorialRepositoryTest {
     @Test
     fun instructions() {
         // Not update db (limiter)
-        `when`(limiter.shouldFetch()).thenReturn(false)
+        `when`(limiter.needUpdate()).thenReturn(false)
         var result: List<Instruction> = emptyList()
         repository.instructions().observeForever { result = it }
         assertEquals(result, instructions.toList())
@@ -62,7 +61,7 @@ class TutorialRepositoryTest {
         verify(db.instructionsDao(), never()).updateInstructions(instructions.asList())
         // Not update db (result onFailure)
         result = emptyList()
-        `when`(limiter.shouldFetch()).thenReturn(true)
+        `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
         repository.instructions().observeForever { result = it }
         assertEquals(result, instructions.toList())
@@ -70,7 +69,7 @@ class TutorialRepositoryTest {
         verify(db.instructionsDao(), never()).updateInstructions(instructions.asList())
         // Update db
         result = emptyList()
-        `when`(limiter.shouldFetch()).thenReturn(true)
+        `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         repository.instructions().observeForever { result = it }
         assertEquals(result, instructions.toList())
