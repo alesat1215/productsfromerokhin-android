@@ -73,5 +73,13 @@ class TutorialRepositoryTest {
         assertEquals(result, instructions.toList())
         sleep(100)
         verify(db.instructionsDao(), never()).updateInstructions(instructions.asList())
+        // Update db
+        result = emptyList()
+        `when`(limiter.shouldFetch()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
+        repository.instructions().observeForever { result = it }
+        assertEquals(result, instructions.toList())
+        sleep(100)
+        verify(db.instructionsDao()).updateInstructions(instructions.asList())
     }
 }
