@@ -26,6 +26,7 @@ class LoadViewModelTest {
     private lateinit var tutorialRepository: TutorialRepository
     @Mock
     private lateinit var auth: Auth
+    private val authResult: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
     private lateinit var viewModel: LoadViewModel
 
     @get:Rule
@@ -33,14 +34,13 @@ class LoadViewModelTest {
 
     @Before
     fun setUp() {
+        `when`(auth.signIn()).thenReturn(authResult)
         viewModel = LoadViewModel(repository, tutorialRepository, auth)
     }
 
     @Test
     fun firebaseAuth() {
-        val result: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
-        `when`(auth.signIn()).thenReturn(result)
-        assertEquals(viewModel.firebaseAuth(), result)
+        assertEquals(viewModel.firebaseAuth(), authResult)
     }
 
     @Test
