@@ -65,6 +65,19 @@ class AppDatabaseTest {
         assertEquals(result, titles)
     }
 
+    @Test
+    fun cartDao() {
+        val product = Product(name = "product")
+        val productInCart = ProductInCart(name = "product")
+        var result: List<ProductInfo> = emptyList()
+        productsDao.products().observeForever { result = it }
+        productsDao.insertProducts(listOf(product))
+        cartDao.insertProductInCart(productInCart)
+        assertEquals(result.first().inCart.first().name, productInCart.name)
+        cartDao.deleteProductFromCart(result.first().inCart.first())
+        assertTrue(result.first().inCart.isEmpty())
+    }
+
     //    @Test
 //    fun updateReadClearProducts() {
 //        var products = listOf<Product>()
