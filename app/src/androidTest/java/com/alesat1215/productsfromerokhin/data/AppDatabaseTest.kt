@@ -8,12 +8,18 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.After
 import org.junit.Before
 
+import org.junit.Assert.*
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class DatabaseTest2 {
-    private lateinit var dao: ProductsDao
+class AppDatabaseTest {
+    private lateinit var productsDao: ProductsDao
+    private lateinit var titlesDao: TitlesDao
+    private lateinit var cartDao: CartDao
+    private lateinit var profileDao: ProfileDao
+    private lateinit var instructionsDao: InstructionsDao
     private lateinit var db: AppDatabase
 
     @get:Rule
@@ -25,12 +31,29 @@ class DatabaseTest2 {
         db = Room.inMemoryDatabaseBuilder(
             context, AppDatabase::class.java)
             .build()
-        dao = db.productsDao()
+        productsDao = db.productsDao()
+        titlesDao = db.titlesDao()
+        cartDao = db.cartDao()
+        profileDao = db.profileDao()
+        instructionsDao = db.instructionsDao()
     }
 
     @After
     fun tearDown() {
         db.close()
+    }
+
+    @Test
+    fun updateProducts() {
+        var productsInfo: List<ProductInfo> = emptyList()
+        var groups: List<Group> = emptyList()
+        val product = Product(name = "product")
+        val group = Group(name = "group")
+        productsDao.products().observeForever { productsInfo = it }
+        productsDao.groups().observeForever { groups = it }
+        productsDao.updateProducts(listOf(group), listOf(product))
+        assertEquals(groups.first(), group)
+        assertEquals(productsInfo.first().product, product)
     }
 
 //    @Test
