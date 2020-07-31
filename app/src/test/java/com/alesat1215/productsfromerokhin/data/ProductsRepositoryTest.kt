@@ -8,7 +8,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -47,7 +46,9 @@ class ProductsRepositoryTest {
         Product(), listOf(
         ProductInCart()
     )))
-    private val productInCart = ProductInCart()
+
+    @Mock
+    private lateinit var productInCart: ProductInCart
 
     @Mock
     private lateinit var limiter: RateLimiter
@@ -64,7 +65,6 @@ class ProductsRepositoryTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-//        `when`(dbFBFetchLimit.shouldFetch()).thenReturn(true)
         `when`(db.productsDao()).thenReturn(productsDao)
         `when`(db.productsDao().products()).thenReturn(MutableLiveData(productsInfo))
         `when`(db.productsDao().groups()).thenReturn(MutableLiveData(groups.asList()))
@@ -77,9 +77,6 @@ class ProductsRepositoryTest {
         `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
         `when`(gson.fromJson("", Titles::class.java)).thenReturn(titles)
         repository = ProductsRepository(remoteConfig, db, limiter, gson)
-//        `when`(db.productsDao().groups()).thenReturn(MutableLiveData(RemoteDataMockTest.data.groups()))
-//        `when`(db.productsDao().titles()).thenReturn(MutableLiveData(RemoteDataMockTest.data.titles()))
-//        `when`(db.productsDao().profile()).thenReturn(MutableLiveData(profileMockTest()))
     }
 
     @After
@@ -190,44 +187,4 @@ class ProductsRepositoryTest {
         verify(db.cartDao()).clearCart()
     }
 
-    //    @Test
-//    fun productsGroupsTitles() {
-//        val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
-//        var products = emptyList<Product>()
-//        var productsInCart = emptyList<Product>()
-//        var groups = emptyList<GroupDB>()
-//        var titles: Titles? = null
-//        repo.products().observeForever { products = it }
-//        repo.productsInCart.observeForever { productsInCart = it }
-//        repo.groups().observeForever { groups = it }
-//        repo.titles().observeForever { titles = it }
-//        assertEquals(products, RemoteDataMockTest.productsNotEmptyCart)
-//        assertEquals(productsInCart, RemoteDataMockTest.productsNotEmptyCart)
-//        assertEquals(groups, RemoteDataMockTest.data.groups())
-//        assertEquals(titles, RemoteDataMockTest.data.titles())
-//    }
-//
-//    @Test
-//    fun cart() = runBlocking {
-//        val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
-//        val product = ProductInCart()
-//        repo.addProductToCart(product)
-//        verify(db.productsDao()).insertProductInCart(product)
-//        repo.delProductFromCart(product)
-//        verify(db.productsDao()).deleteProductFromCart(product)
-//        repo.clearCart()
-//        verify(db.productsDao()).clearCart()
-//    }
-//
-//    @Test
-//    fun profile() = runBlocking {
-//        val repo = ProductsRepository(authFBMock, dbFB, db, dbFBFetchLimit)
-//        // Get profile
-//        var profile: Profile? = null
-//        repo.profile.observeForever { profile = it }
-//        assertEquals(profile, profileMockTest())
-//        // Update profile
-//        repo.updateProfile(profile!!)
-//        verify(db.productsDao()).updateProfile(profile!!)
-//    }
 }
