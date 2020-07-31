@@ -37,6 +37,8 @@ class ProductsRepositoryTest {
     private lateinit var productsDao: ProductsDao
     @Mock
     private lateinit var titlesDao: TitlesDao
+    @Mock
+    private lateinit var cartDao: CartDao
 
     private val groups = arrayOf(Group())
     private val titles = Titles()
@@ -45,6 +47,7 @@ class ProductsRepositoryTest {
         Product(), listOf(
         ProductInCart()
     )))
+    private val productInCart = ProductInCart()
 
     @Mock
     private lateinit var limiter: RateLimiter
@@ -52,8 +55,6 @@ class ProductsRepositoryTest {
     private lateinit var gson: Gson
 
     private lateinit var repository: ProductsRepository
-
-    private var productInCart = false
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
@@ -69,6 +70,7 @@ class ProductsRepositoryTest {
         `when`(db.productsDao().groups()).thenReturn(MutableLiveData(groups.asList()))
         `when`(db.titlesDao()).thenReturn(titlesDao)
         `when`(db.titlesDao().titles()).thenReturn(MutableLiveData(titles))
+        `when`(db.cartDao()).thenReturn(cartDao)
         `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
         `when`(firebaseRemoteConfig.getString(ProductsRepository.TITLES)).thenReturn("")
         `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
@@ -168,6 +170,12 @@ class ProductsRepositoryTest {
         sleep(100)
         verify(db.productsDao()).updateProducts(groups.asList(), products)
         verify(db.titlesDao()).updateTitles(titles)
+    }
+
+    @Test
+    fun addProductToCart() = runBlocking {
+        repository.addProductToCart(productInCart)
+        verify(db.cartDao()).insertProductInCart(productInCart)
     }
 
     //    @Test
