@@ -40,13 +40,13 @@ class ProductsRepositoryTest {
     private lateinit var cartDao: CartDao
 
     private val groups = arrayOf(Group())
-    private val titles = Titles()
+    @Mock
+    private lateinit var titles: Titles
     private val products = emptyList<Product>()
     private val productsInfo = listOf(ProductInfo(
         Product(), listOf(
         ProductInCart()
     )))
-
     @Mock
     private lateinit var productInCart: ProductInCart
 
