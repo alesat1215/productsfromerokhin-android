@@ -10,7 +10,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.alesat1215.productsfromerokhin.R
-import com.alesat1215.productsfromerokhin.RemoteDataMockAndroidTest
 import com.alesat1215.productsfromerokhin.util.BindViewHolder
 import org.junit.Before
 
