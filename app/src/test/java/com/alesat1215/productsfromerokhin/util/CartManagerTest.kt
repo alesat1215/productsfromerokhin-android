@@ -1,12 +1,11 @@
 package com.alesat1215.productsfromerokhin.util
 
-//import com.alesat1215.productsfromerokhin.RemoteDataMockTest
+import com.alesat1215.productsfromerokhin.data.ProductInCart
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.ProductInfo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -14,20 +13,26 @@ import org.junit.Test
 
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CartManagerTest {
     @Mock
     private lateinit var repository: ProductsRepository
+    private val productInCart = ProductInCart()
+    private lateinit var productInfo: ProductInfo
+
     private lateinit var cartManager: CartManager
+
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
+        productInfo = ProductInfo(inCart = listOf(productInCart))
         cartManager = object : CartManager() {
             override val productsRepository = this@CartManagerTest.repository
         }
@@ -41,18 +46,13 @@ class CartManagerTest {
 
     @Test
     fun addProductToCart() = runBlocking {
-        val product =
-            ProductInfo(inCart = emptyList())
-        `when`(repository.addProductToCart(product.asProductInCart())).thenReturn(Unit)
-        cartManager.addProductToCart(product)
-        verify(repository).addProductToCart(product.asProductInCart())
+        cartManager.addProductToCart(productInfo)
+        verify(repository).addProductToCart(productInfo.asProductInCart())
     }
 
-//    @Test
-//    fun delProductFromCart() = runBlocking {
-//        val product = RemoteDataMockTest.productsNotEmptyCart.first()
-//        `when`(repository.delProductFromCart(product.asProductInCart())).thenReturn(Unit)
-//        cartManager.delProductFromCart(product)
-//        verify(repository).delProductFromCart(product.inCart.first())
-//    }
+    @Test
+    fun delProductFromCart() = runBlockingTest {
+        cartManager.delProductFromCart(productInfo)
+        verify(repository).delProductFromCart(productInCart)
+    }
 }
