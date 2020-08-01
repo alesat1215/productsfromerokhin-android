@@ -5,7 +5,7 @@ import com.orhanobut.logger.Logger
 import java.util.concurrent.TimeUnit
 
 /** Set limit for "true" result for needUpdate() by timeout & timeUnit */
-class RateLimiter(timeout: Int, timeUnit: TimeUnit)
+class UpdateLimiter(timeout: Int, timeUnit: TimeUnit)
 {
     /** Time in millis for last run shouldFetch() */
     private var last: Long? = null
