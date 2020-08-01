@@ -68,27 +68,27 @@ class CartViewModelTest {
 
     @Test
     fun products() {
-        assertEquals(viewModel.products(), products)
+        assertEquals(viewModel.productsInCart, products)
     }
 
     @Test
     fun totalInCart() {
         var result = 0
-        viewModel.totalInCart().observeForever { result = it }
+        viewModel.totalInCart.observeForever { result = it }
         assertEquals(result, priceSumInCart)
     }
 
     @Test
     fun order() {
         var result = ""
-        viewModel.order().observeForever { result = it }
+        viewModel.order.observeForever { result = it }
         assertTrue(result.contains(textForOrder))
     }
 
     @Test
     fun delivery() {
         var result = ""
-        viewModel.delivery().observeForever { result = it }
+        viewModel.delivery.observeForever { result = it }
         assertEquals(result, delivery)
     }
 
