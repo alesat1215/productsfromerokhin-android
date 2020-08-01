@@ -13,7 +13,6 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.Thread.sleep
@@ -30,7 +29,7 @@ class PhoneRepositoryTest {
     private lateinit var limiter: UpdateLimiter
     @Mock
     private lateinit var phoneDao: PhoneDao
-    private val phone = PhoneForOrder("phone")
+    private val phoneForOrder = PhoneForOrder("phone")
 
     private lateinit var repository: PhoneRepository
 
@@ -40,7 +39,9 @@ class PhoneRepositoryTest {
     @Before
     fun setUp() {
         `when`(db.phoneDao()).thenReturn(phoneDao)
-        `when`(db.phoneDao().phone()).thenReturn(MutableLiveData(phone))
+        `when`(db.phoneDao().phone()).thenReturn(MutableLiveData(phoneForOrder))
+        `when`(firebaseRemoteConfig.getString(PhoneRepository.PHONE)).thenReturn(phoneForOrder.phone)
+        `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
         repository = PhoneRepository(remoteConfig, db, limiter)
     }
 
@@ -54,8 +55,16 @@ class PhoneRepositoryTest {
         `when`(limiter.needUpdate()).thenReturn(false)
         var result: PhoneForOrder? = null
         repository.phone().observeForever { result = it }
-        assertEquals(result, phone)
+        assertEquals(result, phoneForOrder)
         sleep(100)
-        verify(phoneDao, never()).updatePhone(phone)
+        verify(phoneDao, never()).updatePhone(phoneForOrder)
+        // Not update db (result onFailure)
+        result = null
+        `when`(limiter.needUpdate()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
+        repository.phone().observeForever { result = it }
+        assertEquals(result, phoneForOrder)
+        sleep(100)
+        verify(phoneDao, never()).updatePhone(phoneForOrder)
     }
 }
