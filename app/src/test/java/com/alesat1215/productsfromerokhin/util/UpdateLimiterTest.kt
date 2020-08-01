@@ -5,14 +5,14 @@ import org.junit.Test
 import org.junit.Assert.*
 import java.util.concurrent.TimeUnit
 
-class RateLimiterTest {
+class UpdateLimiterTest {
 
     @Test
     fun needUpdateAndReset() {
-        var limiter = RateLimiter(0, TimeUnit.MINUTES)
+        var limiter = UpdateLimiter(0, TimeUnit.MINUTES)
         assertTrue(limiter.needUpdate())
         assertTrue(limiter.needUpdate())
-        limiter = RateLimiter(1, TimeUnit.MINUTES)
+        limiter = UpdateLimiter(1, TimeUnit.MINUTES)
         assertTrue(limiter.needUpdate())
         assertFalse(limiter.needUpdate())
         limiter.reset()

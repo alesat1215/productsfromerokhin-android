@@ -3,7 +3,7 @@ package com.alesat1215.productsfromerokhin.di
 import android.content.Context
 import androidx.room.Room
 import com.alesat1215.productsfromerokhin.data.AppDatabase
-import com.alesat1215.productsfromerokhin.util.RateLimiter
+import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.GsonBuilder
@@ -37,7 +37,7 @@ object AppModule {
     /** Limiter for remote database  */
 //    @DBfb
     @Provides
-    fun limiter() = RateLimiter(1, TimeUnit.MINUTES)
+    fun limiter() = UpdateLimiter(1, TimeUnit.MINUTES)
 
     @Singleton
     @Provides

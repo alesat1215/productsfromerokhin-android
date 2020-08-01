@@ -2,7 +2,7 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.alesat1215.productsfromerokhin.util.RateLimiter
+import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
@@ -31,7 +31,7 @@ class TutorialRepositoryTest {
     private val instructions = arrayOf(Instruction())
 
     @Mock
-    private lateinit var limiter: RateLimiter
+    private lateinit var limiter: UpdateLimiter
     @Mock
     private lateinit var gson: Gson
 

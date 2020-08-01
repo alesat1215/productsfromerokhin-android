@@ -3,7 +3,7 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.alesat1215.productsfromerokhin.util.RateLimiter
+import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
 import com.orhanobut.logger.Logger
@@ -37,8 +37,8 @@ class ProductsRepository @Inject constructor(
     private val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
-    /** Limiting the frequency of queries to remote database */
-    private val limiter: RateLimiter,
+    /** Limiting the frequency of queries to remote config & update db */
+    private val limiter: UpdateLimiter,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : IProductsRepository {

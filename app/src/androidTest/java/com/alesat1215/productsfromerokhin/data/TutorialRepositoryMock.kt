@@ -1,8 +1,6 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
-import com.alesat1215.productsfromerokhin.util.RateLimiter
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import javax.inject.Inject
 
 class TutorialRepositoryMock @Inject constructor() : ITutorialRepository {
