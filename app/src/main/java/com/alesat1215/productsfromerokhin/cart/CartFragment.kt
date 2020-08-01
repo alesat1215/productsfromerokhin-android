@@ -53,7 +53,7 @@ class CartFragment : DaggerFragment() {
     /** @return adapter for products & set data to it */
     private fun adapterToProducts(): BindRVAdapter<ProductInfo> {
         val adapter = BindRVAdapter<ProductInfo>(R.layout.menu_item, viewModel)
-        viewModel.products().observe(viewLifecycleOwner, Observer {
+        viewModel.productsInCart.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             Logger.d("Set list to adapter: ${it.count()}")
         })
@@ -98,12 +98,16 @@ class CartFragment : DaggerFragment() {
 
     /** Check phone number for order in contacts */
     private fun checkContact() {
-        viewModel.phone().observe(viewLifecycleOwner, Observer {
-            if (!isPhoneNumberInContacts(it?.phone.orEmpty())) {
-                showAlertAddContact(it?.phone.orEmpty())
+        val phone = viewModel.phone()
+        phone.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            if (!isPhoneNumberInContacts(it.phone)) {
+                showAlertAddContact(it.phone)
             } else {
                 selectMessenger()
             }
+            // Get only one event
+            phone.removeObservers(viewLifecycleOwner)
         })
     }
     /** Show instruction for save number for order in contacts */
@@ -160,21 +164,18 @@ class CartFragment : DaggerFragment() {
     }
     /** Show chooser for send order */
     private fun selectMessenger() {
-        val order = viewModel.order()
-        val total = viewModel.totalInCart()
-        val delivery = viewModel.delivery()
         // Get text for order
-        order.observe(viewLifecycleOwner, Observer { orderText ->
+        viewModel.order.observe(viewLifecycleOwner, Observer { orderText ->
             // Unsubscribe from events
-            order.removeObservers(viewLifecycleOwner)
+            viewModel.order.removeObservers(viewLifecycleOwner)
             // Get text for total
-            total.observe(viewLifecycleOwner, Observer { sum ->
+            viewModel.totalInCart.observe(viewLifecycleOwner, Observer { sum ->
                 // Unsubscribe from events
-                total.removeObservers(viewLifecycleOwner)
+                viewModel.totalInCart.removeObservers(viewLifecycleOwner)
                 // Get delivery info
-                delivery.observe(viewLifecycleOwner, Observer {
+                viewModel.delivery.observe(viewLifecycleOwner, Observer {
                     // Unsubscribe from events
-                    delivery.removeObservers(viewLifecycleOwner)
+                    viewModel.delivery.removeObservers(viewLifecycleOwner)
                     // Create text for message
                     val message = "$orderText${getString(R.string.total)} $sum ${getString(R.string.rub)}$it"
                     // Create intent
@@ -231,7 +232,7 @@ class CartFragment : DaggerFragment() {
     override fun onStart() {
         super.onStart()
         // Clear cart button visible only for not empty cart
-        viewModel.products().observe(viewLifecycleOwner, Observer { clearCartButton(it.isNotEmpty()) })
+        viewModel.productsInCart.observe(viewLifecycleOwner, Observer { clearCartButton(it.isNotEmpty()) })
     }
 
     override fun onStop() {

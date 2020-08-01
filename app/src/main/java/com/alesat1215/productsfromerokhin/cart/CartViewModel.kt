@@ -15,17 +15,21 @@ class CartViewModel @Inject constructor(
     private val phoneRepository: IPhoneRepository
 ) : CartManager() {
     /** Products in cart */
-    fun products() = productsRepository.productsInCart
+    val productsInCart by lazy { productsRepository.productsInCart }
     /** Sum for order */
-    fun totalInCart() = Transformations.map(products()) {
-        it.map { it.priceSumInCart() }.sum()
+    val totalInCart by lazy {
+        Transformations.map(productsInCart) {
+            it.map { it.priceSumInCart() }.sum()
+        }
     }
     /** Text for message */
-    fun order() = Transformations.map(products()) {
-        it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
+    val order by lazy {
+        Transformations.map(productsInCart) {
+            it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
+        }
     }
     /** Delivery info for message */
-    fun delivery() = Transformations.map(profileRepository.profile) { it?.delivery().orEmpty() }
+    val delivery by lazy { Transformations.map(profileRepository.profile) { it?.delivery().orEmpty() } }
 
     fun clearCart() {
         viewModelScope.launch { productsRepository.clearCart() }
