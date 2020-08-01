@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -45,10 +44,6 @@ class PhoneRepositoryTest {
         repository = PhoneRepository(remoteConfig, db, limiter)
     }
 
-    @After
-    fun tearDown() {
-    }
-
     @Test
     fun phone() {
         // Not update db (limiter)
@@ -66,5 +61,13 @@ class PhoneRepositoryTest {
         assertEquals(result, phoneForOrder)
         sleep(100)
         verify(phoneDao, never()).updatePhone(phoneForOrder)
+        // Update db
+        result = null
+        `when`(limiter.needUpdate()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
+        repository.phone().observeForever { result = it }
+        assertEquals(result, phoneForOrder)
+        sleep(100)
+        verify(phoneDao).updatePhone(phoneForOrder)
     }
 }
