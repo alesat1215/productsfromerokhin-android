@@ -37,6 +37,8 @@ class CartViewModelTest {
     @Mock
     private lateinit var profile: Profile
     private val delivery = "delivery"
+    @Mock
+    private lateinit var phoneResult: LiveData<PhoneForOrder?>
 
     private lateinit var viewModel: CartViewModel
 
@@ -54,6 +56,7 @@ class CartViewModelTest {
         `when`(productsRepository.productsInCart).thenReturn(products)
         `when`(profile.delivery()).thenReturn(delivery)
         `when`(profileRepository.profile).thenReturn(MutableLiveData(profile))
+        `when`(phoneRepository.phone()).thenReturn(phoneResult)
         viewModel = CartViewModel(productsRepository, profileRepository, phoneRepository)
     }
 
@@ -93,5 +96,10 @@ class CartViewModelTest {
     fun clearCart() = runBlocking {
         viewModel.clearCart()
         verify(productsRepository).clearCart()
+    }
+
+    @Test
+    fun phone() {
+        assertEquals(viewModel.phone(), phoneResult)
     }
 }
