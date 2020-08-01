@@ -3,10 +3,7 @@ package com.alesat1215.productsfromerokhin.cart
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.alesat1215.productsfromerokhin.data.ProductInfo
-import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.Profile
-import com.alesat1215.productsfromerokhin.data.ProfileRepository
+import com.alesat1215.productsfromerokhin.data.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -30,6 +27,8 @@ class CartViewModelTest {
     private lateinit var productsRepository: ProductsRepository
     @Mock
     private lateinit var profileRepository: ProfileRepository
+    @Mock
+    private lateinit var phoneRepository: PhoneRepository
     @Mock
     private lateinit var productInfo: ProductInfo
     private lateinit var products: LiveData<List<ProductInfo>>
@@ -55,7 +54,7 @@ class CartViewModelTest {
         `when`(productsRepository.productsInCart).thenReturn(products)
         `when`(profile.delivery()).thenReturn(delivery)
         `when`(profileRepository.profile).thenReturn(MutableLiveData(profile))
-        viewModel = CartViewModel(productsRepository, profileRepository)
+        viewModel = CartViewModel(productsRepository, profileRepository, phoneRepository)
     }
 
     @After

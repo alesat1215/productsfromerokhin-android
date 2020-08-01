@@ -3,10 +3,7 @@ package com.alesat1215.productsfromerokhin.load
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.alesat1215.productsfromerokhin.data.Instruction
-import com.alesat1215.productsfromerokhin.data.ProductsRepository
-import com.alesat1215.productsfromerokhin.data.TutorialRepository
-import com.alesat1215.productsfromerokhin.data.ProductInfo
+import com.alesat1215.productsfromerokhin.data.*
 import com.alesat1215.productsfromerokhin.util.Auth
 import org.junit.Test
 
@@ -24,6 +21,8 @@ class LoadViewModelTest {
     private lateinit var productsRepository: ProductsRepository
     @Mock
     private lateinit var tutorialRepository: TutorialRepository
+    @Mock
+    private lateinit var phoneRepository: PhoneRepository
     @Mock
     private lateinit var instruction: Instruction
     private lateinit var instructions: List<Instruction>
@@ -46,7 +45,7 @@ class LoadViewModelTest {
         instructions = listOf(instruction)
         `when`(productsRepository.products()).thenReturn(MutableLiveData(products))
         `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(instructions))
-        viewModel = LoadViewModel(productsRepository, tutorialRepository, auth)
+        viewModel = LoadViewModel(productsRepository, tutorialRepository, phoneRepository, auth)
     }
 
     @Test
