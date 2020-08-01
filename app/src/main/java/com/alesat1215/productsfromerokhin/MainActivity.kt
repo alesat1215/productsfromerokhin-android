@@ -29,7 +29,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun setupBadge(navigationView: BottomNavigationView) {
-        viewModel.products().observe(this, Observer {
+        viewModel.productsInCart.observe(this, Observer {
             val badge = navigationView.getOrCreateBadge(R.id.cartFragment)
             if (it.isEmpty()) {
                 badge.isVisible = false
