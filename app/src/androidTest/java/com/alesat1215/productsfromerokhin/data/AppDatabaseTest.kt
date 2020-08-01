@@ -5,6 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.alesat1215.productsfromerokhin.DataMock
 import org.junit.After
 import org.junit.Before
 
@@ -20,6 +21,7 @@ class AppDatabaseTest {
     private lateinit var cartDao: CartDao
     private lateinit var profileDao: ProfileDao
     private lateinit var instructionsDao: InstructionsDao
+    private lateinit var phoneDao: PhoneDao
     private lateinit var db: AppDatabase
 
     @get:Rule
@@ -36,6 +38,7 @@ class AppDatabaseTest {
         cartDao = db.cartDao()
         profileDao = db.profileDao()
         instructionsDao = db.instructionsDao()
+        phoneDao = db.phoneDao()
     }
 
     @After
@@ -94,6 +97,14 @@ class AppDatabaseTest {
         instructionsDao.instructions().observeForever { result = it }
         instructionsDao.updateInstructions(instructions)
         assertEquals(result, instructions)
+    }
+
+    @Test
+    fun phoneDao() {
+        var result: PhoneForOrder? = null
+        phoneDao.phone().observeForever { result = it }
+        phoneDao.updatePhone(DataMock.phone)
+        assertEquals(result, DataMock.phone)
     }
 
 }

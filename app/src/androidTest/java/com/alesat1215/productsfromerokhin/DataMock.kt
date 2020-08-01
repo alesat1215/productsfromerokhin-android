@@ -11,4 +11,5 @@ object DataMock {
     )
     val products = products(groups).map { ProductInfo(it, listOf(ProductInCart(name = it.name))) }
     val profile = Profile(name = "name", phone = "phone", address = "address")
+    val phone = PhoneForOrder("phone")
 }
