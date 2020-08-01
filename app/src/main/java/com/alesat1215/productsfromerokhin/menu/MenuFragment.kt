@@ -137,21 +137,18 @@ class MenuFragment : DaggerFragment() {
                 /** If click on tab */
                 if (tabSelected) {
                     val products = viewModel.products()
-                    products.observe(viewLifecycleOwner, object : Observer<List<ProductInfo>> {
-                        override fun onChanged(t: List<ProductInfo>?) {
-                            if (t == null) return
-                            // Get only one not null event
-                            products.removeObserver(this)
-                            /** Find first product with group id */
-                            val position = t.indexOfFirst { it.product?.group == tab?.text }
-                            /** Scroll to position */
-                            products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
-                                // Scroll item in top
-                                override fun getVerticalSnapPreference() = SNAP_TO_START
-                                // Set scroll position
-                            }.apply { targetPosition = position })
-                            Logger.d("For tab click scroll to position: ${position}, group: ${tab?.text}")
-                        }
+                    products.observe(viewLifecycleOwner, Observer {
+                        // Get only one event
+                        products.removeObservers(viewLifecycleOwner)
+                        /** Find first product with group id */
+                        val position = it.indexOfFirst { it.product?.group == tab?.text }
+                        /** Scroll to position */
+                        products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
+                            // Scroll item in top
+                            override fun getVerticalSnapPreference() = SNAP_TO_START
+                            // Set scroll position
+                        }.apply { targetPosition = position })
+                        Logger.d("For tab click scroll to position: ${position}, group: ${tab?.text}")
                     })
                 }
             }
