@@ -10,9 +10,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.TimeUnit
-import javax.inject.Qualifier
 import javax.inject.Singleton
-import kotlin.annotation.AnnotationRetention.RUNTIME
 
 @Module
 object AppModule {
@@ -21,21 +19,12 @@ object AppModule {
     @Provides
     fun authFB() = FirebaseAuth.getInstance()
 
-//    @Singleton
-//    @Provides
-//    fun dbFB() = FirebaseDatabase.getInstance().reference
-
     @Singleton
     @Provides
     fun db(applicationContext: Context) =
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "productsDatabase").build()
 
-    @Qualifier
-    @Retention(RUNTIME)
-    annotation class DBfb
-
-    /** Limiter for remote database  */
-//    @DBfb
+    /** Limiter for update database from remote config */
     @Provides
     fun limiter() = UpdateLimiter(1, TimeUnit.MINUTES)
 
