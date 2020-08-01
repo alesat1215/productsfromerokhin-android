@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.ProductInfo
 import com.alesat1215.productsfromerokhin.databinding.FragmentStartBinding
@@ -57,7 +58,8 @@ class StartFragment : DaggerFragment() {
     override fun onResume() {
         super.onResume()
 
-        restoreScrollPosition()
+        restoreScrollPosition(products_start)
+        restoreScrollPosition(products2_start)
         // Show BottomNavigationView
         activity?.nav_view?.visibility = View.VISIBLE
     }
@@ -65,30 +67,23 @@ class StartFragment : DaggerFragment() {
     override fun onPause() {
         super.onPause()
 
-        saveScrollPosition()
+        saveScrollPosition(products_start)
+        saveScrollPosition(products2_start)
     }
 
-    /** Restore state from viewModel for lists */
-    private fun restoreScrollPosition() {
-        viewModel.recyclerViewState[products_start.id]?.also {
-            products_start.layoutManager?.onRestoreInstanceState(it)
-            Logger.d("Restore state for products")
-        }
-        viewModel.recyclerViewState[products2_start.id]?.also {
-            products2_start.layoutManager?.onRestoreInstanceState(it)
-            Logger.d("Restore state for products2")
+    /** Restore scroll position from viewModel for lists */
+    private fun restoreScrollPosition(list: RecyclerView) {
+        list.post {
+            val position = viewModel.scrollPosition[list.id] ?: 0
+            list.smoothScrollBy(position, 0)
+            Logger.d("Restore scroll position for id: ${list.id}, position: $position")
         }
     }
-    /** Save state to viewModel for lists */
-    private fun saveScrollPosition() {
-        products_start.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.recyclerViewState[products_start.id] = it
-            Logger.d("Save state for products")
-        }
-        products2_start.layoutManager?.onSaveInstanceState()?.also {
-            viewModel.recyclerViewState[products2_start.id] = it
-            Logger.d("Save state for products2")
-        }
+    /** Save scroll position to viewModel for lists */
+    private fun saveScrollPosition(list: RecyclerView) {
+        val position = list.computeHorizontalScrollOffset()
+        viewModel.scrollPosition[list.id] = position
+        Logger.d("Save scroll position for id: ${list.id}, position: $position")
     }
 
 }

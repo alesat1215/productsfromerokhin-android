@@ -16,6 +16,8 @@ class StartViewModel @Inject constructor(
     /** Save state for lists to remember scroll position */
     val recyclerViewState = mutableMapOf<Int, Parcelable>()
 
+    val scrollPosition = mutableMapOf<Int, Int>()
+
     /** @return title for type */
     fun title(forType: StartTitle) =
         when (forType) {
