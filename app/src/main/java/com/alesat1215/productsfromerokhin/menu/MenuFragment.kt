@@ -132,19 +132,27 @@ class MenuFragment : DaggerFragment() {
 
     /** Scroll to first product with current group id. Only for click on tab event */
     private fun onTabSelected(groups: TabLayout) {
-        groups.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
+        groups.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 /** If click on tab */
                 if (tabSelected) {
-                    /** Find first product with group id */
-                    val position = viewModel.products().value?.indexOfFirst { it.product?.group == tab?.text } ?: 0
-                    /** Scroll to position */
-                    products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
-                        // Scroll item in top
-                        override fun getVerticalSnapPreference() = SNAP_TO_START
-                        // Set scroll position
-                    }.apply { targetPosition = position })
-                    Logger.d("For tab click scroll to position: ${position}, group: ${tab?.text}")
+                    val products = viewModel.products()
+                    products.observe(viewLifecycleOwner, object : Observer<List<ProductInfo>> {
+                        override fun onChanged(t: List<ProductInfo>?) {
+                            if (t == null) return
+                            // Get only one not null event
+                            products.removeObserver(this)
+                            /** Find first product with group id */
+                            val position = t.indexOfFirst { it.product?.group == tab?.text }
+                            /** Scroll to position */
+                            products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
+                                // Scroll item in top
+                                override fun getVerticalSnapPreference() = SNAP_TO_START
+                                // Set scroll position
+                            }.apply { targetPosition = position })
+                            Logger.d("For tab click scroll to position: ${position}, group: ${tab?.text}")
+                        }
+                    })
                 }
             }
 
