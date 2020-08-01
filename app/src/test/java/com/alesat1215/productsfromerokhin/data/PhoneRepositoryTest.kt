@@ -13,8 +13,10 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
+import java.lang.Thread.sleep
 
 @RunWith(MockitoJUnitRunner::class)
 class PhoneRepositoryTest {
@@ -53,5 +55,7 @@ class PhoneRepositoryTest {
         var result: PhoneForOrder? = null
         repository.phone().observeForever { result = it }
         assertEquals(result, phone)
+        sleep(100)
+        verify(phoneDao, never()).updatePhone(phone)
     }
 }
