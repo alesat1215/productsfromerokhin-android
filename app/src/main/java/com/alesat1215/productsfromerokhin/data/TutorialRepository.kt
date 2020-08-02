@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
+import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
@@ -15,7 +16,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface ITutorialRepository {
+interface ITutorialRepository : DatabaseUpdater {
     /** @return instructions for order & update Room from remote config if needed */
     fun instructions(): LiveData<List<Instruction>>
 }
@@ -25,11 +26,11 @@ interface ITutorialRepository {
 @Singleton
 class TutorialRepository @Inject constructor(
     /** Firebase remote config */
-    private val remoteConfig: RemoteConfig,
+    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
     /** Limiting the frequency of queries to remote config & update db */
-    private val limiter: UpdateLimiter,
+    override val limiter: UpdateLimiter,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
@@ -37,23 +38,23 @@ class TutorialRepository @Inject constructor(
     private val instructions by lazy { db.instructionsDao().instructions() }
 
     override fun instructions(): LiveData<List<Instruction>> {
-        return Transformations.switchMap(updateDB()) { instructions }
+        return Transformations.switchMap(updateDB(::updateInstructions)) { instructions }
     }
     /** Update Room from remote config if needed */
-    private fun updateDB(): LiveData<Result<Unit>> {
-        // Return if limit is over
-        if (limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
-        // Fetch data from remote config & update db
-        return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
-            liveData {
-                it.onSuccess { emit(Result.success(updateInstructions())) }
-                it.onFailure {
-                    Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
-                    emit(Result.failure(it))
-                }
-            }
-        }
-    }
+//    private fun updateDB(): LiveData<Result<Unit>> {
+//        // Return if limit is over
+//        if (limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
+//        // Fetch data from remote config & update db
+//        return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
+//            liveData {
+//                it.onSuccess { emit(Result.success(updateInstructions())) }
+//                it.onFailure {
+//                    Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
+//                    emit(Result.failure(it))
+//                }
+//            }
+//        }
+//    }
     /** Update data in Room in background */
     private suspend fun updateInstructions() = withContext(Dispatchers.Default) {
         // Get instructions from remote config
