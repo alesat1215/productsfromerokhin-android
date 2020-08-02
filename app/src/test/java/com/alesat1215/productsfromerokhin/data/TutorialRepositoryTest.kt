@@ -6,6 +6,10 @@ import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -17,6 +21,8 @@ import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.Thread.sleep
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class TutorialRepositoryTest {
     @Mock
@@ -40,8 +46,11 @@ class TutorialRepositoryTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+
     @Before
     fun setUp() {
+        Dispatchers.setMain(mainThreadSurrogate)
         `when`(db.instructionsDao()).thenReturn(instructionsDao)
         `when`(db.instructionsDao().instructions()).thenReturn(MutableLiveData(instructions.asList()))
         `when`(firebaseRemoteConfig.getString(TutorialRepository.INSTRUCTIONS)).thenReturn("")
@@ -50,12 +59,19 @@ class TutorialRepositoryTest {
         repository = TutorialRepository(remoteConfig, db, limiter, gson)
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+        mainThreadSurrogate.close()
+    }
+
     @Test
-    fun instructions() {
+    fun instructions() = runBlocking {
         // Not update db (limiter)
         `when`(limiter.needUpdate()).thenReturn(false)
         var result: List<Instruction> = emptyList()
         repository.instructions().observeForever { result = it }
+        sleep(100)
         assertEquals(result, instructions.toList())
         sleep(100)
         verify(db.instructionsDao(), never()).updateInstructions(instructions.asList())
@@ -64,6 +80,7 @@ class TutorialRepositoryTest {
         `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
         repository.instructions().observeForever { result = it }
+        sleep(100)
         assertEquals(result, instructions.toList())
         sleep(100)
         verify(db.instructionsDao(), never()).updateInstructions(instructions.asList())
@@ -72,6 +89,7 @@ class TutorialRepositoryTest {
         `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         repository.instructions().observeForever { result = it }
+        sleep(100)
         assertEquals(result, instructions.toList())
         sleep(100)
         verify(db.instructionsDao()).updateInstructions(instructions.asList())
