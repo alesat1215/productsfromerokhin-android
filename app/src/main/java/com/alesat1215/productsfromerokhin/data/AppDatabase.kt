@@ -80,15 +80,15 @@ interface InstructionsDao {
     fun instructions(): LiveData<List<Instruction>>
     /** Clear & insert instructions */
     @Transaction
-    fun updateInstructions(instructions: List<Instruction>) {
+    suspend fun updateInstructions(instructions: List<Instruction>) {
         clearInstructions()
         insertInstructions(instructions)
         Logger.d("Update instructions")
     }
     @Insert(entity = Instruction::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertInstructions(instructions: List<Instruction>)
+    suspend fun insertInstructions(instructions: List<Instruction>)
     @Query("DELETE FROM instruction")
-    fun clearInstructions()
+    suspend fun clearInstructions()
 }
 
 @Dao

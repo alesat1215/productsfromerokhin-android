@@ -3,6 +3,7 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.liveData
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
@@ -10,6 +11,7 @@ import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,7 +33,7 @@ class TutorialRepository @Inject constructor(
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
-    /** Get instructions from Room only once */
+    /** @return LiveData with instructions from Room only once */
     private val instructions by lazy { db.instructionsDao().instructions() }
 
     override fun instructions(): LiveData<List<Instruction>> {
@@ -42,22 +44,26 @@ class TutorialRepository @Inject constructor(
         // Return if limit is over
         if (limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
         // Fetch data from remote config & update db
-        return Transformations.map(remoteConfig.fetchAndActivate()) {
-            it.onSuccess { updateInstructions() }
-            it.onFailure { Logger.d("Fetch remote config FAILED: ${it.localizedMessage}") }
-            it
+        return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
+            liveData {
+                it.onSuccess { emit(Result.success(updateInstructions())) }
+                it.onFailure {
+                    Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
+                    emit(Result.failure(it))
+                }
+            }
         }
     }
-    /** Get instructions from remote config & update db in background */
-    private fun updateInstructions() {
+    /** Update data in Room in background */
+    private suspend fun updateInstructions() = withContext(Dispatchers.Default) {
         // Update data in Room
-        GlobalScope.launch(Dispatchers.IO) {
-            // Get instructions from JSON
+//        GlobalScope.launch(Dispatchers.IO) {
+            // Get instructions from remote config
             val remoteInstructions = gson.fromJson(remoteConfig.firebaseRemoteConfig.getString(INSTRUCTIONS), Array<Instruction>::class.java).asList()
             Logger.d("Fetch instructions from remote config: ${remoteInstructions.count()}")
             // Update Room
             db.instructionsDao().updateInstructions(remoteInstructions)
-        }
+//        }
     }
 
     companion object {

@@ -35,10 +35,10 @@ class PhoneRepository @Inject constructor(
     override fun phone(): LiveData<PhoneForOrder?> {
         return Transformations.switchMap(updateDB()) { phone }
     }
-
+    /** Update Room from remote config if needed */
     private fun updateDB(): LiveData<Result<Unit>> {
         /** Return if limit is over */
-        if(limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
+        if (limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
         // Fetch data from remote config & update db
         return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
             liveData {
@@ -51,7 +51,7 @@ class PhoneRepository @Inject constructor(
         }
     }
     /** Update data in Room in background */
-    private suspend fun updatePhone() = withContext(Dispatchers.IO) {
+    private suspend fun updatePhone() = withContext(Dispatchers.Default) {
         // Get phone from remote config
         val phone = remoteConfig.firebaseRemoteConfig.getString(PHONE)
         Logger.d("Fetch from remote config phone for order: $phone")
