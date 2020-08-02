@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
+import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.orhanobut.logger.Logger
@@ -16,25 +17,26 @@ import javax.inject.Singleton
 /** Repository for phone number for order.
  * Return LiveData from Room & update if needed Room from remote config.
  * */
-interface IPhoneRepository : DatabaseUpdater {
+interface IPhoneRepository {
     /** Get phone & update Room from remote config if needed */
     fun phone(): LiveData<PhoneForOrder?>
 }
 
 @Singleton
 class PhoneRepository @Inject constructor(
-    /** Firebase remote config */
-    override val remoteConfig: RemoteConfig,
+//    /** Firebase remote config */
+//    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
-    /** Limiting the frequency of queries to remote config & update db */
-    override val limiter: UpdateLimiter
+    private val databaseUpdater: IDatabaseUpdater
+//    /** Limiting the frequency of queries to remote config & update db */
+//    override val limiter: UpdateLimiter
 ) : IPhoneRepository {
     /** @return LiveData with phone from Room only once */
     private val phone by lazy { db.phoneDao().phone() }
 
     override fun phone(): LiveData<PhoneForOrder?> {
-        return Transformations.switchMap(updateDB(::updatePhone)) { phone }
+        return Transformations.switchMap(databaseUpdater.updateDB(::updatePhone)) { phone }
     }
     /** Update Room from remote config if needed */
 //    private fun updateDB(): LiveData<Result<Unit>> {
@@ -54,7 +56,7 @@ class PhoneRepository @Inject constructor(
     /** Update data in Room in background */
     private suspend fun updatePhone() = withContext(Dispatchers.Default) {
         // Get phone from remote config
-        val phone = remoteConfig.firebaseRemoteConfig.getString(PHONE)
+        val phone = databaseUpdater.firebaseRemoteConfig.getString(PHONE)
         Logger.d("Fetch from remote config phone for order: $phone")
         // Update phone
         db.phoneDao().updatePhone(PhoneForOrder(phone))
