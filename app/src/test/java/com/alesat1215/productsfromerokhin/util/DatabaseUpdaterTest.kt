@@ -52,6 +52,13 @@ class DatabaseUpdaterTest {
         dbUpdater.needUpdate().observeForever { result = it }
         sleep(100)
         assertTrue(result.isFailure)
+        // Not update (fetch failed)
+        result = Result.success(Unit)
+        `when`(limiter.needUpdate()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
+        dbUpdater.needUpdate().observeForever { result = it }
+        sleep(100)
+        assertTrue(result.isFailure)
     }
 
     @Test
