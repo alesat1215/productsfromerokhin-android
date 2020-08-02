@@ -27,6 +27,8 @@ class LoadViewModelTest {
     private lateinit var instruction: Instruction
     private lateinit var instructions: List<Instruction>
     @Mock
+    private lateinit var titlesRepository: TitlesRepository
+    @Mock
     private lateinit var auth: Auth
     private val authResult: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
     @Mock
@@ -45,7 +47,7 @@ class LoadViewModelTest {
         instructions = listOf(instruction)
         `when`(productsRepository.products()).thenReturn(MutableLiveData(products))
         `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(instructions))
-        viewModel = LoadViewModel(productsRepository, tutorialRepository, phoneRepository, auth)
+        viewModel = LoadViewModel(productsRepository, tutorialRepository, phoneRepository, titlesRepository, auth)
     }
 
     @Test
