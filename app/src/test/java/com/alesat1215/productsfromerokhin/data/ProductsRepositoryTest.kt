@@ -71,7 +71,6 @@ class ProductsRepositoryTest {
         `when`(db.titlesDao().titles()).thenReturn(MutableLiveData(titles))
         `when`(db.cartDao()).thenReturn(cartDao)
         `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
-//        `when`(firebaseRemoteConfig.getString(ProductsRepository.TITLES)).thenReturn("")
         `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
         `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
         `when`(gson.fromJson("", Titles::class.java)).thenReturn(titles)
@@ -84,35 +83,32 @@ class ProductsRepositoryTest {
         mainThreadSurrogate.close()
     }
 
-//    @Test
-//    fun products() {
-//        // Not update db (limiter)
-//        `when`(limiter.needUpdate()).thenReturn(false)
-//        var result: List<ProductInfo> = emptyList()
-//        repository.products().observeForever { result = it }
-//        assertEquals(result, productsInfo)
-//        sleep(100)
-//        verify(productsDao, never()).updateProducts(groups.asList(), products)
-//        verify(db.titlesDao(), never()).updateTitles(titles)
-//        // Not update db (result onFailure)
-//        result = emptyList()
-//        `when`(limiter.needUpdate()).thenReturn(true)
-//        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
-//        repository.products().observeForever { result = it }
-//        assertEquals(result, productsInfo)
-//        sleep(100)
-//        verify(productsDao, never()).updateProducts(groups.asList(), products)
-//        verify(db.titlesDao(), never()).updateTitles(titles)
-//        // Update db
-//        result = emptyList()
-//        `when`(limiter.needUpdate()).thenReturn(true)
-//        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
-//        repository.products().observeForever { result = it }
-//        assertEquals(result, productsInfo)
-//        sleep(100)
-//        verify(db.productsDao()).updateProducts(groups.asList(), products)
-//        verify(db.titlesDao()).updateTitles(titles)
-//    }
+    @Test
+    fun products() = runBlocking {
+        // Not update db (limiter)
+        `when`(limiter.needUpdate()).thenReturn(false)
+        var result: List<ProductInfo> = emptyList()
+        repository.products().observeForever { result = it }
+        sleep(100)
+        assertEquals(result, productsInfo)
+        verify(productsDao, never()).updateProducts(groups.asList(), products)
+        // Not update db (result onFailure)
+        result = emptyList()
+        `when`(limiter.needUpdate()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
+        repository.products().observeForever { result = it }
+        sleep(100)
+        assertEquals(result, productsInfo)
+        verify(productsDao, never()).updateProducts(groups.asList(), products)
+        // Update db
+        result = emptyList()
+        `when`(limiter.needUpdate()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
+        repository.products().observeForever { result = it }
+        sleep(100)
+        assertEquals(result, productsInfo)
+        verify(db.productsDao()).updateProducts(groups.asList(), products)
+    }
 
 //    @Test
 //    fun titles() {
