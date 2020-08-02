@@ -49,11 +49,13 @@ class DatabaseUpdaterTest {
 
     @Test
     fun updateDB() {
-        var result = false
+        var insertData = false
+        var result = Result.failure<Unit>(Exception())
         `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
-        databaseUpdater.updateDB { result = true }.observeForever {  }
+        databaseUpdater.updateDB { insertData = true }.observeForever { result = it }
         sleep(100)
-        assertTrue(result)
+        assertTrue(insertData)
+        assertTrue(result.isSuccess)
     }
 }
