@@ -1,11 +1,10 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
-import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
+import com.alesat1215.productsfromerokhin.util.RemoteConfig
+import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import kotlinx.coroutines.*
@@ -27,14 +26,15 @@ import java.lang.Thread.sleep
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class ProductsRepositoryTest {
-//    @Mock
-//    private lateinit var remoteConfig: RemoteConfig
+    @Mock
+    private lateinit var remoteConfig: RemoteConfig
     @Mock
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     @Mock
     private lateinit var db: AppDatabase
+
 //    @Mock
-    private lateinit var dbUpdater: IDatabaseUpdater
+    private lateinit var dbUpdater: DatabaseUpdater
     @Mock
     private lateinit var productsDao: ProductsDao
 //    @Mock
@@ -53,8 +53,8 @@ class ProductsRepositoryTest {
     @Mock
     private lateinit var productInCart: ProductInCart
 
-//    @Mock
-//    private lateinit var limiter: UpdateLimiter
+    @Mock
+    private lateinit var limiter: UpdateLimiter
     @Mock
     private lateinit var gson: Gson
 
@@ -74,12 +74,16 @@ class ProductsRepositoryTest {
 //        `when`(db.titlesDao()).thenReturn(titlesDao)
 //        `when`(db.titlesDao().titles()).thenReturn(MutableLiveData(titles))
         `when`(db.cartDao()).thenReturn(cartDao)
-//        `when`(firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
+//
+
+
         `when`(firebaseRemoteConfig.getString(ProductsRepository.PRODUCTS)).thenReturn("")
 
         `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
+        `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
+        dbUpdater = DatabaseUpdater(limiter, remoteConfig)
 //        `when`(gson.fromJson("", Titles::class.java)).thenReturn(titles)
-
+        repository = ProductsRepository(db, dbUpdater, gson)
 
 
 
@@ -94,25 +98,21 @@ class ProductsRepositoryTest {
     @Test
     fun products() = runBlocking {
         // Not update db
-        dbUpdater = object : IDatabaseUpdater {
-            override val firebaseRemoteConfig = this@ProductsRepositoryTest.firebaseRemoteConfig
-            override fun updateDatabase(insertData: suspend () -> Unit)
-                    = liveData { emit(Unit) }
-        }
-        repository = ProductsRepository(db, dbUpdater, gson)
         var result: List<ProductInfo> = emptyList()
+//        `when`(dbUpdater.needUpdate()).thenReturn(MutableLiveData(Result.failure(Exception())))
+//        `when`(dbUpdater.updateDatabase(repository::updateProducts)).thenCallRealMethod()
+        `when`(limiter.needUpdate()).thenReturn(false)
+//        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         repository.products().observeForever { result = it }
         sleep(100)
         assertEquals(result, productsInfo)
         verify(productsDao, never()).updateProducts(groups.asList(), products)
         // Update db
-        dbUpdater = object : IDatabaseUpdater {
-            override val firebaseRemoteConfig = this@ProductsRepositoryTest.firebaseRemoteConfig
-            override fun updateDatabase(insertData: suspend () -> Unit)
-                    = liveData { emit(insertData()) }
-        }
-        repository = ProductsRepository(db, dbUpdater, gson)
         result = emptyList()
+//        `when`(dbUpdater.needUpdate()).thenReturn(MutableLiveData(Result.success(Unit)))
+//        `when`(dbUpdater.updateDatabase(repository::updateProducts)).thenCallRealMethod()
+        `when`(limiter.needUpdate()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         repository.products().observeForever { result = it }
         sleep(100)
         assertEquals(result, productsInfo)
