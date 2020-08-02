@@ -3,6 +3,7 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.liveData
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
@@ -82,38 +83,39 @@ class ProductsRepository @Inject constructor(
         /** Return if limit is over */
         if(limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
         // Fetch data from remote config & update db
-        return Transformations.map(remoteConfig.fetchAndActivate()) {
-            it.onSuccess { updateProducts() }
-            it.onFailure { Logger.d("Fetch remote config FAILED: ${it.localizedMessage}") }
-            it
+        return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
+            liveData {
+                it.onSuccess { emit(Result.success(updateProducts())) }
+                it.onFailure {
+                    Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
+                    emit(Result.failure(it))
+                }
+            }
         }
     }
     /** Get groups, products & titles from remote config & update db in background */
-    private fun updateProducts() {
-        // Update data in Room
-        GlobalScope.launch(Dispatchers.IO) {
-            // Get groups with products from JSON
-            val groups = gson.fromJson(
-                remoteConfig.firebaseRemoteConfig.getString(PRODUCTS),
-                Array<Group>::class.java
-            ).asList()
-            // Get products from groups
-            val products =
-                products(groups)
-            Logger.d("Fetch from remote config groups: ${groups.count()}, products: ${products.count()}")
-            // Update products
-            db.productsDao().updateProducts(groups, products)
+    private suspend fun updateProducts() = withContext(Dispatchers.Default) {
+        // Get groups with products from JSON
+        val groups = gson.fromJson(
+            remoteConfig.firebaseRemoteConfig.getString(PRODUCTS),
+            Array<Group>::class.java
+        ).asList()
+        // Get products from groups
+        val products =
+            products(groups)
+        Logger.d("Fetch from remote config groups: ${groups.count()}, products: ${products.count()}")
+        // Update products
+        db.productsDao().updateProducts(groups, products)
 
-            // Get titles from JSON
-            val titles = gson.fromJson(
-                remoteConfig.firebaseRemoteConfig.getString(TITLES),
-                Titles::class.java
-            )
-            Logger.d("Fetch from remote config titles: " +
-                    "${titles.title}, ${titles.imgTitle}, ${titles.productsTitle}, ${titles.productsTitle2}, ${titles.img}")
-            // Update titles
-            db.titlesDao().updateTitles(titles)
-        }
+        // Get titles from JSON
+        val titles = gson.fromJson(
+            remoteConfig.firebaseRemoteConfig.getString(TITLES),
+            Titles::class.java
+        )
+        Logger.d("Fetch from remote config titles: " +
+                "${titles.title}, ${titles.imgTitle}, ${titles.productsTitle}, ${titles.productsTitle2}, ${titles.img}")
+        // Update titles
+        db.titlesDao().updateTitles(titles)
     }
 
     companion object {

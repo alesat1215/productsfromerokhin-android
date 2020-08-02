@@ -13,7 +13,7 @@ interface ProductsDao {
     fun groups(): LiveData<List<Group>>
     /** Clear & insert groups & products */
     @Transaction
-    fun updateProducts(groups: List<Group>, products: List<Product>) {
+    suspend fun updateProducts(groups: List<Group>, products: List<Product>) {
         clearGroups()
         clearProducts()
         insertGroups(groups)
@@ -21,13 +21,13 @@ interface ProductsDao {
         Logger.d("Update products & groups")
     }
     @Insert(entity = Product::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertProducts(products: List<Product>)
+    suspend fun insertProducts(products: List<Product>)
     @Insert(entity = Group::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertGroups(products: List<Group>)
+    suspend fun insertGroups(products: List<Group>)
     @Query("DELETE FROM product")
-    fun clearProducts()
+    suspend fun clearProducts()
     @Query("DELETE FROM `group`")
-    fun clearGroups()
+    suspend fun clearGroups()
 }
 
 @Dao
@@ -36,25 +36,25 @@ interface TitlesDao {
     fun titles(): LiveData<Titles?>
     /** Clear & insert titles */
     @Transaction
-    fun updateTitles(titles: Titles) {
+    suspend fun updateTitles(titles: Titles) {
         clearTitles()
         insertTitles(titles)
         Logger.d("Update titles")
     }
     @Query("DELETE FROM titles")
-    fun clearTitles()
+    suspend fun clearTitles()
     @Insert(entity = Titles::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertTitles(titles: Titles)
+    suspend fun insertTitles(titles: Titles)
 }
 
 @Dao
 interface CartDao {
     @Insert(entity = ProductInCart::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertProductInCart(product: ProductInCart)
+    suspend fun insertProductInCart(product: ProductInCart)
     @Delete
-    fun deleteProductFromCart(product: ProductInCart)
+    suspend fun deleteProductFromCart(product: ProductInCart)
     @Query("DELETE FROM productincart")
-    fun clearCart()
+    suspend fun clearCart()
 }
 
 @Dao
