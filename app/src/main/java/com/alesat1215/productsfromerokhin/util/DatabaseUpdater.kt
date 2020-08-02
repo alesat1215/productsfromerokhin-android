@@ -25,13 +25,14 @@ class DatabaseUpdater @Inject constructor(
     /** Check needed update db by limiter & fetching */
     fun needUpdate(): LiveData<Result<Unit>> {
         /** Return failure if limit is over */
-        if(limiter.needUpdate().not()) return MutableLiveData(Result.failure(Exception()))
+        if (limiter.needUpdate().not()) return MutableLiveData(Result.failure(Exception()))
         // Fetch & activate data from remote config
         return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
             liveData {
                 it.onSuccess { emit(Result.success(Unit)) }
                 it.onFailure {
                     Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
+                    limiter.reset()
                     emit(Result.failure(it))
                 }
             }
