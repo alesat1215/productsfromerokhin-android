@@ -47,8 +47,6 @@ class ProductsRepository @Inject constructor(
     private val products by lazy { db.productsDao().products() }
     /** @return LiveData with groups from Room only once */
     private val groups by lazy { db.productsDao().groups() }
-    /** @return LiveData with titles from Room only once */
-    private val titles by lazy { db.titlesDao().titles() }
     /** @return LiveData with products in cart from Room only once */
     override val productsInCart by lazy { Transformations.map(products) { it.filter { it.inCart.isNotEmpty() } } }
 
