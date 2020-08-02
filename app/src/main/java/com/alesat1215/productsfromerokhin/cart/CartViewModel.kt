@@ -29,7 +29,7 @@ class CartViewModel @Inject constructor(
         }
     }
     /** Delivery info for message */
-    val delivery by lazy { Transformations.map(profileRepository.profile) { it.delivery() } }
+    val delivery by lazy { Transformations.map(profileRepository.profile) { it?.delivery().orEmpty() } }
 
     fun clearCart() {
         viewModelScope.launch { productsRepository.clearCart() }

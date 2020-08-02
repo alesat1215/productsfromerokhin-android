@@ -18,7 +18,7 @@ import javax.inject.Singleton
  * */
 interface IPhoneRepository {
     /** Get phone & update Room from remote config if needed */
-    fun phone(): LiveData<PhoneForOrder>
+    fun phone(): LiveData<PhoneForOrder?>
 }
 
 @Singleton
@@ -33,7 +33,7 @@ class PhoneRepository @Inject constructor(
     /** @return LiveData with phone from Room only once */
     private val phone by lazy { db.phoneDao().phone() }
 
-    override fun phone(): LiveData<PhoneForOrder> {
+    override fun phone(): LiveData<PhoneForOrder?> {
         return Transformations.switchMap(updateDB()) { phone }
     }
 
