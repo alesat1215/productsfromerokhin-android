@@ -22,11 +22,11 @@ class DatabaseUpdater @Inject constructor(
     private val remoteConfig: RemoteConfig
 ) : IDatabaseUpdater {
     override val firebaseRemoteConfig = remoteConfig.firebaseRemoteConfig
-    /** Exec "insertData" if need update db */
+    /** Check needed update db by limiter & fetching */
     fun needUpdate(): LiveData<Result<Unit>> {
-        /** Return if limit is over */
+        /** Return failure if limit is over */
         if(limiter.needUpdate().not()) return MutableLiveData(Result.failure(Exception()))
-        // Fetch data from remote config & update db
+        // Fetch & activate data from remote config
         return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
             liveData {
                 it.onSuccess { emit(Result.success(Unit)) }
@@ -37,7 +37,7 @@ class DatabaseUpdater @Inject constructor(
             }
         }
     }
-
+    /** Exec "insertData" if need update db */
     override fun updateDB(insertData: suspend () -> Unit): LiveData<Unit> {
         return Transformations.switchMap(needUpdate()) {
             liveData {
