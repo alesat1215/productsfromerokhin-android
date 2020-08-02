@@ -1,13 +1,8 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.liveData
-import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
 import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
-import com.alesat1215.productsfromerokhin.util.RemoteConfig
-import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +26,7 @@ class TitlesRepository @Inject constructor(
     private val db: AppDatabase,
 //    /** Limiting the frequency of queries to remote config & update db */
 //    override val limiter: UpdateLimiter,
-    private val databaseUpdater: IDatabaseUpdater,
+    private val dbUpdater: IDatabaseUpdater,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITitlesRepository {
@@ -40,7 +35,7 @@ class TitlesRepository @Inject constructor(
 
     /** Get titles & update Room from remote config if needed */
     override fun titles(): LiveData<Titles?> {
-        return Transformations.switchMap(databaseUpdater.updateDB(::updateTitles)) { titles }
+        return Transformations.switchMap(dbUpdater.updateDatabase(::updateTitles)) { titles }
     }
     /** Update Room from remote config if needed */
 //    private fun updateDB(): LiveData<Result<Unit>> {
@@ -61,7 +56,7 @@ class TitlesRepository @Inject constructor(
     private suspend fun updateTitles() = withContext(Dispatchers.Default) {
         // Get titles from JSON
         val titles = gson.fromJson(
-            databaseUpdater.firebaseRemoteConfig.getString(TITLES),
+            dbUpdater.firebaseRemoteConfig.getString(TITLES),
             Titles::class.java
         )
         Logger.d("Fetch from remote config titles: " +

@@ -11,7 +11,7 @@ import kotlin.Exception
 
 interface IDatabaseUpdater {
     val firebaseRemoteConfig: FirebaseRemoteConfig
-    fun updateDB(insertData: suspend () -> Unit): LiveData<Unit>
+    fun updateDatabase(insertData: suspend () -> Unit): LiveData<Unit>
 }
 
 /** Update db from remote config if limit is not over & fetch is success */
@@ -38,7 +38,7 @@ class DatabaseUpdater @Inject constructor(
         }
     }
     /** Exec "insertData" if need update db */
-    override fun updateDB(insertData: suspend () -> Unit): LiveData<Unit> {
+    override fun updateDatabase(insertData: suspend () -> Unit): LiveData<Unit> {
         return Transformations.switchMap(needUpdate()) {
             liveData {
                 it.onSuccess { emit(insertData()) }

@@ -39,7 +39,7 @@ class ProductsRepository @Inject constructor(
     private val db: AppDatabase,
 //    /** Limiting the frequency of queries to remote config & update db */
 //    override val limiter: UpdateLimiter,
-    private val databaseUpdater: IDatabaseUpdater,
+    private val dbUpdater: IDatabaseUpdater,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : IProductsRepository {
@@ -52,12 +52,12 @@ class ProductsRepository @Inject constructor(
 
     /** Get products & update Room from remote config if needed */
     override fun products(): LiveData<List<ProductInfo>> {
-        return Transformations.switchMap(databaseUpdater.updateDB(::updateProducts)) { products }
+        return Transformations.switchMap(dbUpdater.updateDatabase(::updateProducts)) { products }
     }
 
     /** Get groups & update Room from remote config if needed */
     override fun groups(): LiveData<List<Group>> {
-        return Transformations.switchMap(databaseUpdater.updateDB(::updateProducts)) { groups }
+        return Transformations.switchMap(dbUpdater.updateDatabase(::updateProducts)) { groups }
     }
 
     override suspend fun addProductToCart(product: ProductInCart) = withContext(Dispatchers.IO) {
@@ -99,7 +99,7 @@ class ProductsRepository @Inject constructor(
     private suspend fun updateProducts() = withContext(Dispatchers.Default) {
         // Get groups with products from JSON
         val groups = gson.fromJson(
-            databaseUpdater.firebaseRemoteConfig.getString(PRODUCTS),
+            dbUpdater.firebaseRemoteConfig.getString(PRODUCTS),
             Array<Group>::class.java
         ).asList()
         // Get products from groups
