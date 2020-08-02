@@ -3,13 +3,15 @@ package com.alesat1215.productsfromerokhin.start
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
+import com.alesat1215.productsfromerokhin.data.ITitlesRepository
 import com.alesat1215.productsfromerokhin.data.ProductInfo
 import com.alesat1215.productsfromerokhin.start.StartTitle.*
 import com.alesat1215.productsfromerokhin.util.CartManager
 import javax.inject.Inject
 
 class StartViewModel @Inject constructor(
-    override val productsRepository: IProductsRepository
+    override val productsRepository: IProductsRepository,
+    private val titlesRepository: ITitlesRepository
 ) : CartManager() {
 
     /** Save scroll position for lists */
@@ -18,11 +20,11 @@ class StartViewModel @Inject constructor(
     /** @return title for type */
     fun title(forType: StartTitle) =
         when (forType) {
-            TITLE -> Transformations.map(productsRepository.titles()) { it?.title }
-            IMG -> Transformations.map(productsRepository.titles()) { it?.img }
-            IMGTITLE -> Transformations.map(productsRepository.titles()) { it?.imgTitle }
-            PRODUCTS -> Transformations.map(productsRepository.titles()) { it?.productsTitle }
-            PRODUCTS2 -> Transformations.map(productsRepository.titles()) { it?.productsTitle2 }
+            TITLE -> Transformations.map(titlesRepository.titles()) { it?.title }
+            IMG -> Transformations.map(titlesRepository.titles()) { it?.img }
+            IMGTITLE -> Transformations.map(titlesRepository.titles()) { it?.imgTitle }
+            PRODUCTS -> Transformations.map(titlesRepository.titles()) { it?.productsTitle }
+            PRODUCTS2 -> Transformations.map(titlesRepository.titles()) { it?.productsTitle2 }
         }
 
     /** @return products filtering by predicate */

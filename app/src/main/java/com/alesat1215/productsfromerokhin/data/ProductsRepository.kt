@@ -12,14 +12,12 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** Repository for products, groups & titles.
+/** Repository for products & groups.
  * Return LiveData from Room & update if needed Room from remote config.
  * */
 interface IProductsRepository {
     /** Get products & update Room from remote config if needed */
     fun products(): LiveData<List<ProductInfo>>
-    /** Get titles & update Room from remote config if needed */
-    fun titles(): LiveData<Titles?>
     /** Get groups & update Room from remote config if needed */
     fun groups(): LiveData<List<Group>>
     /** Get products in cart */
@@ -55,11 +53,6 @@ class ProductsRepository @Inject constructor(
     /** Get products & update Room from remote config if needed */
     override fun products(): LiveData<List<ProductInfo>> {
         return Transformations.switchMap(updateDB()) { products }
-    }
-
-    /** Get titles & update Room from remote config if needed */
-    override fun titles(): LiveData<Titles?> {
-        return Transformations.switchMap(updateDB()) { titles }
     }
 
     /** Get groups & update Room from remote config if needed */
@@ -106,21 +99,10 @@ class ProductsRepository @Inject constructor(
         Logger.d("Fetch from remote config groups: ${groups.count()}, products: ${products.count()}")
         // Update products
         db.productsDao().updateProducts(groups, products)
-
-        // Get titles from JSON
-        val titles = gson.fromJson(
-            remoteConfig.firebaseRemoteConfig.getString(TITLES),
-            Titles::class.java
-        )
-        Logger.d("Fetch from remote config titles: " +
-                "${titles.title}, ${titles.imgTitle}, ${titles.productsTitle}, ${titles.productsTitle2}, ${titles.img}")
-        // Update titles
-        db.titlesDao().updateTitles(titles)
     }
 
     companion object {
         /** Parameters in Firebase remote config */
-        const val TITLES = "titles"
         const val PRODUCTS = "products"
     }
 

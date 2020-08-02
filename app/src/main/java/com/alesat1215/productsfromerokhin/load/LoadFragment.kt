@@ -54,25 +54,25 @@ class LoadFragment : DaggerFragment() {
     /** When data is loading navigate to destination */
     private fun loadData() {
         if (tutorialIsRead()) {
-            // Subscribe to trigger of products loading
-//            viewModel.loadCompleteProducts().observe(viewLifecycleOwner, Observer {
-//                if (it) {
-//                    // For non empty products navigate to destination
-//                    findNavController().navigate(R.id.action_loadFragment_to_startFragment)
-//                    Logger.d("Load products complete")
-//                }
-//            })
-            // Subscribe to trigger of phone & products loading
-            Transformations.switchMap(viewModel.loadCompletePhone()) {
+            val loadPhoneAndTitles = Transformations.switchMap(viewModel.loadCompletePhone()) {
                 if (it) {
                     Logger.d("Load phone complete")
+                    return@switchMap viewModel.loadCompleteTitles()
+                } else {
+                    return@switchMap MutableLiveData(it)
+                }
+            }
+            // Subscribe to trigger of phone, titles & products loading
+            Transformations.switchMap(loadPhoneAndTitles) {
+                if (it) {
+                    Logger.d("Load titles complete")
                     return@switchMap viewModel.loadCompleteProducts()
                 } else {
                     return@switchMap MutableLiveData(it)
                 }
             }.observe(viewLifecycleOwner, Observer {
                 if (it) {
-                    // For non empty phone & products navigate to destination
+                    // For non empty phone, titles & products navigate to destination
                     findNavController().navigate(R.id.action_loadFragment_to_startFragment)
                     Logger.d("Load products complete")
                 }
