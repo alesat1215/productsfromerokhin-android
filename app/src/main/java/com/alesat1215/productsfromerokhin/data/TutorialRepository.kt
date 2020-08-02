@@ -56,14 +56,11 @@ class TutorialRepository @Inject constructor(
     }
     /** Update data in Room in background */
     private suspend fun updateInstructions() = withContext(Dispatchers.Default) {
-        // Update data in Room
-//        GlobalScope.launch(Dispatchers.IO) {
-            // Get instructions from remote config
-            val remoteInstructions = gson.fromJson(remoteConfig.firebaseRemoteConfig.getString(INSTRUCTIONS), Array<Instruction>::class.java).asList()
-            Logger.d("Fetch instructions from remote config: ${remoteInstructions.count()}")
-            // Update Room
-            db.instructionsDao().updateInstructions(remoteInstructions)
-//        }
+        // Get instructions from remote config
+        val remoteInstructions = gson.fromJson(remoteConfig.firebaseRemoteConfig.getString(INSTRUCTIONS), Array<Instruction>::class.java).asList()
+        Logger.d("Fetch instructions from remote config: ${remoteInstructions.count()}")
+        // Update Room
+        db.instructionsDao().updateInstructions(remoteInstructions)
     }
 
     companion object {
