@@ -18,7 +18,7 @@ interface IProductsRepository {
     /** Get products & update Room from remote config if needed */
     fun products(): LiveData<List<ProductInfo>>
     /** Get titles & update Room from remote config if needed */
-    fun titles(): LiveData<Titles?>
+    fun titles(): LiveData<Titles>
     /** Get groups & update Room from remote config if needed */
     fun groups(): LiveData<List<Group>>
     /** Get products in cart */
@@ -57,7 +57,7 @@ class ProductsRepository @Inject constructor(
     }
 
     /** Get titles & update Room from remote config if needed */
-    override fun titles(): LiveData<Titles?> {
+    override fun titles(): LiveData<Titles> {
         return Transformations.switchMap(updateDB()) { titles }
     }
 

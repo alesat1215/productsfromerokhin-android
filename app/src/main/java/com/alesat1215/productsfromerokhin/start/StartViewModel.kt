@@ -1,6 +1,5 @@
 package com.alesat1215.productsfromerokhin.start
 
-import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
@@ -13,19 +12,17 @@ class StartViewModel @Inject constructor(
     override val productsRepository: IProductsRepository
 ) : CartManager() {
 
-    /** Save state for lists to remember scroll position */
-    val recyclerViewState = mutableMapOf<Int, Parcelable>()
-
+    /** Save scroll position for lists */
     val scrollPosition = mutableMapOf<Int, Int>()
 
     /** @return title for type */
     fun title(forType: StartTitle) =
         when (forType) {
-            TITLE -> Transformations.map(productsRepository.titles()) { it?.title }
-            IMG -> Transformations.map(productsRepository.titles()) { it?.img }
-            IMGTITLE -> Transformations.map(productsRepository.titles()) { it?.imgTitle }
-            PRODUCTS -> Transformations.map(productsRepository.titles()) { it?.productsTitle }
-            PRODUCTS2 -> Transformations.map(productsRepository.titles()) { it?.productsTitle2 }
+            TITLE -> Transformations.map(productsRepository.titles()) { it.title }
+            IMG -> Transformations.map(productsRepository.titles()) { it.img }
+            IMGTITLE -> Transformations.map(productsRepository.titles()) { it.imgTitle }
+            PRODUCTS -> Transformations.map(productsRepository.titles()) { it.productsTitle }
+            PRODUCTS2 -> Transformations.map(productsRepository.titles()) { it.productsTitle2 }
         }
 
     /** @return products filtering by predicate */

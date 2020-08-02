@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 interface IProfileRepository {
     /** @return LiveData with delivery info from Room only once */
-    val profile: LiveData<Profile?>
+    val profile: LiveData<Profile>
     /** Update profile data in db */
     suspend fun updateProfile(profile: Profile)
 }

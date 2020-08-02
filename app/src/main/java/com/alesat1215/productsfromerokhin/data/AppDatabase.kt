@@ -33,7 +33,7 @@ interface ProductsDao {
 @Dao
 interface TitlesDao {
     @Query("SELECT * FROM titles LIMIT 1")
-    fun titles(): LiveData<Titles?>
+    fun titles(): LiveData<Titles>
     /** Clear & insert titles */
     @Transaction
     fun updateTitles(titles: Titles) {
@@ -60,7 +60,7 @@ interface CartDao {
 @Dao
 interface ProfileDao {
     @Query("SELECT rowid, * FROM profile LIMIT 1")
-    fun profile(): LiveData<Profile?>
+    fun profile(): LiveData<Profile>
     /** Clear & insert profile */
     @Transaction
     fun updateProfile(profile: Profile) {
@@ -94,7 +94,7 @@ interface InstructionsDao {
 @Dao
 interface PhoneDao {
     @Query("SELECT * FROM phonefororder LIMIT 1")
-    fun phone(): LiveData<PhoneForOrder?>
+    fun phone(): LiveData<PhoneForOrder>
     /** Clear & insert phone */
     @Transaction
     fun updatePhone(phoneForOrder: PhoneForOrder) {
