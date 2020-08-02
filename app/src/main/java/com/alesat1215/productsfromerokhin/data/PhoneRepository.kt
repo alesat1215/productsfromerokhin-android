@@ -42,11 +42,6 @@ class PhoneRepository @Inject constructor(
         /** Return if limit is over */
         if(limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
         // Fetch data from remote config & update db
-//        return Transformations.map(remoteConfig.fetchAndActivate()) {
-//            it.onSuccess { updatePhone() }
-//            it.onFailure { Logger.d("Fetch remote config FAILED: ${it.localizedMessage}") }
-//            it
-//        }
         return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
             liveData {
                 it.onSuccess { emit(Result.success(updatePhone())) }
@@ -57,16 +52,13 @@ class PhoneRepository @Inject constructor(
             }
         }
     }
-
+    /** Update data in Room in background */
     private suspend fun updatePhone() = withContext(Dispatchers.IO) {
-        // Update data in Room
-//        GlobalScope.launch(Dispatchers.IO) {
-            // Get groups with products from JSON
-            val phone = remoteConfig.firebaseRemoteConfig.getString(PHONE)
-            Logger.d("Fetch from remote config phone for order: $phone")
-            // Update phone
-            db.phoneDao().updatePhone(PhoneForOrder(phone))
-//        }
+        // Get phone from remote config
+        val phone = remoteConfig.firebaseRemoteConfig.getString(PHONE)
+        Logger.d("Fetch from remote config phone for order: $phone")
+        // Update phone
+        db.phoneDao().updatePhone(PhoneForOrder(phone))
     }
 
     companion object {
