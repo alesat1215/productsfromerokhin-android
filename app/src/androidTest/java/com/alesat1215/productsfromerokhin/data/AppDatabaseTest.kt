@@ -6,6 +6,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alesat1215.productsfromerokhin.DataMock
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 
@@ -13,7 +16,10 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Thread.sleep
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class AppDatabaseTest {
     private lateinit var productsDao: ProductsDao
@@ -26,12 +32,17 @@ class AppDatabaseTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
+    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(mainThreadSurrogate)
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context, AppDatabase::class.java)
+            .allowMainThreadQueries()
+            .setQueryExecutor(Dispatchers.Main.asExecutor())
+            .setTransactionExecutor(Dispatchers.Main.asExecutor())
             .build()
         productsDao = db.productsDao()
         titlesDao = db.titlesDao()
@@ -43,6 +54,8 @@ class AppDatabaseTest {
 
     @After
     fun tearDown() {
+        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+        mainThreadSurrogate.close()
         db.close()
     }
 
@@ -100,10 +113,11 @@ class AppDatabaseTest {
     }
 
     @Test
-    fun phoneDao() {
+    fun phoneDao() = runBlocking {
         var result: PhoneForOrder? = null
         phoneDao.phone().observeForever { result = it }
         phoneDao.updatePhone(DataMock.phone)
+        sleep(100)
         assertEquals(result, DataMock.phone)
     }
 
