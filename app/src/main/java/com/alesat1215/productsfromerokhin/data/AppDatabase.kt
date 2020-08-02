@@ -63,15 +63,15 @@ interface ProfileDao {
     fun profile(): LiveData<Profile?>
     /** Clear & insert profile */
     @Transaction
-    fun updateProfile(profile: Profile) {
+    suspend fun updateProfile(profile: Profile) {
         clearProfile()
         insertProfile(profile)
         Logger.d("Update profile")
     }
     @Insert(entity = Profile::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertProfile(profile: Profile)
+    suspend fun insertProfile(profile: Profile)
     @Query("DELETE FROM profile")
-    fun clearProfile()
+    suspend fun clearProfile()
 }
 
 @Dao

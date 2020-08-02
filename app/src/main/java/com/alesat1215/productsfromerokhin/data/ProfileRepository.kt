@@ -21,7 +21,7 @@ class ProfileRepository @Inject constructor(
 
     override val profile by lazy { db.profileDao().profile() }
 
-    override suspend fun updateProfile(profile: Profile) = withContext(Dispatchers.IO) {
+    override suspend fun updateProfile(profile: Profile) {
         db.profileDao().updateProfile(profile)
     }
 }
