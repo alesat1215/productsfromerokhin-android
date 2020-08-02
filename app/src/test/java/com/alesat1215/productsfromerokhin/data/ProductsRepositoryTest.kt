@@ -2,6 +2,8 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
+import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -31,6 +33,8 @@ class ProductsRepositoryTest {
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     @Mock
     private lateinit var db: AppDatabase
+    @Mock
+    private lateinit var databaseUpdater: DatabaseUpdater
     @Mock
     private lateinit var productsDao: ProductsDao
 //    @Mock
@@ -74,7 +78,8 @@ class ProductsRepositoryTest {
         `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
         `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
 //        `when`(gson.fromJson("", Titles::class.java)).thenReturn(titles)
-        repository = ProductsRepository(remoteConfig, db, limiter, gson)
+        `when`(databaseUpdater.needUpdate()).thenReturn(MutableLiveData(Result.success(Unit)))
+        repository = ProductsRepository(db, databaseUpdater, gson)
     }
 
     @After
