@@ -80,15 +80,9 @@ class ProductsRepositoryTest {
         `when`(gson.fromJson("", Array<Group>::class.java)).thenReturn(groups)
 //        `when`(gson.fromJson("", Titles::class.java)).thenReturn(titles)
 
-        dbUpdater = object : IDatabaseUpdater {
-            override val firebaseRemoteConfig = this@ProductsRepositoryTest.firebaseRemoteConfig
 
-            override fun updateDatabase(insertData: suspend () -> Unit)
-                    = liveData { emit(insertData()) }
 
-        }
 
-        repository = ProductsRepository(db, dbUpdater, gson)
     }
 
     @After
@@ -99,11 +93,26 @@ class ProductsRepositoryTest {
 
     @Test
     fun products() = runBlocking {
-//        `when`(db.productsDao().updateProducts(groups.asList(), products)).thenReturn(Unit)
         // Not update db
-//        `when`(dbUpdater.needUpdate()).thenReturn(MutableLiveData(Result.failure(Exception())))
-//        `when`(dbUpdater.updateDatabase {  }).thenCallRealMethod()
+        dbUpdater = object : IDatabaseUpdater {
+            override val firebaseRemoteConfig = this@ProductsRepositoryTest.firebaseRemoteConfig
+            override fun updateDatabase(insertData: suspend () -> Unit)
+                    = liveData { emit(Unit) }
+        }
+        repository = ProductsRepository(db, dbUpdater, gson)
         var result: List<ProductInfo> = emptyList()
+        repository.products().observeForever { result = it }
+        sleep(100)
+        assertEquals(result, productsInfo)
+        verify(productsDao, never()).updateProducts(groups.asList(), products)
+        // Update db
+        dbUpdater = object : IDatabaseUpdater {
+            override val firebaseRemoteConfig = this@ProductsRepositoryTest.firebaseRemoteConfig
+            override fun updateDatabase(insertData: suspend () -> Unit)
+                    = liveData { emit(insertData()) }
+        }
+        repository = ProductsRepository(db, dbUpdater, gson)
+        result = emptyList()
         repository.products().observeForever { result = it }
         sleep(100)
         assertEquals(result, productsInfo)
