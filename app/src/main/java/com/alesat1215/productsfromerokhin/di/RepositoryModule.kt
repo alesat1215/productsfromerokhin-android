@@ -1,6 +1,8 @@
 package com.alesat1215.productsfromerokhin.di
 
 import com.alesat1215.productsfromerokhin.data.*
+import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
+import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
 import dagger.Binds
 import dagger.Module
 
@@ -16,4 +18,6 @@ abstract class RepositoryModule {
     abstract fun bindPhoneRepository(repository: PhoneRepository): IPhoneRepository
     @Binds
     abstract fun bindTitlesRepository(repository: TitlesRepository): ITitlesRepository
+    @Binds
+    abstract fun bindDatabaseUpdater(databaseUpdater: DatabaseUpdater): IDatabaseUpdater
 }

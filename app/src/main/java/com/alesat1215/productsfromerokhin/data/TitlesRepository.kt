@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
+import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.google.gson.Gson
@@ -14,7 +15,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface ITitlesRepository : DatabaseUpdater {
+interface ITitlesRepository {
     /** Get titles & update Room from remote config if needed */
     fun titles(): LiveData<Titles?>
 }
@@ -24,12 +25,13 @@ interface ITitlesRepository : DatabaseUpdater {
  * */
 @Singleton
 class TitlesRepository @Inject constructor(
-    /** Firebase remote config */
-    override val remoteConfig: RemoteConfig,
+//    /** Firebase remote config */
+//    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
-    /** Limiting the frequency of queries to remote config & update db */
-    override val limiter: UpdateLimiter,
+//    /** Limiting the frequency of queries to remote config & update db */
+//    override val limiter: UpdateLimiter,
+    private val databaseUpdater: IDatabaseUpdater,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITitlesRepository {
@@ -38,7 +40,7 @@ class TitlesRepository @Inject constructor(
 
     /** Get titles & update Room from remote config if needed */
     override fun titles(): LiveData<Titles?> {
-        return Transformations.switchMap(updateDB(::updateTitles)) { titles }
+        return Transformations.switchMap(databaseUpdater.updateDB(::updateTitles)) { titles }
     }
     /** Update Room from remote config if needed */
 //    private fun updateDB(): LiveData<Result<Unit>> {
@@ -59,7 +61,7 @@ class TitlesRepository @Inject constructor(
     private suspend fun updateTitles() = withContext(Dispatchers.Default) {
         // Get titles from JSON
         val titles = gson.fromJson(
-            remoteConfig.firebaseRemoteConfig.getString(TITLES),
+            databaseUpdater.firebaseRemoteConfig.getString(TITLES),
             Titles::class.java
         )
         Logger.d("Fetch from remote config titles: " +
