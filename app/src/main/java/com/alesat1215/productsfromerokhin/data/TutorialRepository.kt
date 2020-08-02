@@ -1,18 +1,11 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.liveData
-import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
 import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
-import com.alesat1215.productsfromerokhin.util.UpdateLimiter
-import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,7 +25,7 @@ class TutorialRepository @Inject constructor(
     private val db: AppDatabase,
 //    /** Limiting the frequency of queries to remote config & update db */
 //    override val limiter: UpdateLimiter,
-    private val databaseUpdater: IDatabaseUpdater,
+    private val dbUpdater: IDatabaseUpdater,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : ITutorialRepository {
@@ -40,7 +33,7 @@ class TutorialRepository @Inject constructor(
     private val instructions by lazy { db.instructionsDao().instructions() }
 
     override fun instructions(): LiveData<List<Instruction>> {
-        return Transformations.switchMap(databaseUpdater.updateDB(::updateInstructions)) { instructions }
+        return Transformations.switchMap(dbUpdater.updateDatabase(::updateInstructions)) { instructions }
     }
     /** Update Room from remote config if needed */
 //    private fun updateDB(): LiveData<Result<Unit>> {
@@ -60,7 +53,7 @@ class TutorialRepository @Inject constructor(
     /** Update data in Room in background */
     private suspend fun updateInstructions() = withContext(Dispatchers.Default) {
         // Get instructions from remote config
-        val remoteInstructions = gson.fromJson(databaseUpdater.firebaseRemoteConfig.getString(INSTRUCTIONS), Array<Instruction>::class.java).asList()
+        val remoteInstructions = gson.fromJson(dbUpdater.firebaseRemoteConfig.getString(INSTRUCTIONS), Array<Instruction>::class.java).asList()
         Logger.d("Fetch instructions from remote config: ${remoteInstructions.count()}")
         // Update Room
         db.instructionsDao().updateInstructions(remoteInstructions)

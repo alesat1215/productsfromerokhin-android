@@ -1,13 +1,8 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.liveData
-import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
 import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
-import com.alesat1215.productsfromerokhin.util.UpdateLimiter
-import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,7 +23,7 @@ class PhoneRepository @Inject constructor(
 //    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
-    private val databaseUpdater: IDatabaseUpdater
+    private val dbUpdater: IDatabaseUpdater
 //    /** Limiting the frequency of queries to remote config & update db */
 //    override val limiter: UpdateLimiter
 ) : IPhoneRepository {
@@ -36,7 +31,7 @@ class PhoneRepository @Inject constructor(
     private val phone by lazy { db.phoneDao().phone() }
 
     override fun phone(): LiveData<PhoneForOrder?> {
-        return Transformations.switchMap(databaseUpdater.updateDB(::updatePhone)) { phone }
+        return Transformations.switchMap(dbUpdater.updateDatabase(::updatePhone)) { phone }
     }
     /** Update Room from remote config if needed */
 //    private fun updateDB(): LiveData<Result<Unit>> {
@@ -56,7 +51,7 @@ class PhoneRepository @Inject constructor(
     /** Update data in Room in background */
     private suspend fun updatePhone() = withContext(Dispatchers.Default) {
         // Get phone from remote config
-        val phone = databaseUpdater.firebaseRemoteConfig.getString(PHONE)
+        val phone = dbUpdater.firebaseRemoteConfig.getString(PHONE)
         Logger.d("Fetch from remote config phone for order: $phone")
         // Update phone
         db.phoneDao().updatePhone(PhoneForOrder(phone))
