@@ -38,7 +38,7 @@ class CartViewModelTest {
     private lateinit var profile: Profile
     private val delivery = "delivery"
     @Mock
-    private lateinit var phoneResult: LiveData<PhoneForOrder?>
+    private lateinit var phoneResult: LiveData<PhoneForOrder>
 
     private lateinit var viewModel: CartViewModel
 

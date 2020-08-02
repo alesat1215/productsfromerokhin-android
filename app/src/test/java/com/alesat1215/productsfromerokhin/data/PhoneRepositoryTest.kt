@@ -5,6 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -16,6 +20,8 @@ import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.Thread.sleep
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class PhoneRepositoryTest {
     @Mock
@@ -35,8 +41,11 @@ class PhoneRepositoryTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+
     @Before
     fun setUp() {
+        Dispatchers.setMain(mainThreadSurrogate)
         `when`(db.phoneDao()).thenReturn(phoneDao)
         `when`(db.phoneDao().phone()).thenReturn(MutableLiveData(phoneForOrder))
         `when`(firebaseRemoteConfig.getString(PhoneRepository.PHONE)).thenReturn(phoneForOrder.phone)
@@ -44,12 +53,19 @@ class PhoneRepositoryTest {
         repository = PhoneRepository(remoteConfig, db, limiter)
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+        mainThreadSurrogate.close()
+    }
+
     @Test
-    fun phone() {
+    fun phone() = runBlocking {
         // Not update db (limiter)
         `when`(limiter.needUpdate()).thenReturn(false)
         var result: PhoneForOrder? = null
         repository.phone().observeForever { result = it }
+        sleep(100)
         assertEquals(result, phoneForOrder)
         sleep(100)
         verify(phoneDao, never()).updatePhone(phoneForOrder)
@@ -58,6 +74,7 @@ class PhoneRepositoryTest {
         `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
         repository.phone().observeForever { result = it }
+        sleep(100)
         assertEquals(result, phoneForOrder)
         sleep(100)
         verify(phoneDao, never()).updatePhone(phoneForOrder)
@@ -66,6 +83,7 @@ class PhoneRepositoryTest {
         `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         repository.phone().observeForever { result = it }
+        sleep(100)
         assertEquals(result, phoneForOrder)
         sleep(100)
         verify(phoneDao).updatePhone(phoneForOrder)
