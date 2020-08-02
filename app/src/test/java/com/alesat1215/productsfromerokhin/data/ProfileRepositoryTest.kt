@@ -25,7 +25,7 @@ class ProfileRepositoryTest {
     private lateinit var profileDao: ProfileDao
     @Mock
     private lateinit var profile: Profile
-    private lateinit var profileResult: LiveData<Profile?>
+    private lateinit var profileResult: LiveData<Profile>
 
     private lateinit var repository: ProfileRepository
 

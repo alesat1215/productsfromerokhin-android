@@ -52,12 +52,12 @@ class PhoneRepository @Inject constructor(
         }
     }
     /** Update data in Room in background */
-    private suspend fun updatePhone() = withContext(Dispatchers.Default) {
+    private suspend fun updatePhone() = withContext(Dispatchers.IO) {
         // Get phone from remote config
         val phone = remoteConfig.firebaseRemoteConfig.getString(PHONE)
         Logger.d("Fetch from remote config phone for order: $phone")
         // Update phone
-        db.withTransaction { db.phoneDao().updatePhone(PhoneForOrder(phone)) }
+        db.phoneDao().updatePhone(PhoneForOrder(phone))
     }
 
     companion object {

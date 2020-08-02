@@ -27,7 +27,7 @@ class ProfileViewModelTest {
     private lateinit var repository: ProfileRepository
     private lateinit var viewModel: ProfileViewModel
     private val profile = Profile(name = "name", phone = "phone", address = "address")
-    private lateinit var profileResult: LiveData<Profile?>
+    private lateinit var profileResult: LiveData<Profile>
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
