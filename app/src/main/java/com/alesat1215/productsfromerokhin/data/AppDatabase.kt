@@ -97,15 +97,15 @@ interface PhoneDao {
     fun phone(): LiveData<PhoneForOrder>
     /** Clear & insert phone */
     @Transaction
-    fun updatePhone(phoneForOrder: PhoneForOrder) {
+    suspend fun updatePhone(phoneForOrder: PhoneForOrder) {
         clearPhone()
         insertPhone(phoneForOrder)
         Logger.d("Update phone for order")
     }
     @Insert(entity = PhoneForOrder::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertPhone(phoneForOrder: PhoneForOrder)
+    suspend fun insertPhone(phoneForOrder: PhoneForOrder)
     @Query("DELETE FROM phonefororder")
-    fun clearPhone()
+    suspend fun clearPhone()
 }
 
 @Database(

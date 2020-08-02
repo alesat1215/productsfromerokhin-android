@@ -4,12 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
+import androidx.room.withTransaction
 import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -53,12 +52,12 @@ class PhoneRepository @Inject constructor(
         }
     }
     /** Update data in Room in background */
-    private suspend fun updatePhone() = withContext(Dispatchers.IO) {
+    private suspend fun updatePhone() = withContext(Dispatchers.Default) {
         // Get phone from remote config
         val phone = remoteConfig.firebaseRemoteConfig.getString(PHONE)
         Logger.d("Fetch from remote config phone for order: $phone")
         // Update phone
-        db.phoneDao().updatePhone(PhoneForOrder(phone))
+        db.withTransaction { db.phoneDao().updatePhone(PhoneForOrder(phone)) }
     }
 
     companion object {
