@@ -45,38 +45,22 @@ class DatabaseUpdaterTest {
     }
 
     @Test
-    fun needUpdate() {
-        // Not update (limiter)
-        var result = Result.success(Unit)
-        `when`(limiter.needUpdate()).thenReturn(false)
-        dbUpdater.needUpdate().observeForever { result = it }
-        sleep(100)
-        assertTrue(result.isFailure)
-        // Not update (fetch failed)
-        result = Result.success(Unit)
-        `when`(limiter.needUpdate()).thenReturn(true)
-        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
-        dbUpdater.needUpdate().observeForever { result = it }
-        sleep(100)
-        assertTrue(result.isFailure)
-        // Update
-        result = Result.failure(Exception())
-        `when`(limiter.needUpdate()).thenReturn(true)
-        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
-        dbUpdater.needUpdate().observeForever { result = it }
-        sleep(100)
-        assertTrue(result.isSuccess)
-    }
-
-    @Test
     fun updateDatabase() {
         var insertData = false
-        // Not update
+        // Not update (limiter)
         `when`(limiter.needUpdate()).thenReturn(false)
         dbUpdater.updateDatabase { insertData = true }.observeForever {  }
         sleep(100)
         assertFalse(insertData)
+        // Not update (fetch failed)
+        insertData = false
+        `when`(limiter.needUpdate()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
+        dbUpdater.updateDatabase { insertData = true }.observeForever {  }
+        sleep(100)
+        assertFalse(insertData)
         // Update
+        insertData = false
         `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
         dbUpdater.updateDatabase { insertData = true }.observeForever {  }
