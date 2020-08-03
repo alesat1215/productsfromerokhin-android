@@ -3,11 +3,6 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
-//import androidx.lifecycle.liveData
-//import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
-//import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
-//import com.alesat1215.productsfromerokhin.util.UpdateLimiter
-//import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
@@ -34,12 +29,8 @@ interface IProductsRepository {
 
 @Singleton
 class ProductsRepository @Inject constructor(
-//    /** Firebase remote config */
-//    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
-//    /** Limiting the frequency of queries to remote config & update db */
-//    override val limiter: UpdateLimiter,
     private val dbUpdater: DatabaseUpdater,
     /** For parse JSON from remote config */
     private val gson: Gson
@@ -73,29 +64,6 @@ class ProductsRepository @Inject constructor(
         db.cartDao().clearCart()
     }
 
-//    private fun updateDB(): LiveData<Unit> {
-//        return Transformations.switchMap(databaseUpdater.needUpdate()) {
-//            liveData {
-//                it.onSuccess { emit(updateProducts()) }
-//                it.onFailure { emit(Unit) }
-//            }
-//        }
-//    }
-//    /** Update Room from remote config if needed */
-//    override fun updateDB(): LiveData<Result<Unit>> {
-//        /** Return if limit is over */
-//        if(limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
-//        // Fetch data from remote config & update db
-//        return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
-//            liveData {
-//                it.onSuccess { emit(Result.success(updateProducts())) }
-//                it.onFailure {
-//                    Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
-//                    emit(Result.failure(it))
-//                }
-//            }
-//        }
-//    }
     /** Get groups, products & titles from remote config & update db in background */
     private suspend fun updateProducts() = withContext(Dispatchers.Default) {
         // Get groups with products from JSON
