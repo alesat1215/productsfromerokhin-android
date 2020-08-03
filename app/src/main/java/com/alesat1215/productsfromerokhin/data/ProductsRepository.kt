@@ -2,9 +2,10 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
 //import androidx.lifecycle.liveData
 //import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
-import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
+//import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
 //import com.alesat1215.productsfromerokhin.util.UpdateLimiter
 //import com.alesat1215.productsfromerokhin.util.RemoteConfig
 import com.google.gson.Gson
@@ -39,7 +40,7 @@ class ProductsRepository @Inject constructor(
     private val db: AppDatabase,
 //    /** Limiting the frequency of queries to remote config & update db */
 //    override val limiter: UpdateLimiter,
-    private val dbUpdater: IDatabaseUpdater,
+    private val dbUpdater: DatabaseUpdater,
     /** For parse JSON from remote config */
     private val gson: Gson
 ) : IProductsRepository {
