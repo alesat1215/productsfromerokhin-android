@@ -53,7 +53,7 @@ class PhoneRepositoryTest {
         `when`(db.phoneDao().phone()).thenReturn(MutableLiveData(phoneForOrder))
 //        `when`(firebaseRemoteConfig.getString(PhoneRepository.PHONE)).thenReturn(phoneForOrder.phone)
 //        `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
-        `when`(dbUpdater.needUpdate()).thenReturn(MutableLiveData(Result.success(Unit)))
+//        `when`(dbUpdater.needUpdate()).thenReturn(MutableLiveData(Result.success(Unit)))
         repository = PhoneRepository(db, dbUpdater)
     }
 
