@@ -4,15 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.orhanobut.logger.Logger
 import javax.inject.Inject
 import kotlin.Exception
-
-//interface IDatabaseUpdater {
-//    val firebaseRemoteConfig: FirebaseRemoteConfig
-//    fun updateDatabase(insertData: suspend () -> Unit): LiveData<Unit>
-//}
 
 /** Update db from remote config if limit is not over & fetch is success */
 class DatabaseUpdater @Inject constructor(
