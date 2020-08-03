@@ -2,7 +2,7 @@ package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.alesat1215.productsfromerokhin.util.IDatabaseUpdater
+import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,7 +23,7 @@ class PhoneRepository @Inject constructor(
 //    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
-    private val dbUpdater: IDatabaseUpdater
+    private val dbUpdater: DatabaseUpdater
 //    /** Limiting the frequency of queries to remote config & update db */
 //    override val limiter: UpdateLimiter
 ) : IPhoneRepository {

@@ -9,10 +9,10 @@ import com.orhanobut.logger.Logger
 import javax.inject.Inject
 import kotlin.Exception
 
-interface IDatabaseUpdater {
-    val firebaseRemoteConfig: FirebaseRemoteConfig
-    fun updateDatabase(insertData: suspend () -> Unit): LiveData<Unit>
-}
+//interface IDatabaseUpdater {
+//    val firebaseRemoteConfig: FirebaseRemoteConfig
+//    fun updateDatabase(insertData: suspend () -> Unit): LiveData<Unit>
+//}
 
 /** Update db from remote config if limit is not over & fetch is success */
 class DatabaseUpdater @Inject constructor(
@@ -20,10 +20,10 @@ class DatabaseUpdater @Inject constructor(
     private val limiter: UpdateLimiter,
     /** Firebase remote config */
     private val remoteConfig: RemoteConfig
-) : IDatabaseUpdater {
-    override val firebaseRemoteConfig = remoteConfig.firebaseRemoteConfig
+) {
+    val firebaseRemoteConfig = remoteConfig.firebaseRemoteConfig
     /** Check needed update db by limiter & fetching */
-    fun needUpdate(): LiveData<Result<Unit>> {
+    private fun needUpdate(): LiveData<Result<Unit>> {
         /** Return failure if limit is over */
         if (limiter.needUpdate().not()) return MutableLiveData(Result.failure(Exception()))
         // Fetch & activate data from remote config
@@ -39,7 +39,7 @@ class DatabaseUpdater @Inject constructor(
         }
     }
     /** Exec "insertData" if need update db */
-    override fun updateDatabase(insertData: suspend () -> Unit): LiveData<Unit> {
+    fun updateDatabase(insertData: suspend () -> Unit): LiveData<Unit> {
         return Transformations.switchMap(needUpdate()) {
             liveData {
                 it.onSuccess { emit(insertData()) }
