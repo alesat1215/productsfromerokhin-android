@@ -42,6 +42,7 @@
                 android:stateListAnimator="@null"
                 android:text="@string/about_products"
                 android:textColor="@color/common_google_signin_btn_text_light"
+                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_aboutProductsFragment)}"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
 
