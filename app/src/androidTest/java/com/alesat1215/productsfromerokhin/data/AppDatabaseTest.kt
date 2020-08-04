@@ -60,7 +60,7 @@ class AppDatabaseTest {
     }
 
     @Test
-    fun updateProducts() {
+    fun updateProducts() = runBlocking {
         var productsInfo: List<ProductInfo> = emptyList()
         var groups: List<Group> = emptyList()
         val product = Product(name = "product")
@@ -68,47 +68,53 @@ class AppDatabaseTest {
         productsDao.products().observeForever { productsInfo = it }
         productsDao.groups().observeForever { groups = it }
         productsDao.updateProducts(listOf(group), listOf(product))
+        sleep(100)
         assertEquals(groups.first(), group)
         assertEquals(productsInfo.first().product, product)
     }
 
     @Test
-    fun updateTitles() {
+    fun updateTitles() = runBlocking {
         val titles = Titles(title = "title")
         var result: Titles? = null
         titlesDao.titles().observeForever { result = it }
         titlesDao.updateTitles(titles)
+        sleep(100)
         assertEquals(result, titles)
     }
 
     @Test
-    fun cartDao() {
+    fun cartDao() = runBlocking {
         val product = Product(name = "product")
         val productInCart = ProductInCart(name = "product")
         var result: List<ProductInfo> = emptyList()
         productsDao.products().observeForever { result = it }
         productsDao.insertProducts(listOf(product))
         cartDao.insertProductInCart(productInCart)
+        sleep(100)
         assertEquals(result.first().inCart.first().name, productInCart.name)
         cartDao.deleteProductFromCart(result.first().inCart.first())
+        sleep(100)
         assertTrue(result.first().inCart.isEmpty())
     }
 
     @Test
-    fun updateProfile() {
+    fun updateProfile() = runBlocking {
         val profile = Profile(name = "name")
         var result: Profile? = null
         profileDao.profile().observeForever { result = it }
         profileDao.updateProfile(profile)
+        sleep(100)
         assertEquals(result?.name, profile.name)
     }
 
     @Test
-    fun updateInstructions() {
+    fun updateInstructions() = runBlocking {
         val instructions = listOf(Instruction(title = "title"))
         var result: List<Instruction> = emptyList()
         instructionsDao.instructions().observeForever { result = it }
         instructionsDao.updateInstructions(instructions)
+        sleep(100)
         assertEquals(result, instructions)
     }
 
