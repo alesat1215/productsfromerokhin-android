@@ -19,13 +19,9 @@ interface IPhoneRepository {
 
 @Singleton
 class PhoneRepository @Inject constructor(
-//    /** Firebase remote config */
-//    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
     private val dbUpdater: DatabaseUpdater
-//    /** Limiting the frequency of queries to remote config & update db */
-//    override val limiter: UpdateLimiter
 ) : IPhoneRepository {
     /** @return LiveData with phone from Room only once */
     private val phone by lazy { db.phoneDao().phone() }
@@ -33,22 +29,8 @@ class PhoneRepository @Inject constructor(
     override fun phone(): LiveData<PhoneForOrder?> {
         return Transformations.switchMap(dbUpdater.updateDatabase(::updatePhone)) { phone }
     }
-    /** Update Room from remote config if needed */
-//    private fun updateDB(): LiveData<Result<Unit>> {
-//        /** Return if limit is over */
-//        if (limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
-//        // Fetch data from remote config & update db
-//        return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
-//            liveData {
-//                it.onSuccess { emit(Result.success(updatePhone())) }
-//                it.onFailure {
-//                    Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
-//                    emit(Result.failure(it))
-//                }
-//            }
-//        }
-//    }
-    /** Update data in Room in background */
+
+    /** Get phone from remote config & update db in background */
     private suspend fun updatePhone() = withContext(Dispatchers.Default) {
         // Get phone from remote config
         val phone = dbUpdater.firebaseRemoteConfig.getString(PHONE)
