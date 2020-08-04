@@ -20,12 +20,8 @@ interface ITitlesRepository {
  * */
 @Singleton
 class TitlesRepository @Inject constructor(
-//    /** Firebase remote config */
-//    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
-//    /** Limiting the frequency of queries to remote config & update db */
-//    override val limiter: UpdateLimiter,
     private val dbUpdater: DatabaseUpdater,
     /** For parse JSON from remote config */
     private val gson: Gson
@@ -37,21 +33,6 @@ class TitlesRepository @Inject constructor(
     override fun titles(): LiveData<Titles?> {
         return Transformations.switchMap(dbUpdater.updateDatabase(::updateTitles)) { titles }
     }
-    /** Update Room from remote config if needed */
-//    private fun updateDB(): LiveData<Result<Unit>> {
-//        /** Return if limit is over */
-//        if(limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
-//        // Fetch data from remote config & update db
-//        return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
-//            liveData {
-//                it.onSuccess { emit(Result.success(updateTitles())) }
-//                it.onFailure {
-//                    Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
-//                    emit(Result.failure(it))
-//                }
-//            }
-//        }
-//    }
     /** Get groups, products & titles from remote config & update db in background */
     private suspend fun updateTitles() = withContext(Dispatchers.Default) {
         // Get titles from JSON
