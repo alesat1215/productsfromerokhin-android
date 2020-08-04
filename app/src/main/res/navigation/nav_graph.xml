@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/aboutProductsFragment"
-        android:name="com.alesat1215.productsfromerokhin.AboutProductsFragment"
+        android:name="com.alesat1215.productsfromerokhin.aboutproducts.AboutProductsFragment"
         android:label="fragment_about_products"
         tools:layout="@layout/fragment_about_products" />
 </navigation>
