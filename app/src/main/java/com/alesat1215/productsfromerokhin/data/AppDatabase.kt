@@ -112,27 +112,21 @@ interface PhoneDao {
 interface AboutProductsDao {
     @Query("SELECT * FROM aboutproducts")
     fun aboutProducts(): LiveData<List<AboutProducts>>
+    @Query("SELECT * FROM aboutproducts LIMIT 1")
+    fun aboutProductsTitle(): LiveData<AboutProductsTitle?>
     /** Clear & insert about products */
     @Transaction
-    suspend fun updateAboutProducts(aboutProducts: List<AboutProducts>) {
+    suspend fun updateAboutProducts(aboutProducts: List<AboutProducts>, aboutProductsTitle: AboutProductsTitle) {
         clearAboutProducts()
+        clearAboutProductsTitle()
         insertAboutProducts(aboutProducts)
+        insertAboutProductsTitle(aboutProductsTitle)
         Logger.d("Update about products")
     }
     @Insert(entity = AboutProducts::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAboutProducts(aboutProducts: List<AboutProducts>)
     @Query("DELETE FROM aboutproducts")
     suspend fun clearAboutProducts()
-
-    @Query("SELECT * FROM aboutproducts LIMIT 1")
-    fun aboutProductsTitle(): LiveData<AboutProductsTitle?>
-    /** Clear & insert about products title */
-    @Transaction
-    suspend fun updateAboutProductsTitle(aboutProductsTitle: AboutProductsTitle) {
-        clearAboutProductsTitle()
-        insertAboutProductsTitle(aboutProductsTitle)
-        Logger.d("Update about products title")
-    }
     @Insert(entity = AboutProductsTitle::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAboutProductsTitle(aboutProductsTitle: AboutProductsTitle)
     @Query("DELETE FROM aboutproductstitle")

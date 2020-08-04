@@ -16,4 +16,6 @@ abstract class RepositoryModule {
     abstract fun bindPhoneRepository(repository: PhoneRepository): IPhoneRepository
     @Binds
     abstract fun bindTitlesRepository(repository: TitlesRepository): ITitlesRepository
+    @Binds
+    abstract fun bindAboutProductsRepository(repository: AboutProductsRepository): IAboutProductsRepository
 }
