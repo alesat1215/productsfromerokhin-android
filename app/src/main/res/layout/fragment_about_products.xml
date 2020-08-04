@@ -41,9 +41,16 @@
             android:id="@+id/about_products_list2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             app:layoutManager="GridLayoutManager"
             app:spanCount="3"
+            tools:itemCount="9"
             tools:listitem="@layout/about_products_item2" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
 
     </LinearLayout>
 
