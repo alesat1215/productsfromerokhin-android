@@ -2,7 +2,6 @@ package com.alesat1215.productsfromerokhin.di
 
 import android.content.Context
 import com.alesat1215.productsfromerokhin.App
-import com.alesat1215.productsfromerokhin.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -20,7 +19,8 @@ import javax.inject.Singleton
     CartModule::class,
     ProfileModule::class,
     TutorialModule::class,
-    RepositoryModule::class
+    RepositoryModule::class,
+    AboutProductsModule::class
 ])
 interface AppComponent : AndroidInjector<App> {
     @Component.Factory
