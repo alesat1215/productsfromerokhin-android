@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AboutProductsFragment">
+    tools:context=".aboutproducts.AboutProductsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/recycler_view_item" />
+            tools:listitem="@layout/about_products_item"
+            tools:itemCount="3"/>
 
         <Space
             android:layout_width="match_parent"
@@ -26,6 +27,10 @@
             android:id="@+id/about_products_list2_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
             tools:text="Title for list2" />
 
         <Space
@@ -38,7 +43,7 @@
             android:layout_height="wrap_content"
             app:layoutManager="GridLayoutManager"
             app:spanCount="3"
-            tools:listitem="@layout/recycler_view_item_1" />
+            tools:listitem="@layout/about_products_item2" />
 
     </LinearLayout>
 
