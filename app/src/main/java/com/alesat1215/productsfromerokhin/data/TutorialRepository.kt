@@ -19,12 +19,8 @@ interface ITutorialRepository {
  * */
 @Singleton
 class TutorialRepository @Inject constructor(
-//    /** Firebase remote config */
-//    override val remoteConfig: RemoteConfig,
     /** Room database */
     private val db: AppDatabase,
-//    /** Limiting the frequency of queries to remote config & update db */
-//    override val limiter: UpdateLimiter,
     private val dbUpdater: DatabaseUpdater,
     /** For parse JSON from remote config */
     private val gson: Gson
@@ -35,21 +31,7 @@ class TutorialRepository @Inject constructor(
     override fun instructions(): LiveData<List<Instruction>> {
         return Transformations.switchMap(dbUpdater.updateDatabase(::updateInstructions)) { instructions }
     }
-    /** Update Room from remote config if needed */
-//    private fun updateDB(): LiveData<Result<Unit>> {
-//        // Return if limit is over
-//        if (limiter.needUpdate().not()) return MutableLiveData(Result.success(Unit))
-//        // Fetch data from remote config & update db
-//        return Transformations.switchMap(remoteConfig.fetchAndActivate()) {
-//            liveData {
-//                it.onSuccess { emit(Result.success(updateInstructions())) }
-//                it.onFailure {
-//                    Logger.d("Fetch remote config FAILED: ${it.localizedMessage}")
-//                    emit(Result.failure(it))
-//                }
-//            }
-//        }
-//    }
+
     /** Update data in Room in background */
     private suspend fun updateInstructions() = withContext(Dispatchers.Default) {
         // Get instructions from remote config
