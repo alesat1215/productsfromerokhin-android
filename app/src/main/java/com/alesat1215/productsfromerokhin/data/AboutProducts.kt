@@ -11,3 +11,10 @@ data class AboutProducts(
     val text: String = "",
     val img: String = ""
 )
+
+/** Model for [AboutProducts] */
+@Fts4
+@Entity
+data class AboutProductsTitle(
+    val title: String = ""
+)

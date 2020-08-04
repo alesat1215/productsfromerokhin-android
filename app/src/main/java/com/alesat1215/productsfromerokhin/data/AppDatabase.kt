@@ -112,7 +112,7 @@ interface PhoneDao {
 interface AboutProductsDao {
     @Query("SELECT * FROM aboutproducts")
     fun aboutProducts(): LiveData<List<AboutProducts>>
-    /** Clear & insert instructions */
+    /** Clear & insert about products */
     @Transaction
     suspend fun updateAboutProducts(aboutProducts: List<AboutProducts>) {
         clearAboutProducts()
@@ -123,6 +123,20 @@ interface AboutProductsDao {
     suspend fun insertAboutProducts(aboutProducts: List<AboutProducts>)
     @Query("DELETE FROM aboutproducts")
     suspend fun clearAboutProducts()
+
+    @Query("SELECT * FROM aboutproducts LIMIT 1")
+    fun aboutProductsTitle(): LiveData<AboutProductsTitle?>
+    /** Clear & insert about products title */
+    @Transaction
+    suspend fun updateAboutProductsTitle(aboutProductsTitle: AboutProductsTitle) {
+        clearAboutProductsTitle()
+        insertAboutProductsTitle(aboutProductsTitle)
+        Logger.d("Update about products title")
+    }
+    @Insert(entity = AboutProductsTitle::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAboutProductsTitle(aboutProductsTitle: AboutProductsTitle)
+    @Query("DELETE FROM aboutproductstitle")
+    suspend fun clearAboutProductsTitle()
 }
 
 @Database(
@@ -134,7 +148,8 @@ interface AboutProductsDao {
     Profile::class,
     Instruction::class,
     PhoneForOrder::class,
-    AboutProducts::class
+    AboutProducts::class,
+    AboutProductsTitle::class
 ], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
@@ -143,5 +158,6 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun profileDao(): ProfileDao
     abstract fun instructionsDao(): InstructionsDao
     abstract fun phoneDao(): PhoneDao
+    abstract fun aboutProductsDao(): AboutProductsDao
 }
 
