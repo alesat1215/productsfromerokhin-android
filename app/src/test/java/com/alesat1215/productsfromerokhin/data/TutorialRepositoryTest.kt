@@ -32,7 +32,7 @@ class TutorialRepositoryTest {
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     @Mock
     private lateinit var db: AppDatabase
-    @Mock
+
     private lateinit var dbUpdater: DatabaseUpdater
     @Mock
     private lateinit var instructionsDao: InstructionsDao
@@ -59,6 +59,7 @@ class TutorialRepositoryTest {
         `when`(firebaseRemoteConfig.getString(TutorialRepository.INSTRUCTIONS)).thenReturn("")
         `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
         `when`(gson.fromJson("", Array<Instruction>::class.java)).thenReturn(instructions)
+        dbUpdater = DatabaseUpdater(limiter, remoteConfig)
         repository = TutorialRepository(db, dbUpdater, gson)
     }
 
@@ -70,22 +71,12 @@ class TutorialRepositoryTest {
 
     @Test
     fun instructions() = runBlocking {
-        // Not update db (limiter)
-        `when`(limiter.needUpdate()).thenReturn(false)
+        // Not update db
         var result: List<Instruction> = emptyList()
+        `when`(limiter.needUpdate()).thenReturn(false)
         repository.instructions().observeForever { result = it }
         sleep(100)
         assertEquals(result, instructions.toList())
-        sleep(100)
-        verify(db.instructionsDao(), never()).updateInstructions(instructions.asList())
-        // Not update db (result onFailure)
-        result = emptyList()
-        `when`(limiter.needUpdate()).thenReturn(true)
-        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
-        repository.instructions().observeForever { result = it }
-        sleep(100)
-        assertEquals(result, instructions.toList())
-        sleep(100)
         verify(db.instructionsDao(), never()).updateInstructions(instructions.asList())
         // Update db
         result = emptyList()
@@ -94,7 +85,6 @@ class TutorialRepositoryTest {
         repository.instructions().observeForever { result = it }
         sleep(100)
         assertEquals(result, instructions.toList())
-        sleep(100)
         verify(db.instructionsDao()).updateInstructions(instructions.asList())
     }
 }
