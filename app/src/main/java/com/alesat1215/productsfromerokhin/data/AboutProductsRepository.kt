@@ -60,6 +60,6 @@ class AboutProductsRepository @Inject constructor(
     companion object {
         /** Parameters in Firebase remote config */
         const val ABOUT_PRODUCTS_LIST = "about_products_list"
-        const val ABOUT_PRODUCTS_TITLE = "about_products_list_title"
+        const val ABOUT_PRODUCTS_TITLE = "about_products_title"
     }
 }

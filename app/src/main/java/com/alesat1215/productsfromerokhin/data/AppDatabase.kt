@@ -112,7 +112,7 @@ interface PhoneDao {
 interface AboutProductsDao {
     @Query("SELECT * FROM aboutproducts")
     fun aboutProducts(): LiveData<List<AboutProducts>>
-    @Query("SELECT * FROM aboutproducts LIMIT 1")
+    @Query("SELECT * FROM aboutproductstitle LIMIT 1")
     fun aboutProductsTitle(): LiveData<AboutProductsTitle?>
     /** Clear & insert about products */
     @Transaction
