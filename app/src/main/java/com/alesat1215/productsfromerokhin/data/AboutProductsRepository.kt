@@ -16,6 +16,8 @@ import javax.inject.Singleton
 interface IAboutProductsRepository {
     /** Get about products & update Room from remote config if needed */
     fun aboutProducts(): LiveData<List<AboutProducts>>
+    /** Get about products title & update Room from remote config if needed */
+    fun aboutProductsTitle(): LiveData<AboutProductsTitle?>
 }
 /**
  *
@@ -30,9 +32,15 @@ class AboutProductsRepository @Inject constructor(
 ) : IAboutProductsRepository {
     /** @return LiveData with about products from Room only once */
     private val aboutProducts by lazy { db.aboutProductsDao().aboutProducts() }
+    /** @return LiveData with about products title from Room only once */
+    private val aboutProductsTitle by lazy { db.aboutProductsDao().aboutProductsTitle() }
 
     override fun aboutProducts(): LiveData<List<AboutProducts>> {
         return Transformations.switchMap(dbUpdater.updateDatabase(::updateAboutProducts)) { aboutProducts }
+    }
+
+    override fun aboutProductsTitle(): LiveData<AboutProductsTitle?> {
+        return Transformations.switchMap(dbUpdater.updateDatabase(::updateAboutProducts)) { aboutProductsTitle }
     }
 
     /** Get about product & title from remote config & update db in background */
