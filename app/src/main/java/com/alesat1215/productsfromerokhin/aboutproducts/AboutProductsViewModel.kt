@@ -11,7 +11,7 @@ class AboutProductsViewModel @Inject constructor(
     private val aboutProductsRepository: IAboutProductsRepository
 ): ViewModel() {
     /** @return about products title */
-    val title = aboutProductsRepository.aboutProductsTitle()
+    val aboutProductsTitle = aboutProductsRepository.aboutProductsTitle()
 
     /** @return about products filtering by predicate */
     fun aboutProducts(predicate: ((AboutProducts) -> Boolean)? = null): LiveData<List<AboutProducts>> {

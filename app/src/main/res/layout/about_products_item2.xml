@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    app:cardUseCompatPadding="true">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+        <variable
+            name="data"
+            type="com.alesat1215.productsfromerokhin.data.AboutProducts" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true">
 
-        <ImageView
-            android:id="@+id/about_products_item2_img"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:contentDescription="@string/about_products"
-            android:scaleType="fitXY"
-            tools:src="@tools:sample/avatars" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/about_products_item2_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="18sp"
-            tools:text="TextView" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/about_products_item2_img"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:contentDescription="@string/about_products"
+                android:scaleType="fitXY"
+                app:fb_image="@{data.img}"
+                tools:src="@tools:sample/avatars" />
 
-</androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/about_products_item2_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:text="@{data.text}"
+                tools:text="TextView" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
