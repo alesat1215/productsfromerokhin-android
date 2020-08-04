@@ -11,8 +11,6 @@ class ProductsRepositoryMock @Inject constructor() : IProductsRepository {
 
     override fun products() = MutableLiveData(DataMock.products)
 
-    override fun titles() = MutableLiveData<Titles>(DataMock.titles)
-
     override fun groups() = MutableLiveData<List<Group>>(DataMock.groups)
 
     override val productsInCart = MutableLiveData<List<ProductInfo>>(DataMock.products)
