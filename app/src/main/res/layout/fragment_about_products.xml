@@ -5,12 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".aboutproducts.AboutProductsFragment">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.alesat1215.productsfromerokhin.aboutproducts.AboutProductsViewModel" />
-    </data>
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,25 +22,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/about_products_item"
                 tools:itemCount="3"/>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
-
-            <TextView
-                android:id="@+id/about_products_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@{viewModel.aboutProductsTitle.title}"
-                tools:text="Title for list2" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/about_products_list2"
