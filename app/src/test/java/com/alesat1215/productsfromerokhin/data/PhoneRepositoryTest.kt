@@ -25,18 +25,19 @@ import java.lang.Thread.sleep
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class PhoneRepositoryTest {
-//    @Mock
-//    private lateinit var remoteConfig: RemoteConfig
-//    @Mock
-//    private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
+    @Mock
+    private lateinit var remoteConfig: RemoteConfig
+    @Mock
+    private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     @Mock
     private lateinit var db: AppDatabase
-//    @Mock
-//    private lateinit var limiter: UpdateLimiter
     @Mock
+    private lateinit var limiter: UpdateLimiter
+
     private lateinit var dbUpdater: DatabaseUpdater
     @Mock
     private lateinit var phoneDao: PhoneDao
+
     private val phoneForOrder = PhoneForOrder("phone")
 
     private lateinit var repository: PhoneRepository
@@ -51,9 +52,9 @@ class PhoneRepositoryTest {
         Dispatchers.setMain(mainThreadSurrogate)
         `when`(db.phoneDao()).thenReturn(phoneDao)
         `when`(db.phoneDao().phone()).thenReturn(MutableLiveData(phoneForOrder))
-//        `when`(firebaseRemoteConfig.getString(PhoneRepository.PHONE)).thenReturn(phoneForOrder.phone)
-//        `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
-//        `when`(dbUpdater.needUpdate()).thenReturn(MutableLiveData(Result.success(Unit)))
+        `when`(firebaseRemoteConfig.getString(PhoneRepository.PHONE)).thenReturn(phoneForOrder.phone)
+        `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
+        dbUpdater = DatabaseUpdater(limiter, remoteConfig)
         repository = PhoneRepository(db, dbUpdater)
     }
 
@@ -65,31 +66,20 @@ class PhoneRepositoryTest {
 
     @Test
     fun phone() = runBlocking {
-//        // Not update db (limiter)
-//        `when`(limiter.needUpdate()).thenReturn(false)
-//        var result: PhoneForOrder? = null
-//        repository.phone().observeForever { result = it }
-//        sleep(100)
-//        assertEquals(result, phoneForOrder)
-//        sleep(100)
-//        verify(phoneDao, never()).updatePhone(phoneForOrder)
-//        // Not update db (result onFailure)
-//        result = null
-//        `when`(limiter.needUpdate()).thenReturn(true)
-//        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.failure(Exception())))
-//        repository.phone().observeForever { result = it }
-//        sleep(100)
-//        assertEquals(result, phoneForOrder)
-//        sleep(100)
-//        verify(phoneDao, never()).updatePhone(phoneForOrder)
-//        // Update db
-//        result = null
-//        `when`(limiter.needUpdate()).thenReturn(true)
-//        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
-//        repository.phone().observeForever { result = it }
-//        sleep(100)
-//        assertEquals(result, phoneForOrder)
-//        sleep(100)
-//        verify(phoneDao).updatePhone(phoneForOrder)
+        // Not update db
+        var result: PhoneForOrder? = null
+        `when`(limiter.needUpdate()).thenReturn(false)
+        repository.phone().observeForever { result = it }
+        sleep(100)
+        assertEquals(result, phoneForOrder)
+        verify(phoneDao, never()).updatePhone(phoneForOrder)
+        // Update db
+        result = null
+        `when`(limiter.needUpdate()).thenReturn(true)
+        `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
+        repository.phone().observeForever { result = it }
+        sleep(100)
+        assertEquals(result, phoneForOrder)
+        verify(phoneDao).updatePhone(phoneForOrder)
     }
 }
