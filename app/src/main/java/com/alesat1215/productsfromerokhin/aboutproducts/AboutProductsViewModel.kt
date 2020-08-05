@@ -10,9 +10,6 @@ import javax.inject.Inject
 class AboutProductsViewModel @Inject constructor(
     private val aboutProductsRepository: IAboutProductsRepository
 ): ViewModel() {
-    /** @return about products title */
-    val aboutProductsTitle = aboutProductsRepository.aboutProductsTitle()
-
     /** @return about products filtering by predicate */
     fun aboutProducts(predicate: ((AboutProducts) -> Boolean)? = null): LiveData<List<AboutProducts>> {
         return if (predicate != null)
