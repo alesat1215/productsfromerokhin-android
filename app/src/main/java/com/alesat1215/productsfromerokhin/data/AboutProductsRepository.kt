@@ -1,7 +1,6 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
 import com.google.gson.Gson
@@ -17,8 +16,6 @@ import javax.inject.Singleton
 interface IAboutProductsRepository {
     /** Get about products & update Room from remote config if needed */
     fun aboutProducts(): LiveData<List<AboutProducts>>
-    /** Get about products title & update Room from remote config if needed */
-    fun aboutProductsTitle(): LiveData<AboutProductsTitle?>
 }
 /**
  *
@@ -33,16 +30,9 @@ class AboutProductsRepository @Inject constructor(
 ) : IAboutProductsRepository {
     /** @return LiveData with about products from Room only once */
     private val aboutProducts by lazy { db.aboutProductsDao().aboutProducts() }
-    /** @return LiveData with about products title from Room only once */
-    private val aboutProductsTitle by lazy { db.aboutProductsDao().aboutProductsTitle() }
 
     override fun aboutProducts(): LiveData<List<AboutProducts>> {
         return Transformations.switchMap(dbUpdater.updateDatabase(::updateAboutProducts)) { aboutProducts }
-    }
-
-    override fun aboutProductsTitle(): LiveData<AboutProductsTitle?> {
-//        return Transformations.switchMap(dbUpdater.updateDatabase(::updateAboutProducts)) { aboutProductsTitle }
-        return MutableLiveData(AboutProductsTitle())
     }
 
     /** Get about product & title from remote config & update db in background */
@@ -52,16 +42,12 @@ class AboutProductsRepository @Inject constructor(
             dbUpdater.firebaseRemoteConfig.getString(ABOUT_PRODUCTS_LIST),
             Array<AboutProducts>::class.java
         ).asList()
-        // Get about_products_title
-        val aboutProductsTitle = dbUpdater.firebaseRemoteConfig.getString(ABOUT_PRODUCTS_TITLE)
-        Logger.d("Fetch from remote config about products: ${aboutProducts.count()}, title: $aboutProductsTitle")
         // Update db
-        db.aboutProductsDao().updateAboutProducts(aboutProducts, AboutProductsTitle(aboutProductsTitle))
+        db.aboutProductsDao().updateAboutProducts(aboutProducts)
     }
 
     companion object {
         /** Parameters in Firebase remote config */
         const val ABOUT_PRODUCTS_LIST = "about_products_list"
-        const val ABOUT_PRODUCTS_TITLE = "about_products_title"
     }
 }
