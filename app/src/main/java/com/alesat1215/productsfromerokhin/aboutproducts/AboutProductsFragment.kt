@@ -28,7 +28,7 @@ class AboutProductsFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ) =
         FragmentAboutProductsBinding.inflate(inflater, container, false).apply {
-            viewModel = this@AboutProductsFragment.viewModel
+//            viewModel = this@AboutProductsFragment.viewModel
             // Set adapters to lists
             aboutProductsList.adapter = adapterToAboutProducts(R.layout.about_products_item) { it.img.isEmpty() }
             aboutProductsList2.adapter = adapterToAboutProducts(R.layout.about_products_item2) { it.img.isNotEmpty() }
