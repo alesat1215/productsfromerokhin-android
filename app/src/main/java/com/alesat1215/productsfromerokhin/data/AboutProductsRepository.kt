@@ -1,6 +1,7 @@
 package com.alesat1215.productsfromerokhin.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.alesat1215.productsfromerokhin.util.DatabaseUpdater
 import com.google.gson.Gson
@@ -40,7 +41,8 @@ class AboutProductsRepository @Inject constructor(
     }
 
     override fun aboutProductsTitle(): LiveData<AboutProductsTitle?> {
-        return Transformations.switchMap(dbUpdater.updateDatabase(::updateAboutProducts)) { aboutProductsTitle }
+//        return Transformations.switchMap(dbUpdater.updateDatabase(::updateAboutProducts)) { aboutProductsTitle }
+        return MutableLiveData(AboutProductsTitle())
     }
 
     /** Get about product & title from remote config & update db in background */

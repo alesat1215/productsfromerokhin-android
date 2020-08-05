@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+    <import type="android.view.View" />
     <variable
         name="data"
         type="com.alesat1215.productsfromerokhin.data.AboutProducts" />
@@ -30,6 +31,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="@{data.text}"
+        android:visibility="@{data.text.empty ? View.GONE : View.VISIBLE}"
         tools:text="@tools:sample/lorem" />
   </LinearLayout>
 </layout>
