@@ -55,5 +55,9 @@ class MainActivityTest {
         onView(withText(R.string.about_products)).perform(click())
         onView(withId(R.id.about_products_list)).check(matches(isDisplayed()))
         onView(withId(R.id.about_products_list2)).check(matches(isDisplayed()))
+        pressBack()
+        // Navigate to contacts
+        onView(withText(R.string.contacts)).perform(click())
+        onView(withId(R.id.contacts_phone_title)).check(matches(isDisplayed()))
     }
 }
