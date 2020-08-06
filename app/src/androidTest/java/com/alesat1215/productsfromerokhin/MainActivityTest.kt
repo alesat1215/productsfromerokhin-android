@@ -42,5 +42,8 @@ class MainActivityTest {
         // Navigate to more
         onView(withContentDescription(R.string.more)).perform(click())
         onView(withId(R.id.moreFragment)).check(matches(isDisplayed()))
+        // Navigate to how to order
+        onView(withText(R.string.tutorial)).perform(click())
+        onView(withText(DataMock.instructions.first().text)).check(matches(isDisplayed()))
     }
 }

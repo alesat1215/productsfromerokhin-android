@@ -16,4 +16,5 @@ object DataMock {
         AboutProducts("title 1", "text 1"),
         AboutProducts(text = "text 2", img = "img 2")
     )
+    val instructions = listOf(Instruction("title 1", "text 1"), Instruction("title 2", "text 2"))
 }
