@@ -9,5 +9,5 @@ import javax.inject.Singleton
 /** For UI testing with dagger */
 @Singleton
 class ContactsRepositoryMock @Inject constructor() : IContactsRepository {
-    override fun contacts(): LiveData<Contacts?> = MutableLiveData(DataMock.phone)
+    override fun contacts(): LiveData<Contacts?> = MutableLiveData(DataMock.contacts)
 }
