@@ -8,10 +8,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.alesat1215.productsfromerokhin.cart.CartViewModel
-import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerAppCompatActivity
