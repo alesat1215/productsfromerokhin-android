@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.alesat1215.productsfromerokhin.MainActivity
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.AboutProducts
 import com.alesat1215.productsfromerokhin.databinding.FragmentAboutProductsBinding
@@ -47,6 +48,22 @@ class AboutProductsFragment : DaggerFragment() {
         })
         Logger.d("Set adapter to about products")
         return adapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setupBackButton(true)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        setupBackButton(false)
+    }
+
+    private fun setupBackButton(enabled: Boolean) {
+        (activity as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(enabled)
+        (activity as? MainActivity)?.supportActionBar?.setDisplayShowHomeEnabled(enabled)
+        Logger.d("Show back button: $enabled")
     }
 
 }

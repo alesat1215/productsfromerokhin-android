@@ -55,5 +55,10 @@ class MainActivity : DaggerAppCompatActivity() {
             return true
         } else return super.onOptionsItemSelected(item)
     }
+    // For back button in toolbar
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
 }
