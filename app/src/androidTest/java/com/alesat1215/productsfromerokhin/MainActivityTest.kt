@@ -7,6 +7,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
+import org.hamcrest.core.IsNot.not
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,5 +46,6 @@ class MainActivityTest {
         // Navigate to how to order
         onView(withText(R.string.tutorial)).perform(click())
         onView(withText(DataMock.instructions.first().text)).check(matches(isDisplayed()))
+        onView(withId(R.id.nav_view)).check(matches(not((isDisplayed()))))
     }
 }
