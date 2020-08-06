@@ -1,11 +1,13 @@
 package com.alesat1215.productsfromerokhin.tutorial
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.alesat1215.productsfromerokhin.MainActivity
 import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.databinding.FragmentTutorialBinding
 import com.alesat1215.productsfromerokhin.util.ViewPagerAdapter
@@ -46,4 +48,27 @@ class TutorialFragment : DaggerFragment() {
             }
         })
     }
+
+    override fun onStart() {
+        super.onStart()
+        setupBackButton(tutorialIsRead())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        setupBackButton(false)
+    }
+
+    private fun setupBackButton(enabled: Boolean) {
+        (activity as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(enabled)
+        (activity as? MainActivity)?.supportActionBar?.setDisplayShowHomeEnabled(enabled)
+        Logger.d("Show back button: $enabled")
+    }
+
+    /** Check tutorial read */
+    private fun tutorialIsRead() =
+        (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, Context.MODE_PRIVATE)
+            ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
+            Logger.d("Tutorial is read: $it")
+        }
 }
