@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.alesat1215.productsfromerokhin.MainActivity
 import com.alesat1215.productsfromerokhin.MainActivity.Companion.IS_READ
 import com.alesat1215.productsfromerokhin.MainActivity.Companion.SHARED_PREFS
 import com.alesat1215.productsfromerokhin.R
@@ -45,8 +46,7 @@ class InstructionFragment : Fragment() {
     /** Save finish status to shared prefs & navigate to destination */
     fun finishRead() {
         // Set finish status to shared prefs
-        activity?.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
-            ?.edit()?.putBoolean(IS_READ, true)?.apply()
+        (activity as? MainActivity)?.finishRead()
         Logger.d("Tutorial read")
         // Navigate to destination
         findNavController().navigate(R.id.action_tutorialFragment_to_loadFragment)
@@ -57,9 +57,5 @@ class InstructionFragment : Fragment() {
         // Hide BottomNavigationView
         activity?.nav_view?.visibility = View.GONE
     }
-    /** Keys for saving status for read tutorial */
-//    companion object {
-//        const val SHARED_PREFS = "com.alesat1215.productsfromerokhin"
-//        const val IS_READ = "IS_READ"
-//    }
+
 }

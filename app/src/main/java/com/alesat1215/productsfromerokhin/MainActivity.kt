@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.alesat1215.productsfromerokhin.cart.CartViewModel
 import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment
@@ -75,6 +76,13 @@ class MainActivity : DaggerAppCompatActivity() {
             .getBoolean(IS_READ, false).also {
             Logger.d("Tutorial is read: $it")
         }
+
+    /** Save finish status to shared prefs */
+    fun finishRead() {
+        // Set finish status to shared prefs
+        getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+            .edit().putBoolean(IS_READ, true).apply()
+    }
 
     companion object {
         const val SHARED_PREFS = "com.alesat1215.productsfromerokhin"
