@@ -1,6 +1,5 @@
 package com.alesat1215.productsfromerokhin.tutorial
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.alesat1215.productsfromerokhin.MainActivity
-import com.alesat1215.productsfromerokhin.MainActivity.Companion.IS_READ
-import com.alesat1215.productsfromerokhin.MainActivity.Companion.SHARED_PREFS
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.databinding.FragmentInstructionBinding
