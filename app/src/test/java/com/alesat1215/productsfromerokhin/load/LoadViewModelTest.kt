@@ -22,14 +22,14 @@ class LoadViewModelTest {
     @Mock
     private lateinit var tutorialRepository: TutorialRepository
     @Mock
-    private lateinit var phoneRepository: PhoneRepository
+    private lateinit var contactsRepository: ContactsRepository
     @Mock
     private lateinit var aboutProductsRepository: AboutProductsRepository
     @Mock
     private lateinit var instruction: Instruction
     private lateinit var instructions: List<Instruction>
 
-    private val phoneForOrder = PhoneForOrder("phone")
+    private val phoneForOrder = Contacts("phone")
     @Mock
     private lateinit var aboutProducts: AboutProducts
     private lateinit var aboutProductsList: List<AboutProducts>
@@ -56,10 +56,10 @@ class LoadViewModelTest {
         aboutProductsList = listOf(aboutProducts)
         `when`(productsRepository.products()).thenReturn(MutableLiveData(products))
         `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(instructions))
-        `when`(phoneRepository.phone()).thenReturn(MutableLiveData(phoneForOrder))
+        `when`(contactsRepository.contacts()).thenReturn(MutableLiveData(phoneForOrder))
         `when`(titlesRepository.titles()).thenReturn(titles)
         `when`(aboutProductsRepository.aboutProducts()).thenReturn(MutableLiveData(aboutProductsList))
-        viewModel = LoadViewModel(productsRepository, tutorialRepository, phoneRepository, titlesRepository, aboutProductsRepository, auth)
+        viewModel = LoadViewModel(productsRepository, tutorialRepository, contactsRepository, titlesRepository, aboutProductsRepository, auth)
     }
 
     @Test

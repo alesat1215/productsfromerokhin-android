@@ -98,7 +98,7 @@ class CartFragment : DaggerFragment() {
 
     /** Check phone number for order in contacts */
     private fun checkContact() {
-        val phone = viewModel.phone()
+        val phone = viewModel.contacts()
         phone.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             if (!isPhoneNumberInContacts(it.phone)) {
