@@ -33,7 +33,4 @@ class AboutProductsFragmentTest {
         }
     }
 
-    @After
-    fun tearDown() {
-    }
 }
