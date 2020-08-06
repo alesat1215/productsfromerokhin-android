@@ -21,6 +21,7 @@ import javax.inject.Singleton
     MenuModule::class,
     CartModule::class,
     ProfileModule::class,
+    TutorialModule::class,
     AboutProductsModule::class,
     TestRepositoryModule::class,
     HelpModule::class
