@@ -7,5 +7,5 @@ import javax.inject.Inject
 class ContactsViewModel @Inject constructor(
     private val contactsRepository: IContactsRepository
 ) : ViewModel() {
-    fun contacts() = contactsRepository.contacts()
+    val contacts by lazy { contactsRepository.contacts() }
 }
