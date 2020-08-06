@@ -19,8 +19,7 @@ import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.never
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.Thread.sleep
 
@@ -78,7 +77,7 @@ class AboutProductsRepositoryTest {
         repository.aboutProducts().observeForever { result = it }
         sleep(100)
         assertEquals(result, aboutProducts.asList())
-        Mockito.verify(aboutProductsDao, never()).updateAboutProducts(aboutProducts.asList())
+        verify(aboutProductsDao, never()).updateAboutProducts(aboutProducts.asList())
         // Update db
         result = emptyList()
         `when`(limiter.needUpdate()).thenReturn(true)
@@ -86,6 +85,6 @@ class AboutProductsRepositoryTest {
         repository.aboutProducts().observeForever { result = it }
         sleep(100)
         assertEquals(result, aboutProducts.asList())
-        Mockito.verify(aboutProductsDao).updateAboutProducts(aboutProducts.asList())
+        verify(aboutProductsDao).updateAboutProducts(aboutProducts.asList())
     }
 }
