@@ -52,18 +52,12 @@ class AboutProductsFragment : DaggerFragment() {
 
     override fun onStart() {
         super.onStart()
-        setupBackButton(true)
+        (activity as? MainActivity)?.setupBackButton(true)
     }
 
     override fun onStop() {
         super.onStop()
-        setupBackButton(false)
-    }
-
-    private fun setupBackButton(enabled: Boolean) {
-        (activity as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(enabled)
-        (activity as? MainActivity)?.supportActionBar?.setDisplayShowHomeEnabled(enabled)
-        Logger.d("Show back button: $enabled")
+        (activity as? MainActivity)?.setupBackButton(false)
     }
 
 }

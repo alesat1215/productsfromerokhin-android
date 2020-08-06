@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.alesat1215.productsfromerokhin.cart.CartViewModel
+import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerAppCompatActivity
@@ -61,4 +63,21 @@ class MainActivity : DaggerAppCompatActivity() {
         return true
     }
 
+    fun setupBackButton(enabled: Boolean) {
+        supportActionBar?.setDisplayHomeAsUpEnabled(enabled)
+        supportActionBar?.setDisplayShowHomeEnabled(enabled)
+        Logger.d("Show back button: $enabled")
+    }
+
+    /** Check tutorial read */
+    fun tutorialIsRead() =
+        getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+            .getBoolean(IS_READ, false).also {
+            Logger.d("Tutorial is read: $it")
+        }
+
+    companion object {
+        const val SHARED_PREFS = "com.alesat1215.productsfromerokhin"
+        const val IS_READ = "IS_READ"
+    }
 }
