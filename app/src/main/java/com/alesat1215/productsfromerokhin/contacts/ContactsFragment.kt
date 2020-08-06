@@ -44,22 +44,6 @@ class ContactsFragment : DaggerFragment() {
                 Logger.d("Select call")
             }
         }
-//        val contacts = viewModel.contacts()
-//        contacts.observe(viewLifecycleOwner, Observer {
-//            if (it == null) return@Observer
-//            val intent = Intent(Intent.ACTION_DIAL).apply {
-//                data = Uri.parse("tel:${it.phone}")
-//            }
-//            // Show chooser
-//            val chooser: Intent = Intent.createChooser(intent, "")
-//            activity?.packageManager?.also {
-//                intent.resolveActivity(it)?.also {
-//                    startActivity(chooser)
-//                    Logger.d("Select call")
-//                }
-//            }
-//            contacts.removeObservers(viewLifecycleOwner)
-//        })
     }
 
 }
