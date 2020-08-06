@@ -121,12 +121,12 @@ class AppDatabaseTest {
     }
 
     @Test
-    fun phoneDao() = runBlocking {
+    fun contactsDao() = runBlocking {
         var result: Contacts? = null
         contactsDao.contacts().observeForever { result = it }
-        contactsDao.updateContacts(DataMock.phone)
+        contactsDao.updateContacts(DataMock.contacts)
         sleep(100)
-        assertEquals(result, DataMock.phone)
+        assertEquals(result, DataMock.contacts)
     }
 
     @Test
