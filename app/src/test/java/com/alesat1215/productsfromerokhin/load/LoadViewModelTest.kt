@@ -28,11 +28,14 @@ class LoadViewModelTest {
     @Mock
     private lateinit var instruction: Instruction
     private lateinit var instructions: List<Instruction>
+
+    private val phoneForOrder = PhoneForOrder("phone")
     @Mock
     private lateinit var aboutProducts: AboutProducts
     private lateinit var aboutProductsList: List<AboutProducts>
     @Mock
     private lateinit var titlesRepository: TitlesRepository
+    private val titles: LiveData<Titles?> = MutableLiveData(Titles())
     @Mock
     private lateinit var auth: Auth
     private val authResult: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
@@ -53,6 +56,8 @@ class LoadViewModelTest {
         aboutProductsList = listOf(aboutProducts)
         `when`(productsRepository.products()).thenReturn(MutableLiveData(products))
         `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(instructions))
+        `when`(phoneRepository.phone()).thenReturn(MutableLiveData(phoneForOrder))
+        `when`(titlesRepository.titles()).thenReturn(titles)
         `when`(aboutProductsRepository.aboutProducts()).thenReturn(MutableLiveData(aboutProductsList))
         viewModel = LoadViewModel(productsRepository, tutorialRepository, phoneRepository, titlesRepository, aboutProductsRepository, auth)
     }
@@ -77,6 +82,20 @@ class LoadViewModelTest {
     }
 
     @Test
+    fun loadCompleteTitles() {
+        var result = false
+        viewModel.loadCompleteTitles().observeForever { result = it }
+        assertTrue(result)
+    }
+
+    @Test
+    fun loadCompletePhone() {
+        var result = false
+        viewModel.loadCompletePhone().observeForever { result = it }
+        assertTrue(result)
+    }
+
+            @Test
     fun loadCompleteAboutProducts() {
         var result = false
         viewModel.loadCompleteAboutProducts().observeForever { result = it }
