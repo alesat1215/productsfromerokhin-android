@@ -19,7 +19,7 @@ class LoadViewModel @Inject constructor(
     // Data loading triggers
     fun loadCompleteProducts() = Transformations.map(productsRepository.products()) { it.isNotEmpty() }
     fun loadCompleteTutorial() = Transformations.map(tutorialRepository.instructions()) { it.isNotEmpty() }
-    fun loadCompletePhone() = Transformations.map(contactsRepository.contacts()) { it?.phone?.isNotEmpty() ?: false }
+    fun loadCompletePhone() = Transformations.map(contactsRepository.contacts()) { it != null }
     fun loadCompleteTitles() = Transformations.map(titlesRepository.titles()) { it != null }
     fun loadCompleteAboutProducts() = Transformations.map(aboutProductsRepository.aboutProducts()) { it.isNotEmpty() }
 }
