@@ -50,11 +50,11 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.clearCart) {
+        return if (item.itemId == R.id.clearCart) {
             viewModel.clearCart()
             Logger.d("Clear cart")
-            return true
-        } else return super.onOptionsItemSelected(item)
+            true
+        } else super.onOptionsItemSelected(item)
     }
     // For back button in toolbar
     override fun onSupportNavigateUp(): Boolean {
