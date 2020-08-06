@@ -55,6 +55,7 @@
                 android:stateListAnimator="@null"
                 android:text="@string/contacts"
                 android:textColor="@color/common_google_signin_btn_text_light"
+                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_contactsFragment)}"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
 

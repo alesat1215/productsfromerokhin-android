@@ -19,6 +19,7 @@ import javax.inject.Singleton
     CartModule::class,
     ProfileModule::class,
     TutorialModule::class,
+    ContactsModule::class,
     RepositoryModule::class,
     AboutProductsModule::class
 ])
