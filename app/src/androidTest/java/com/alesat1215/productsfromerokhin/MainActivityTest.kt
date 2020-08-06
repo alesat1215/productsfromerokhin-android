@@ -1,6 +1,7 @@
 package com.alesat1215.productsfromerokhin
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -11,6 +12,7 @@ import org.hamcrest.core.IsNot.not
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Thread.sleep
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -47,5 +49,11 @@ class MainActivityTest {
         onView(withText(R.string.tutorial)).perform(click())
         onView(withText(DataMock.instructions.first().text)).check(matches(isDisplayed()))
         onView(withId(R.id.nav_view)).check(matches(not((isDisplayed()))))
+        pressBack()
+        onView(withId(R.id.nav_view)).check(matches((isDisplayed())))
+        // Navigate to about products
+        onView(withText(R.string.about_products)).perform(click())
+        onView(withId(R.id.about_products_list)).check(matches(isDisplayed()))
+        onView(withId(R.id.about_products_list2)).check(matches(isDisplayed()))
     }
 }
