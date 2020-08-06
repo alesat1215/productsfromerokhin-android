@@ -69,4 +69,9 @@
         android:name="com.alesat1215.productsfromerokhin.aboutproducts.AboutProductsFragment"
         android:label="fragment_about_products"
         tools:layout="@layout/fragment_about_products" />
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.alesat1215.productsfromerokhin.contacts.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts" />
 </navigation>

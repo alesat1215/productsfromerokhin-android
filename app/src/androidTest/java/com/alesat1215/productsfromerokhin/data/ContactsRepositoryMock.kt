@@ -8,6 +8,6 @@ import javax.inject.Singleton
 
 /** For UI testing with dagger */
 @Singleton
-class PhoneRepositoryMock @Inject constructor() : IPhoneRepository {
-    override fun phone(): LiveData<PhoneForOrder?> = MutableLiveData(DataMock.phone)
+class ContactsRepositoryMock @Inject constructor() : IContactsRepository {
+    override fun contacts(): LiveData<Contacts?> = MutableLiveData(DataMock.phone)
 }

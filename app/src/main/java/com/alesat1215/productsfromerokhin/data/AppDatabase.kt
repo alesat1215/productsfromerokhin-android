@@ -92,20 +92,20 @@ interface InstructionsDao {
 }
 
 @Dao
-interface PhoneDao {
-    @Query("SELECT * FROM phonefororder LIMIT 1")
-    fun phone(): LiveData<PhoneForOrder?>
-    /** Clear & insert phone */
+interface ContactsDao {
+    @Query("SELECT * FROM contacts LIMIT 1")
+    fun contacts(): LiveData<Contacts?>
+    /** Clear & insert contacts */
     @Transaction
-    suspend fun updatePhone(phoneForOrder: PhoneForOrder) {
-        clearPhone()
-        insertPhone(phoneForOrder)
-        Logger.d("Update phone for order")
+    suspend fun updateContacts(contacts: Contacts) {
+        clearContacts()
+        insertContacts(contacts)
+        Logger.d("Update contacts")
     }
-    @Insert(entity = PhoneForOrder::class, onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPhone(phoneForOrder: PhoneForOrder)
-    @Query("DELETE FROM phonefororder")
-    suspend fun clearPhone()
+    @Insert(entity = Contacts::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertContacts(contacts: Contacts)
+    @Query("DELETE FROM contacts")
+    suspend fun clearContacts()
 }
 
 @Dao
@@ -133,7 +133,7 @@ interface AboutProductsDao {
     ProductInCart::class,
     Profile::class,
     Instruction::class,
-    PhoneForOrder::class,
+    Contacts::class,
     AboutProducts::class
 ], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
@@ -142,7 +142,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun cartDao(): CartDao
     abstract fun profileDao(): ProfileDao
     abstract fun instructionsDao(): InstructionsDao
-    abstract fun phoneDao(): PhoneDao
+    abstract fun contactsDao(): ContactsDao
     abstract fun aboutProductsDao(): AboutProductsDao
 }
 

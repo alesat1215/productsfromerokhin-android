@@ -38,7 +38,7 @@ abstract class TestRepositoryModule {
     @Binds
     abstract fun bindProfileRepository(repository: ProfileRepositoryMock): IProfileRepository
     @Binds
-    abstract fun bindPhoneRepository(repository: PhoneRepositoryMock): IPhoneRepository
+    abstract fun bindPhoneRepository(repository: ContactsRepositoryMock): IContactsRepository
     @Binds
     abstract fun bindTitlesRepository(repository: TitlesRepositoryMock): ITitlesRepository
     @Binds

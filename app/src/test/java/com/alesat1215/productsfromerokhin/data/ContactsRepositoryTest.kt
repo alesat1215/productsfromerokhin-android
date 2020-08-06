@@ -24,7 +24,7 @@ import java.lang.Thread.sleep
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class PhoneRepositoryTest {
+class ContactsRepositoryTest {
     @Mock
     private lateinit var remoteConfig: RemoteConfig
     @Mock
@@ -36,11 +36,11 @@ class PhoneRepositoryTest {
 
     private lateinit var dbUpdater: DatabaseUpdater
     @Mock
-    private lateinit var phoneDao: PhoneDao
+    private lateinit var contactsDao: ContactsDao
 
-    private val phoneForOrder = PhoneForOrder("phone")
+    private val phoneForOrder = Contacts("phone")
 
-    private lateinit var repository: PhoneRepository
+    private lateinit var repository: ContactsRepository
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -50,12 +50,12 @@ class PhoneRepositoryTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        `when`(db.phoneDao()).thenReturn(phoneDao)
-        `when`(db.phoneDao().phone()).thenReturn(MutableLiveData(phoneForOrder))
-        `when`(firebaseRemoteConfig.getString(PhoneRepository.PHONE)).thenReturn(phoneForOrder.phone)
+        `when`(db.contactsDao()).thenReturn(contactsDao)
+        `when`(db.contactsDao().contacts()).thenReturn(MutableLiveData(phoneForOrder))
+        `when`(firebaseRemoteConfig.getString(ContactsRepository.CONTACTS)).thenReturn(phoneForOrder.phone)
         `when`(remoteConfig.firebaseRemoteConfig).thenReturn(firebaseRemoteConfig)
         dbUpdater = DatabaseUpdater(limiter, remoteConfig)
-        repository = PhoneRepository(db, dbUpdater)
+        repository = ContactsRepository(db, dbUpdater)
     }
 
     @After
@@ -67,19 +67,19 @@ class PhoneRepositoryTest {
     @Test
     fun phone() = runBlocking {
         // Not update db
-        var result: PhoneForOrder? = null
+        var result: Contacts? = null
         `when`(limiter.needUpdate()).thenReturn(false)
-        repository.phone().observeForever { result = it }
+        repository.contacts().observeForever { result = it }
         sleep(100)
         assertEquals(result, phoneForOrder)
-        verify(phoneDao, never()).updatePhone(phoneForOrder)
+        verify(contactsDao, never()).updateContacts(phoneForOrder)
         // Update db
         result = null
         `when`(limiter.needUpdate()).thenReturn(true)
         `when`(remoteConfig.fetchAndActivate()).thenReturn(MutableLiveData(Result.success(Unit)))
-        repository.phone().observeForever { result = it }
+        repository.contacts().observeForever { result = it }
         sleep(100)
         assertEquals(result, phoneForOrder)
-        verify(phoneDao).updatePhone(phoneForOrder)
+        verify(contactsDao).updateContacts(phoneForOrder)
     }
 }

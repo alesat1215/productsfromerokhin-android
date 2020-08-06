@@ -27,7 +27,7 @@ class AppDatabaseTest {
     private lateinit var cartDao: CartDao
     private lateinit var profileDao: ProfileDao
     private lateinit var instructionsDao: InstructionsDao
-    private lateinit var phoneDao: PhoneDao
+    private lateinit var contactsDao: ContactsDao
     private lateinit var aboutProductsDao: AboutProductsDao
     private lateinit var db: AppDatabase
 
@@ -50,7 +50,7 @@ class AppDatabaseTest {
         cartDao = db.cartDao()
         profileDao = db.profileDao()
         instructionsDao = db.instructionsDao()
-        phoneDao = db.phoneDao()
+        contactsDao = db.contactsDao()
         aboutProductsDao = db.aboutProductsDao()
     }
 
@@ -122,9 +122,9 @@ class AppDatabaseTest {
 
     @Test
     fun phoneDao() = runBlocking {
-        var result: PhoneForOrder? = null
-        phoneDao.phone().observeForever { result = it }
-        phoneDao.updatePhone(DataMock.phone)
+        var result: Contacts? = null
+        contactsDao.contacts().observeForever { result = it }
+        contactsDao.updateContacts(DataMock.phone)
         sleep(100)
         assertEquals(result, DataMock.phone)
     }

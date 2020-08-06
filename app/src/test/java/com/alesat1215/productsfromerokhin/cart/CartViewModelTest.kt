@@ -28,7 +28,7 @@ class CartViewModelTest {
     @Mock
     private lateinit var profileRepository: ProfileRepository
     @Mock
-    private lateinit var phoneRepository: PhoneRepository
+    private lateinit var contactsRepository: ContactsRepository
     @Mock
     private lateinit var productInfo: ProductInfo
     private lateinit var products: LiveData<List<ProductInfo>>
@@ -38,7 +38,7 @@ class CartViewModelTest {
     private lateinit var profile: Profile
     private val delivery = "delivery"
     @Mock
-    private lateinit var phoneResult: LiveData<PhoneForOrder?>
+    private lateinit var phoneResult: LiveData<Contacts?>
 
     private lateinit var viewModel: CartViewModel
 
@@ -56,8 +56,8 @@ class CartViewModelTest {
         `when`(productsRepository.productsInCart).thenReturn(products)
         `when`(profile.delivery()).thenReturn(delivery)
         `when`(profileRepository.profile).thenReturn(MutableLiveData(profile))
-        `when`(phoneRepository.phone()).thenReturn(phoneResult)
-        viewModel = CartViewModel(productsRepository, profileRepository, phoneRepository)
+        `when`(contactsRepository.contacts()).thenReturn(phoneResult)
+        viewModel = CartViewModel(productsRepository, profileRepository, contactsRepository)
     }
 
     @After
@@ -100,6 +100,6 @@ class CartViewModelTest {
 
     @Test
     fun phone() {
-        assertEquals(viewModel.phone(), phoneResult)
+        assertEquals(viewModel.contacts(), phoneResult)
     }
 }

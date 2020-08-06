@@ -2,7 +2,7 @@ package com.alesat1215.productsfromerokhin.cart
 
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
-import com.alesat1215.productsfromerokhin.data.IPhoneRepository
+import com.alesat1215.productsfromerokhin.data.IContactsRepository
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
 import com.alesat1215.productsfromerokhin.data.IProfileRepository
 import com.alesat1215.productsfromerokhin.util.CartManager
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     override val productsRepository: IProductsRepository,
     private val profileRepository: IProfileRepository,
-    private val phoneRepository: IPhoneRepository
+    private val contactsRepository: IContactsRepository
 ) : CartManager() {
     /** Products in cart */
     val productsInCart by lazy { productsRepository.productsInCart }
@@ -35,5 +35,5 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch { productsRepository.clearCart() }
     }
 
-    fun phone() = phoneRepository.phone()
+    fun contacts() = contactsRepository.contacts()
 }
