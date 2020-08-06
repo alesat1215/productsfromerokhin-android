@@ -12,6 +12,7 @@ import androidx.test.filters.LargeTest
 import com.alesat1215.productsfromerokhin.DataMock
 import com.alesat1215.productsfromerokhin.R
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 
@@ -30,10 +31,15 @@ class TutorialFragmentTest {
 
     @Test
     fun checkViews() {
-        DataMock.instructions.forEach {
-            onView(withText(it.title)).check(matches(isDisplayed()))
-            onView(withText(it.text)).check(matches(isDisplayed()))
-            onView(withId(R.id.pager_tutorial)).perform(swipeLeft())
+        DataMock.instructions.withIndex().forEach {
+            onView(withText(it.value.title)).check(matches(isDisplayed()))
+            onView(withText(it.value.text)).check(matches(isDisplayed()))
+            if (it.index != DataMock.instructions.lastIndex) {
+                onView(allOf(withText(android.R.string.ok), not(isDisplayed())))
+                onView(withId(R.id.pager_tutorial)).perform(swipeLeft())
+            } else {
+                onView(allOf(withText(android.R.string.ok), isDisplayed()))
+            }
         }
     }
 
