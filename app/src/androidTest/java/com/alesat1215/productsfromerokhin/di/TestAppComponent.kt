@@ -13,7 +13,18 @@ import javax.inject.Singleton
 
 /** Fro UI test with dagger */
 @Singleton
-@Component(modules = [AndroidSupportInjectionModule::class, ActivityModule::class, LoadModule::class, StartModule::class, MenuModule::class, CartModule::class, ProfileModule::class, TestRepositoryModule::class, HelpModule::class])
+@Component(modules = [
+    AndroidSupportInjectionModule::class,
+    ActivityModule::class,
+    LoadModule::class,
+    StartModule::class,
+    MenuModule::class,
+    CartModule::class,
+    ProfileModule::class,
+    AboutProductsModule::class,
+    TestRepositoryModule::class,
+    HelpModule::class
+])
 interface TestAppComponent : AndroidInjector<TestApp>
 
 /** Provide mock repository for UI test */
