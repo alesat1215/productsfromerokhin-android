@@ -29,6 +29,9 @@ class LoadViewModelTest {
     private lateinit var instruction: Instruction
     private lateinit var instructions: List<Instruction>
     @Mock
+    private lateinit var aboutProducts: AboutProducts
+    private lateinit var aboutProductsList: List<AboutProducts>
+    @Mock
     private lateinit var titlesRepository: TitlesRepository
     @Mock
     private lateinit var auth: Auth
@@ -47,8 +50,10 @@ class LoadViewModelTest {
         `when`(auth.signIn()).thenReturn(authResult)
         products = listOf(productInfo)
         instructions = listOf(instruction)
+        aboutProductsList = listOf(aboutProducts)
         `when`(productsRepository.products()).thenReturn(MutableLiveData(products))
         `when`(tutorialRepository.instructions()).thenReturn(MutableLiveData(instructions))
+        `when`(aboutProductsRepository.aboutProducts()).thenReturn(MutableLiveData(aboutProductsList))
         viewModel = LoadViewModel(productsRepository, tutorialRepository, phoneRepository, titlesRepository, aboutProductsRepository, auth)
     }
 
@@ -68,6 +73,13 @@ class LoadViewModelTest {
     fun loadCompleteTutorial() {
         var result = false
         viewModel.loadCompleteTutorial().observeForever { result = it }
+        assertTrue(result)
+    }
+
+    @Test
+    fun loadCompleteAboutProducts() {
+        var result = false
+        viewModel.loadCompleteAboutProducts().observeForever { result = it }
         assertTrue(result)
     }
 
