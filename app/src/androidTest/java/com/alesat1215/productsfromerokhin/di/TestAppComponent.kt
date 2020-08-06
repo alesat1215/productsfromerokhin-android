@@ -23,6 +23,7 @@ import javax.inject.Singleton
     ProfileModule::class,
     TutorialModule::class,
     AboutProductsModule::class,
+    ContactsModule::class,
     TestRepositoryModule::class,
     HelpModule::class
 ])
