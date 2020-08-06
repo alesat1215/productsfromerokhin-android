@@ -28,6 +28,7 @@ class AppDatabaseTest {
     private lateinit var profileDao: ProfileDao
     private lateinit var instructionsDao: InstructionsDao
     private lateinit var phoneDao: PhoneDao
+    private lateinit var aboutProductsDao: AboutProductsDao
     private lateinit var db: AppDatabase
 
     @get:Rule
@@ -50,6 +51,7 @@ class AppDatabaseTest {
         profileDao = db.profileDao()
         instructionsDao = db.instructionsDao()
         phoneDao = db.phoneDao()
+        aboutProductsDao = db.aboutProductsDao()
     }
 
     @After
@@ -125,6 +127,16 @@ class AppDatabaseTest {
         phoneDao.updatePhone(DataMock.phone)
         sleep(100)
         assertEquals(result, DataMock.phone)
+    }
+
+    @Test
+    fun updateAboutProducts() = runBlocking {
+        val aboutProducts = listOf(AboutProducts("title"))
+        var result: List<AboutProducts> = emptyList()
+        aboutProductsDao.aboutProducts().observeForever { result = it }
+        aboutProductsDao.updateAboutProducts(aboutProducts)
+        sleep(100)
+        assertEquals(result, aboutProducts)
     }
 
 }
