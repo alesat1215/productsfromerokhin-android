@@ -38,7 +38,7 @@ class AboutProductsFragment : DaggerFragment() {
 
     private fun adapterToAboutProducts(
         vhLayout: Int,
-        predicate: ((AboutProducts) -> Boolean)? = null
+        predicate: ((AboutProducts) -> Boolean)
     ): BindRVAdapter<AboutProducts> {
         val adapter = BindRVAdapter<AboutProducts>(vhLayout)
         viewModel.aboutProducts(predicate).observe(viewLifecycleOwner, Observer {
