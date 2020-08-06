@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.alesat1215.productsfromerokhin.MainActivity.Companion.IS_READ
+import com.alesat1215.productsfromerokhin.MainActivity.Companion.SHARED_PREFS
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.databinding.FragmentInstructionBinding
@@ -56,8 +58,8 @@ class InstructionFragment : Fragment() {
         activity?.nav_view?.visibility = View.GONE
     }
     /** Keys for saving status for read tutorial */
-    companion object {
-        const val SHARED_PREFS = "com.alesat1215.productsfromerokhin"
-        const val IS_READ = "IS_READ"
-    }
+//    companion object {
+//        const val SHARED_PREFS = "com.alesat1215.productsfromerokhin"
+//        const val IS_READ = "IS_READ"
+//    }
 }

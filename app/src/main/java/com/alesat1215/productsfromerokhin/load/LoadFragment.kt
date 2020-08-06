@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.alesat1215.productsfromerokhin.MainActivity
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment
 import com.orhanobut.logger.Logger
@@ -53,7 +54,7 @@ class LoadFragment : DaggerFragment() {
     }
     /** When data is loading navigate to destination */
     private fun loadData() {
-        if (tutorialIsRead()) {
+        if ((activity as? MainActivity)?.tutorialIsRead() == true) {
             val loadPhoneTitles = Transformations.switchMap(viewModel.loadCompletePhone()) {
                 if (it) {
                     Logger.d("Load phone complete")
@@ -97,11 +98,5 @@ class LoadFragment : DaggerFragment() {
             })
         }
     }
-    /** Check tutorial read */
-    private fun tutorialIsRead() =
-        (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, MODE_PRIVATE)
-            ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
-            Logger.d("Tutorial is read: $it")
-        }
 
 }

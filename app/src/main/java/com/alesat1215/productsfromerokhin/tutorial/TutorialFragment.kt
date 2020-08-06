@@ -51,24 +51,12 @@ class TutorialFragment : DaggerFragment() {
 
     override fun onStart() {
         super.onStart()
-        setupBackButton(tutorialIsRead())
+        (activity as? MainActivity)?.setupBackButton((activity as? MainActivity)?.tutorialIsRead() ?: false)
     }
 
     override fun onStop() {
         super.onStop()
-        setupBackButton(false)
+        (activity as? MainActivity)?.setupBackButton(false)
     }
 
-    private fun setupBackButton(enabled: Boolean) {
-        (activity as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(enabled)
-        (activity as? MainActivity)?.supportActionBar?.setDisplayShowHomeEnabled(enabled)
-        Logger.d("Show back button: $enabled")
-    }
-
-    /** Check tutorial read */
-    private fun tutorialIsRead() =
-        (activity?.getSharedPreferences(InstructionFragment.SHARED_PREFS, Context.MODE_PRIVATE)
-            ?.getBoolean(InstructionFragment.IS_READ, false) ?: false).also {
-            Logger.d("Tutorial is read: $it")
-        }
 }
