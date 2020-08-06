@@ -42,6 +42,11 @@ class InstructionFragment : Fragment() {
 
     /** Save finish status to shared prefs & navigate to destination */
     fun finishRead() {
+        // For already read tutorial navigate back
+        if ((activity as? MainActivity)?.tutorialIsRead() == true) {
+            findNavController().navigateUp()
+            return
+        }
         // Set finish status to shared prefs
         (activity as? MainActivity)?.finishRead()
         Logger.d("Tutorial read")
