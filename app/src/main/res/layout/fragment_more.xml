@@ -7,6 +7,9 @@
     <data>
         <import type="androidx.navigation.Navigation"/>
         <import type="com.alesat1215.productsfromerokhin.R"/>
+        <variable
+            name="fragment"
+            type="com.alesat1215.productsfromerokhin.more.MoreFragment" />
     </data>
 
     <ScrollView
@@ -68,6 +71,7 @@
                 android:stateListAnimator="@null"
                 android:text="@string/share"
                 android:textColor="@color/common_google_signin_btn_text_light"
+                android:onClick="@{() -> fragment.share()}"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
 
