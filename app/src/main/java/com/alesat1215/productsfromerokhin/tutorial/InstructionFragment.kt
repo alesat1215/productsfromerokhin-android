@@ -48,7 +48,7 @@ class InstructionFragment : Fragment() {
             ?.edit()?.putBoolean(IS_READ, true)?.apply()?.also {
                 Logger.d("Tutorial read")
                 // Navigate to destination
-                findNavController().navigate(R.id.action_tutorialFragment_to_loadFragment)
+                findNavController().navigateUp()
             }
 
     override fun onStart() {
