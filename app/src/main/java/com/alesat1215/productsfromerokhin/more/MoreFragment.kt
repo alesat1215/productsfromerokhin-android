@@ -19,9 +19,4 @@ class MoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = FragmentMoreBinding.inflate(inflater, container, false).root
 
-    override fun onStart() {
-        super.onStart()
-        // Show BottomNavigationView
-        activity?.nav_view?.visibility = View.VISIBLE
-    }
 }
