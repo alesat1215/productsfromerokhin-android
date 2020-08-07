@@ -1,6 +1,5 @@
 package com.alesat1215.productsfromerokhin
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -75,6 +74,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun setupNavigation(navController: NavController) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            // Toolbar & BottomNavigationView visible
             when (destination.id) {
                 R.id.loadFragment, R.id.tutorialFragment -> {
                     toolbar.visibility = View.GONE
@@ -85,6 +85,8 @@ class MainActivity : DaggerAppCompatActivity() {
                     nav_view.visibility = View.VISIBLE
                 }
             }
+            // Clear cart button visible
+            toolbar.menu.findItem(R.id.clearCart)?.isVisible = destination.id == R.id.cartFragment
         }
     }
 
