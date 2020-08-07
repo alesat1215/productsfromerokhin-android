@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.load
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.alesat1215.productsfromerokhin.MainActivity
 import com.alesat1215.productsfromerokhin.R
+import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment.Companion.IS_READ
+import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment.Companion.SHARED_PREFS
 import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -52,7 +54,7 @@ class LoadFragment : DaggerFragment() {
     }
     /** When data is loading navigate to destination */
     private fun loadData() {
-        if ((activity as? MainActivity)?.tutorialIsRead() == true) {
+        if (tutorialIsRead()) {
             val loadPhoneTitles = Transformations.switchMap(viewModel.loadCompletePhone()) {
                 if (it) {
                     Logger.d("Load phone complete")
@@ -96,5 +98,12 @@ class LoadFragment : DaggerFragment() {
             })
         }
     }
+
+    /** Check tutorial read */
+    private fun tutorialIsRead() =
+        activity?.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+            ?.getBoolean(IS_READ, false).also {
+                Logger.d("Tutorial is read: $it")
+            } ?: false
 
 }
