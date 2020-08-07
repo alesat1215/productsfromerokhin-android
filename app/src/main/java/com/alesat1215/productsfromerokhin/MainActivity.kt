@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,7 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val navController = findNavController(R.id.nav_host_fragment)
+        // Setup AppBarConfiguration with top-level destinations
         val appBarConfiguration = AppBarConfiguration(setOf(
             R.id.loadFragment,
             R.id.startFragment,
@@ -40,7 +42,7 @@ class MainActivity : DaggerAppCompatActivity() {
         toolbar.setupWithNavController(navController, appBarConfiguration)
         nav_view.setupWithNavController(navController)
         setupBadge(nav_view)
-//        setupNavigation(navController)
+        setupNavigation(navController)
     }
 
     private fun setupBadge(navigationView: BottomNavigationView) {
@@ -73,16 +75,16 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun setupNavigation(navController: NavController) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-//            when (destination.id) {
-//                R.id.startFragment,
-//                R.id.menuFragment,
-//                R.id.cartFragment,
-//                R.id.profileFragment,
-//                R.id.moreFragment -> {
-//                    setupBackButton(false)
-//                    controller.
-//                }
-//            }
+            when (destination.id) {
+                R.id.loadFragment, R.id.tutorialFragment -> {
+                    toolbar.visibility = View.GONE
+                    nav_view.visibility = View.GONE
+                }
+                else -> {
+                    toolbar.visibility = View.VISIBLE
+                    nav_view.visibility = View.VISIBLE
+                }
+            }
         }
     }
 

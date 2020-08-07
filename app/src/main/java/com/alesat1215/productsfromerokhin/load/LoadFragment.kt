@@ -36,14 +36,14 @@ class LoadFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupLoadingAnimation()
+        // Start load data
+        firebaseAuth()
     }
 
     /** Sign in to firebase auth & load data */
-    private fun setupLoadingAnimation() {
+    private fun firebaseAuth() {
         // Hide BottomNavigationView
-        activity?.nav_view?.visibility = View.GONE
+//        activity?.nav_view?.visibility = View.GONE
         // Sign in firebase
         viewModel.firebaseAuth().observe(viewLifecycleOwner, Observer {
             it.onSuccess { loadData() }

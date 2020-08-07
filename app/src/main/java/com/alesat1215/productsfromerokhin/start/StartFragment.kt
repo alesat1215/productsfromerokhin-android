@@ -60,8 +60,6 @@ class StartFragment : DaggerFragment() {
 
         restoreScrollPosition(products_start)
         restoreScrollPosition(products2_start)
-        // Show BottomNavigationView
-        activity?.nav_view?.visibility = View.VISIBLE
     }
 
     override fun onPause() {
