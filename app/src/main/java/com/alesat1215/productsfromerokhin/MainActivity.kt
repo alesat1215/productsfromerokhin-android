@@ -73,7 +73,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun setupNavigation(navController: NavController) {
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             // Toolbar & BottomNavigationView visible
             when (destination.id) {
                 R.id.loadFragment, R.id.tutorialFragment -> {
