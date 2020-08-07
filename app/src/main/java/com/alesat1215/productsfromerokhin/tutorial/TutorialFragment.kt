@@ -49,14 +49,4 @@ class TutorialFragment : DaggerFragment() {
         })
     }
 
-    override fun onStart() {
-        super.onStart()
-        (activity as? MainActivity)?.setupBackButton((activity as? MainActivity)?.tutorialIsRead() ?: false)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as? MainActivity)?.setupBackButton(false)
-    }
-
 }
