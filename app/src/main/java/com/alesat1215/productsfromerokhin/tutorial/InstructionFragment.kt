@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.tutorial
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,23 +42,24 @@ class InstructionFragment : Fragment() {
     }.root
 
     /** Save finish status to shared prefs & navigate to destination */
-    fun finishRead() {
-        // For already read tutorial navigate back
-        if ((activity as? MainActivity)?.tutorialIsRead() == true) {
-            findNavController().navigateUp()
-            return
-        }
+    fun finishRead() =
         // Set finish status to shared prefs
-        (activity as? MainActivity)?.finishRead()
-        Logger.d("Tutorial read")
-        // Navigate to destination
-        findNavController().navigate(R.id.action_tutorialFragment_to_loadFragment)
-    }
+        activity?.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+            ?.edit()?.putBoolean(IS_READ, true)?.apply()?.also {
+                Logger.d("Tutorial read")
+                // Navigate to destination
+                findNavController().navigate(R.id.action_tutorialFragment_to_loadFragment)
+            }
 
     override fun onStart() {
         super.onStart()
         // Hide BottomNavigationView
         activity?.nav_view?.visibility = View.GONE
+    }
+
+    companion object {
+        const val SHARED_PREFS = "com.alesat1215.productsfromerokhin"
+        const val IS_READ = "IS_READ"
     }
 
 }

@@ -28,7 +28,14 @@ class MainActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_main)
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.loadFragment, R.id.startFragment, R.id.menuFragment, R.id.cartFragment, R.id.profileFragment, R.id.moreFragment))
+            R.id.loadFragment,
+            R.id.startFragment,
+            R.id.menuFragment,
+            R.id.cartFragment,
+            R.id.profileFragment,
+            R.id.moreFragment,
+            R.id.tutorialFragment
+        ))
         setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController, appBarConfiguration)
         nav_view.setupWithNavController(navController)
@@ -64,20 +71,6 @@ class MainActivity : DaggerAppCompatActivity() {
         } else super.onOptionsItemSelected(item)
     }
 
-    /** Check tutorial read */
-    fun tutorialIsRead() =
-        getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
-            .getBoolean(IS_READ, false).also {
-            Logger.d("Tutorial is read: $it")
-        }
-
-    /** Save finish status to shared prefs */
-    fun finishRead() {
-        // Set finish status to shared prefs
-        getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
-            .edit().putBoolean(IS_READ, true).apply()
-    }
-
     private fun setupNavigation(navController: NavController) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
 //            when (destination.id) {
@@ -93,8 +86,4 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
-    companion object {
-        const val SHARED_PREFS = "com.alesat1215.productsfromerokhin"
-        const val IS_READ = "IS_READ"
-    }
 }
