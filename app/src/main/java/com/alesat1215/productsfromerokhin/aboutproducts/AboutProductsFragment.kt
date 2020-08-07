@@ -50,14 +50,4 @@ class AboutProductsFragment : DaggerFragment() {
         return adapter
     }
 
-    override fun onStart() {
-        super.onStart()
-        (activity as? MainActivity)?.setupBackButton(true)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as? MainActivity)?.setupBackButton(false)
-    }
-
 }

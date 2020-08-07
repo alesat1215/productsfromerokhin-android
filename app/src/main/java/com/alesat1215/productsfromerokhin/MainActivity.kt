@@ -7,7 +7,9 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.alesat1215.productsfromerokhin.cart.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,9 +26,14 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.loadFragment, R.id.startFragment, R.id.menuFragment, R.id.cartFragment, R.id.profileFragment, R.id.moreFragment))
         setSupportActionBar(toolbar)
-        nav_view.setupWithNavController(findNavController(R.id.nav_host_fragment))
+        toolbar.setupWithNavController(navController, appBarConfiguration)
+        nav_view.setupWithNavController(navController)
         setupBadge(nav_view)
+//        setupNavigation(navController)
     }
 
     private fun setupBadge(navigationView: BottomNavigationView) {
@@ -56,17 +63,6 @@ class MainActivity : DaggerAppCompatActivity() {
             true
         } else super.onOptionsItemSelected(item)
     }
-    // For back button in toolbar
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
-
-    fun setupBackButton(enabled: Boolean) {
-        supportActionBar?.setDisplayHomeAsUpEnabled(enabled)
-        supportActionBar?.setDisplayShowHomeEnabled(enabled)
-        Logger.d("Show back button: $enabled")
-    }
 
     /** Check tutorial read */
     fun tutorialIsRead() =
@@ -80,6 +76,21 @@ class MainActivity : DaggerAppCompatActivity() {
         // Set finish status to shared prefs
         getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
             .edit().putBoolean(IS_READ, true).apply()
+    }
+
+    private fun setupNavigation(navController: NavController) {
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+//            when (destination.id) {
+//                R.id.startFragment,
+//                R.id.menuFragment,
+//                R.id.cartFragment,
+//                R.id.profileFragment,
+//                R.id.moreFragment -> {
+//                    setupBackButton(false)
+//                    controller.
+//                }
+//            }
+        }
     }
 
     companion object {
