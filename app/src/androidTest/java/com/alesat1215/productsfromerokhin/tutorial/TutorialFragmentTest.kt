@@ -40,8 +40,4 @@ class TutorialFragmentTest {
             }
         }
     }
-
-    @After
-    fun tearDown() {
-    }
 }
