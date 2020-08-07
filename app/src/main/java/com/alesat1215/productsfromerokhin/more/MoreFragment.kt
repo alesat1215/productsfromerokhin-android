@@ -21,6 +21,7 @@ class MoreFragment : Fragment() {
         fragment = this@MoreFragment
     }.root
 
+    /** Send link for app through text message */
     fun share() {
         // Create intent
         val intent = Intent().apply {
