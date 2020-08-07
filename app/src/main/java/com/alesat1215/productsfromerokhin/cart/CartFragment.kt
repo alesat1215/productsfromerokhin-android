@@ -17,9 +17,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import com.orhanobut.logger.Logger
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 /**
@@ -227,24 +225,6 @@ class CartFragment : DaggerFragment() {
         }
         // Show alert
         dialog?.show()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // Clear cart button visible only for not empty cart
-        viewModel.productsInCart.observe(viewLifecycleOwner, Observer { clearCartButton(it.isNotEmpty()) })
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // Set clear cart button invisible
-        clearCartButton(false)
-    }
-
-    /** Setup clear cart button visible */
-    private fun clearCartButton(visible: Boolean) {
-        (activity as? AppCompatActivity)?.toolbar?.menu?.findItem(R.id.clearCart)?.isVisible = visible
-        Logger.d("Clear cart button visible: $visible")
     }
 }
 
