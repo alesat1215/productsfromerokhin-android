@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.alesat1215.productsfromerokhin.MainActivity
 import com.alesat1215.productsfromerokhin.databinding.FragmentContactsBinding
 import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerFragment
@@ -44,6 +45,16 @@ class ContactsFragment : DaggerFragment() {
                 Logger.d("Select call")
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (activity as? MainActivity)?.setupBackButton(true)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as? MainActivity)?.setupBackButton(false)
     }
 
 }
