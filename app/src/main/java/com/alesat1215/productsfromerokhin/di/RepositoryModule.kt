@@ -18,4 +18,6 @@ abstract class RepositoryModule {
     abstract fun bindTitlesRepository(repository: TitlesRepository): ITitlesRepository
     @Binds
     abstract fun bindAboutProductsRepository(repository: AboutProductsRepository): IAboutProductsRepository
+    @Binds
+    abstract fun bindAppInfoRepository(repository: AppInfoRepository): IAppInfoRepository
 }
