@@ -3,10 +3,10 @@ package com.alesat1215.productsfromerokhin.data
 import androidx.room.Entity
 import androidx.room.Fts4
 
-/** Model for [AppInfo] */
+/** Model for [AboutApp] */
 @Fts4
 @Entity
-data class AppInfo(
+data class AboutApp(
     val privacy: String = "",
     val versionCode: Int = 0
 )

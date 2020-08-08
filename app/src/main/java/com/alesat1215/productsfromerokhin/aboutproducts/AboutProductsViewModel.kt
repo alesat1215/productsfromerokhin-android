@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class AboutProductsViewModel @Inject constructor(
     private val aboutProductsRepository: IAboutProductsRepository
-): ViewModel() {
+) : ViewModel() {
     /** @return about products filtering by predicate */
     fun aboutProducts(predicate: ((AboutProducts) -> Boolean)) =
         Transformations.map(aboutProductsRepository.aboutProducts()) { it.filter(predicate) }
