@@ -19,7 +19,7 @@ interface IAboutAppRepository {
 }
 
 @Singleton
-class AboutAboutAppRepository @Inject constructor(
+class AboutAppRepository @Inject constructor(
     /** Room database */
     private val db: AppDatabase,
     private val dbUpdater: DatabaseUpdater,
