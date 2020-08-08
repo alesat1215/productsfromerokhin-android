@@ -38,4 +38,7 @@
     <!--ContactsFragment-->
     <string name="our_phone">Our phone:</string>
     <string name="our_address">Our address:</string>
+    <!--AboutAppFragment-->
+    <string name="update_available">New version available</string>
+    <string name="update">Update</string>
 </resources>
