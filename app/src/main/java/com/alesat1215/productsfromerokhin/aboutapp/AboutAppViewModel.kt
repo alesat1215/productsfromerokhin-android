@@ -7,4 +7,5 @@ import javax.inject.Inject
 class AboutAppViewModel @Inject constructor(
     private val aboutAppRepository: IAboutAppRepository
 ) : ViewModel() {
+    val aboutApp by lazy { aboutAppRepository.aboutApp() }
 }
