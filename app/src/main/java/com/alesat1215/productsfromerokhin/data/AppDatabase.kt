@@ -126,20 +126,20 @@ interface AboutProductsDao {
 }
 
 @Dao
-interface AppInfoDao {
-    @Query("SELECT * FROM appinfo LIMIT 1")
-    fun appInfo(): LiveData<AppInfo?>
+interface AboutAppDao {
+    @Query("SELECT * FROM aboutapp LIMIT 1")
+    fun aboutApp(): LiveData<AboutApp?>
     /** Clear & insert appInfo */
     @Transaction
-    suspend fun updateAppInfo(appInfo: AppInfo) {
-        clearAppInfo()
-        insertAppInfo(appInfo)
-        Logger.d("Update appInfo")
+    suspend fun updateAboutApp(aboutApp: AboutApp) {
+        clearAboutApp()
+        insertAboutApp(aboutApp)
+        Logger.d("Update about app")
     }
-    @Insert(entity = AppInfo::class, onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAppInfo(appInfo: AppInfo)
-    @Query("DELETE FROM appinfo")
-    suspend fun clearAppInfo()
+    @Insert(entity = AboutApp::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAboutApp(aboutApp: AboutApp)
+    @Query("DELETE FROM aboutapp")
+    suspend fun clearAboutApp()
 }
 
 @Database(
@@ -152,7 +152,7 @@ interface AppInfoDao {
     Instruction::class,
     Contacts::class,
     AboutProducts::class,
-    AppInfo::class
+    AboutApp::class
 ], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
@@ -162,6 +162,6 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun instructionsDao(): InstructionsDao
     abstract fun contactsDao(): ContactsDao
     abstract fun aboutProductsDao(): AboutProductsDao
-    abstract fun appInfoDao(): AppInfoDao
+    abstract fun aboutApp(): AboutAppDao
 }
 
