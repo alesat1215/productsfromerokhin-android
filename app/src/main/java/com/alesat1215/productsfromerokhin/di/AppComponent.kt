@@ -20,6 +20,7 @@ import javax.inject.Singleton
     ProfileModule::class,
     TutorialModule::class,
     ContactsModule::class,
+    AboutAppModule::class,
     RepositoryModule::class,
     AboutProductsModule::class
 ])

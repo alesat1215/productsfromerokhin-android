@@ -41,4 +41,5 @@
     <!--AboutAppFragment-->
     <string name="update_available">New version available</string>
     <string name="update">Update</string>
+    <string name="privacy_policy">Privacy policy</string>
 </resources>
