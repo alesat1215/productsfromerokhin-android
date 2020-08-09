@@ -76,18 +76,6 @@
                 app:iconTint="@color/colorPrimary" />
 
             <Button
-                android:id="@+id/confidentiality_more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#00FFFFFF"
-                android:gravity="start|center_vertical"
-                android:stateListAnimator="@null"
-                android:text="@string/confidentiality"
-                android:textColor="@color/common_google_signin_btn_text_light"
-                app:icon="@android:drawable/ic_menu_info_details"
-                app:iconTint="@color/colorPrimary" />
-
-            <Button
                 android:id="@+id/about_app_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,6 +84,7 @@
                 android:stateListAnimator="@null"
                 android:text="@string/about_app"
                 android:textColor="@color/common_google_signin_btn_text_light"
+                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_aboutAppFragment)}"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
         </LinearLayout>

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.alesat1215.productsfromerokhin.MainActivity
 import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.AboutProducts
 import com.alesat1215.productsfromerokhin.databinding.FragmentAboutProductsBinding
