@@ -17,5 +17,5 @@ object DataMock {
         AboutProducts(text = "text 2", img = "img 2")
     )
     val instructions = listOf(Instruction("title 1", "text 1"), Instruction("title 2", "text 2"))
-    val aboutApp = AboutApp("https://google.com", 6)
+    val aboutApp = AboutApp("https://google.com", 6, "https://play.google.com/store/apps/details?id=")
 }

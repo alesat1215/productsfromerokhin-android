@@ -47,7 +47,7 @@ class AboutAppFragment : DaggerFragment() {
     /** Open google play app url */
     fun update() {
         // Create intent
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${activity?.packageName}"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.aboutApp.value?.googlePlay.orEmpty() + activity?.packageName.orEmpty()))
         // Show chooser
         val chooser: Intent = Intent.createChooser(intent, "")
         activity?.packageManager?.also {
