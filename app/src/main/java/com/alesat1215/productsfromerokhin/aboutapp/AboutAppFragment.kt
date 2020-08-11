@@ -33,27 +33,22 @@ class AboutAppFragment : DaggerFragment() {
 
     /** Open url with privacy policy */
     fun privacy() {
-        // Create intent
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.aboutApp.value?.privacy.orEmpty()))
-        // Show chooser
-        val chooser: Intent = Intent.createChooser(intent, "")
-        activity?.packageManager?.also {
-            intent.resolveActivity(it)?.also {
-                startActivity(chooser)
-                Logger.d("Select browser for privacy policy")
-            }
-        }
+        openURL(viewModel.aboutApp.value?.privacy)
     }
     /** Open google play app url */
     fun update() {
+        openURL(viewModel.aboutApp.value?.googlePlay + activity?.packageName)
+    }
+    /** Create intent for open url */
+    private fun openURL(url: String?) {
         // Create intent
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.aboutApp.value?.googlePlay.orEmpty() + activity?.packageName.orEmpty()))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url.orEmpty()))
         // Show chooser
         val chooser: Intent = Intent.createChooser(intent, "")
         activity?.packageManager?.also {
             intent.resolveActivity(it)?.also {
                 startActivity(chooser)
-                Logger.d("Open google play app url")
+                Logger.d("Open $url")
             }
         }
     }
