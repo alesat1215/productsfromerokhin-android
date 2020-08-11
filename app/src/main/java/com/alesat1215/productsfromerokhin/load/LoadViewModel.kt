@@ -36,7 +36,7 @@ class LoadViewModel @Inject constructor(
                     Logger.d("Load complete")
                     return@switchMap liveData
                 } else {
-                    Logger.d("Load uncomplete")
+                    Logger.d("Load incomplete")
                     return@switchMap MutableLiveData(it)
                 }
             }
