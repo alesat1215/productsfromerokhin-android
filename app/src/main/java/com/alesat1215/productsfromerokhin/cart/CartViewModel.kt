@@ -21,21 +21,7 @@ class CartViewModel @Inject constructor(
             it.map { it.priceSumInCart() }.sum()
         }
     }
-    /** Text for message */
-//    val order by lazy {
-//        Transformations.map(productsInCart) {
-//            it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
-//        }
-//    }
-    /** Delivery info for message */
-//    val delivery by lazy { Transformations.map(profileRepository.profile) { it?.delivery().orEmpty() } }
-
-    fun clearCart() {
-        viewModelScope.launch { productsRepository.clearCart() }
-    }
-
-    fun contacts() = contactsRepository.contacts()
-    /** Create message for order */
+    /** Message for order */
     fun message(total: String, rub: String): LiveData<String> {
         /** Text with products */
         val order = productsInCart.value?.joinToString(
@@ -50,4 +36,10 @@ class CartViewModel @Inject constructor(
         }
 
     }
+
+    fun clearCart() {
+        viewModelScope.launch { productsRepository.clearCart() }
+    }
+
+    fun contacts() = contactsRepository.contacts()
 }
