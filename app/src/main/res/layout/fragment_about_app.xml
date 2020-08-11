@@ -9,6 +9,9 @@
         <import type="android.view.View" />
         <import type="com.alesat1215.productsfromerokhin.BuildConfig" />
         <variable
+            name="fragment"
+            type="com.alesat1215.productsfromerokhin.aboutapp.AboutAppFragment" />
+        <variable
             name="viewModel"
             type="com.alesat1215.productsfromerokhin.aboutapp.AboutAppViewModel" />
     </data>
@@ -44,6 +47,7 @@
             android:background="@null"
             android:backgroundTint="#00FFFFFF"
             android:stateListAnimator="@null"
+            android:onClick="@{() -> fragment.privacy()}"
             android:text="@string/privacy_policy"
             android:textColor="@color/common_google_signin_btn_text_light" />
 

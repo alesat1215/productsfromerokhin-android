@@ -38,8 +38,4 @@ class MoreFragment : Fragment() {
             }
         }
     }
-
-    fun confidentiality() {
-
-    }
 }
