@@ -47,10 +47,6 @@ class AboutAppFragmentTest {
         onView(withId(R.id.update)).check(matches(isDisplayed()))
     }
 
-    @After
-    fun tearDown() {
-    }
-
     @Test
     fun privacy() {
         onView(withId(R.id.privacy)).perform(click())
@@ -64,5 +60,12 @@ class AboutAppFragmentTest {
 
     @Test
     fun update() {
+        onView(withId(R.id.update)).perform(click())
+        val chooser = Intents.getIntents().last()
+        assertEquals(chooser.action, Intent.ACTION_CHOOSER)
+        assertTrue(chooser.hasExtra(Intent.EXTRA_INTENT))
+        val intent = chooser.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)
+        assertEquals(intent?.action, Intent.ACTION_VIEW)
+        assertEquals(intent?.data, Uri.parse(DataMock.aboutApp.googlePlay + intentsTestRule.activity.packageName))
     }
 }

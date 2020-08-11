@@ -8,5 +8,6 @@ import androidx.room.Fts4
 @Entity
 data class AboutApp(
     val privacy: String = "",
-    val versionCode: Int = 0
+    val versionCode: Int = 0,
+    val googlePlay: String = ""
 )
