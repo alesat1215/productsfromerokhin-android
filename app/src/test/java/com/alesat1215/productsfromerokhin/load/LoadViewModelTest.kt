@@ -77,7 +77,7 @@ class LoadViewModelTest {
     @Test
     fun loadCompleteTutorial() {
         var result = false
-        viewModel.loadCompleteTutorial().observeForever { result = it }
+        viewModel.loadTutorialComplete().observeForever { result = it }
         assertTrue(result)
     }
 
