@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".aboutapp.AboutAppFragment">
 
@@ -42,37 +41,27 @@
             tools:text="App version" />
 
         <Button
+            android:id="@+id/privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="@{() -> fragment.privacy()}"
+            android:stateListAnimator="@null"
+            android:text="@string/privacy_policy"
+            android:textColor="@color/common_google_signin_btn_text_light" />
+
+        <Button
+            android:id="@+id/update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:backgroundTint="#00FFFFFF"
             android:stateListAnimator="@null"
-            android:onClick="@{() -> fragment.privacy()}"
-            android:text="@string/privacy_policy"
-            android:textColor="@color/common_google_signin_btn_text_light" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="8dp" />
-
-        <TextView
-            android:id="@+id/updateAvailable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/update_available"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="@{viewModel.aboutApp.versionCode > BuildConfig.VERSION_CODE ? View.VISIBLE : View.GONE}" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:onClick="@{() -> fragment.update()}"
             android:text="@string/update"
-            android:visibility="@{viewModel.aboutApp.versionCode > BuildConfig.VERSION_CODE ? View.VISIBLE : View.GONE}"
-            app:cornerRadius="10dp" />
+            android:textColor="@color/common_google_signin_btn_text_light"
+            android:visibility="@{viewModel.aboutApp.versionCode > BuildConfig.VERSION_CODE ? View.VISIBLE : View.GONE}" />
 
     </LinearLayout>
 </layout>
