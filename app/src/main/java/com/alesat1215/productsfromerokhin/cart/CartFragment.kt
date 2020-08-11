@@ -160,38 +160,28 @@ class CartFragment : DaggerFragment() {
         // Phone number for order not found in contacts
         return false
     }
+
     /** Show chooser for send order */
     private fun selectMessenger() {
         // Get text for order
-        viewModel.order.observe(viewLifecycleOwner, Observer { orderText ->
+        val message = viewModel.message(getString(R.string.total), getString(R.string.rub))
+        message.observe(viewLifecycleOwner, Observer{
             // Unsubscribe from events
-            viewModel.order.removeObservers(viewLifecycleOwner)
-            // Get text for total
-            viewModel.totalInCart.observe(viewLifecycleOwner, Observer { sum ->
-                // Unsubscribe from events
-                viewModel.totalInCart.removeObservers(viewLifecycleOwner)
-                // Get delivery info
-                viewModel.delivery.observe(viewLifecycleOwner, Observer {
-                    // Unsubscribe from events
-                    viewModel.delivery.removeObservers(viewLifecycleOwner)
-                    // Create text for message
-                    val message = "$orderText${getString(R.string.total)} $sum ${getString(R.string.rub)}$it"
-                    // Create intent
-                    val intent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, message)
-                        type = "text/plain"
-                    }
-                    // Show chooser
-                    val chooser: Intent = Intent.createChooser(intent, "")
-                    activity?.packageManager?.also {
-                        intent.resolveActivity(it)?.also {
-                            startActivityForResult(chooser, CHOOSER_REQUEST)
-                            Logger.d("Select messenger")
-                        }
-                    }
-                })
-            })
+            message.removeObservers(viewLifecycleOwner)
+            // Create intent
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, it)
+                type = "text/plain"
+            }
+            // Show chooser
+            val chooser: Intent = Intent.createChooser(intent, "")
+            activity?.packageManager?.also {
+                intent.resolveActivity(it)?.also {
+                    startActivityForResult(chooser, CHOOSER_REQUEST)
+                    Logger.d("Select messenger")
+                }
+            }
         })
     }
 

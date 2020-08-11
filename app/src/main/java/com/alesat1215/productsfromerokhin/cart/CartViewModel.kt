@@ -1,7 +1,6 @@
 package com.alesat1215.productsfromerokhin.cart
 
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.alesat1215.productsfromerokhin.data.IContactsRepository
 import com.alesat1215.productsfromerokhin.data.IProductsRepository
 import com.alesat1215.productsfromerokhin.data.IProfileRepository
@@ -23,17 +22,32 @@ class CartViewModel @Inject constructor(
         }
     }
     /** Text for message */
-    val order by lazy {
-        Transformations.map(productsInCart) {
-            it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
-        }
-    }
+//    val order by lazy {
+//        Transformations.map(productsInCart) {
+//            it.map { it.textForOrder() }.joinToString(separator = ", ${System.lineSeparator()}", postfix = ". ${System.lineSeparator()}")
+//        }
+//    }
     /** Delivery info for message */
-    val delivery by lazy { Transformations.map(profileRepository.profile) { it?.delivery().orEmpty() } }
+//    val delivery by lazy { Transformations.map(profileRepository.profile) { it?.delivery().orEmpty() } }
 
     fun clearCart() {
         viewModelScope.launch { productsRepository.clearCart() }
     }
 
     fun contacts() = contactsRepository.contacts()
+    /** Create message for order */
+    fun message(total: String, rub: String): LiveData<String> {
+        /** Text with products */
+        val order = productsInCart.value?.joinToString(
+            separator = ", ${System.lineSeparator()}",
+            postfix = ".${System.lineSeparator()}"
+        ) { it.textForOrder() }.orEmpty()
+        /** Text with sum */
+        val sum = "$total ${totalInCart.value} $rub"
+        /** Text with products, sum & delivery info */
+        return Transformations.map(profileRepository.profile) {
+            "$order$sum${it?.delivery().orEmpty()}"
+        }
+
+    }
 }
