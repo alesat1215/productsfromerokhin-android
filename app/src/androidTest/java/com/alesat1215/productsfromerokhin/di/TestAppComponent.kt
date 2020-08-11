@@ -24,6 +24,7 @@ import javax.inject.Singleton
     TutorialModule::class,
     AboutProductsModule::class,
     ContactsModule::class,
+    AboutAppModule::class,
     TestRepositoryModule::class,
     HelpModule::class
 ])
@@ -44,6 +45,8 @@ abstract class TestRepositoryModule {
     abstract fun bindTitlesRepository(repository: TitlesRepositoryMock): ITitlesRepository
     @Binds
     abstract fun bindAboutProductsRepository(repository: AboutProductsRepositoryMock): IAboutProductsRepository
+    @Binds
+    abstract fun bindAboutAppRepository(repository: AboutAppRepositoryMock): IAboutAppRepository
 }
 
 @Module
