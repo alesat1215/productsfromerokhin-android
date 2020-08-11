@@ -6,6 +6,7 @@
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
     <string name="more">More</string>
+    <string name="logo_toolbar_description">Toolbar logo</string>
     <!--StartFragment-->
     <string name="image_description">Image with title</string>
     <string name="product_image_description">Product image</string>
