@@ -55,36 +55,43 @@ class LoadFragment : DaggerFragment() {
     /** When data is loading navigate to destination */
     private fun loadData() {
         if (tutorialIsRead()) {
-            val loadPhoneTitles = Transformations.switchMap(viewModel.loadCompletePhone()) {
+//            val loadPhoneTitles = Transformations.switchMap(viewModel.loadCompletePhone()) {
+//                if (it) {
+//                    Logger.d("Load phone complete")
+//                    return@switchMap viewModel.loadCompleteTitles()
+//                } else {
+//                    return@switchMap MutableLiveData(it)
+//                }
+//            }
+//
+//            val loadPhoneTitlesProducts= Transformations.switchMap(loadPhoneTitles) {
+//                if (it) {
+//                    Logger.d("Load titles complete")
+//                    return@switchMap viewModel.loadCompleteProducts()
+//                } else {
+//                    return@switchMap MutableLiveData(it)
+//                }
+//            }
+//            // Subscribe to trigger of phone, titles, products & about products loading
+//            Transformations.switchMap(loadPhoneTitlesProducts) {
+//                if (it) {
+//                    Logger.d("Load products complete")
+//                    return@switchMap viewModel.loadCompleteAboutProducts()
+//                } else {
+//                    return@switchMap MutableLiveData(it)
+//                }
+//            }.observe(viewLifecycleOwner, Observer {
+//                if (it) {
+//                    // For non empty phone, titles, products & about products navigate to destination
+//                    findNavController().navigate(R.id.action_loadFragment_to_startFragment)
+//                    Logger.d("Load about products complete")
+//                }
+//            })
+            viewModel.loadDataComplete().observe(viewLifecycleOwner, Observer {
                 if (it) {
-                    Logger.d("Load phone complete")
-                    return@switchMap viewModel.loadCompleteTitles()
-                } else {
-                    return@switchMap MutableLiveData(it)
-                }
-            }
-
-            val loadPhoneTitlesProducts= Transformations.switchMap(loadPhoneTitles) {
-                if (it) {
-                    Logger.d("Load titles complete")
-                    return@switchMap viewModel.loadCompleteProducts()
-                } else {
-                    return@switchMap MutableLiveData(it)
-                }
-            }
-            // Subscribe to trigger of phone, titles, products & about products loading
-            Transformations.switchMap(loadPhoneTitlesProducts) {
-                if (it) {
-                    Logger.d("Load products complete")
-                    return@switchMap viewModel.loadCompleteAboutProducts()
-                } else {
-                    return@switchMap MutableLiveData(it)
-                }
-            }.observe(viewLifecycleOwner, Observer {
-                if (it) {
-                    // For non empty phone, titles, products & about products navigate to destination
+                    // For non empty data navigate to destination
                     findNavController().navigate(R.id.action_loadFragment_to_startFragment)
-                    Logger.d("Load about products complete")
+                    Logger.d("Load data complete")
                 }
             })
         } else {
