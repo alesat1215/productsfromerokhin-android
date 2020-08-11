@@ -30,7 +30,6 @@ class MoreFragmentTest {
         onView(withId(R.id.about_products_more)).check(matches(isDisplayed()))
         onView(withId(R.id.contacts_more)).check(matches(isDisplayed()))
         onView(withId(R.id.share_more)).check(matches(isDisplayed()))
-        onView(withId(R.id.confidentiality_more)).check(matches(isDisplayed()))
         onView(withId(R.id.about_app_more)).check(matches(isDisplayed()))
     }
 
