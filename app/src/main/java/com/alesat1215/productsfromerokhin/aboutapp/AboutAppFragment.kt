@@ -31,7 +31,7 @@ class AboutAppFragment : DaggerFragment() {
         executePendingBindings()
     }.root
 
-    /** Show url with privacy policy */
+    /** Open url with privacy policy */
     fun privacy() {
         // Create intent
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.aboutApp.value?.privacy.orEmpty()))
@@ -41,6 +41,19 @@ class AboutAppFragment : DaggerFragment() {
             intent.resolveActivity(it)?.also {
                 startActivity(chooser)
                 Logger.d("Select browser for privacy policy")
+            }
+        }
+    }
+    /** Open google play app url */
+    fun update() {
+        // Create intent
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${activity?.packageName}"))
+        // Show chooser
+        val chooser: Intent = Intent.createChooser(intent, "")
+        activity?.packageManager?.also {
+            intent.resolveActivity(it)?.also {
+                startActivity(chooser)
+                Logger.d("Open google play app url")
             }
         }
     }
