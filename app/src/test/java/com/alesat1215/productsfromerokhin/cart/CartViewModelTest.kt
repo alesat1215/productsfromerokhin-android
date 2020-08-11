@@ -38,7 +38,7 @@ class CartViewModelTest {
     private lateinit var profile: Profile
     private val delivery = "delivery"
     @Mock
-    private lateinit var phoneResult: LiveData<Contacts?>
+    private lateinit var contactsResult: LiveData<Contacts?>
 
     private lateinit var viewModel: CartViewModel
 
@@ -56,7 +56,7 @@ class CartViewModelTest {
         `when`(productsRepository.productsInCart).thenReturn(products)
         `when`(profile.delivery()).thenReturn(delivery)
         `when`(profileRepository.profile).thenReturn(MutableLiveData(profile))
-        `when`(contactsRepository.contacts()).thenReturn(phoneResult)
+        `when`(contactsRepository.contacts()).thenReturn(contactsResult)
         viewModel = CartViewModel(productsRepository, profileRepository, contactsRepository)
     }
 
@@ -79,17 +79,15 @@ class CartViewModelTest {
     }
 
     @Test
-    fun order() {
+    fun message() {
         var result = ""
-        viewModel.order.observeForever { result = it }
-        assertTrue(result.contains(textForOrder))
-    }
-
-    @Test
-    fun delivery() {
-        var result = ""
-        viewModel.delivery.observeForever { result = it }
-        assertEquals(result, delivery)
+        val total = "total"
+        val rub = "rub"
+        viewModel.message(total, rub).observeForever { result = it }
+        assertTrue(result.contains(productInfo.textForOrder()))
+        assertTrue(result.contains(profile.delivery()))
+        assertTrue(result.contains(total))
+        assertTrue(result.contains(rub))
     }
 
     @Test
@@ -99,7 +97,7 @@ class CartViewModelTest {
     }
 
     @Test
-    fun phone() {
-        assertEquals(viewModel.contacts(), phoneResult)
+    fun contacts() {
+        assertEquals(viewModel.contacts(), contactsResult)
     }
 }
