@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.alesat1215.productsfromerokhin.R
@@ -17,7 +15,6 @@ import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment.Companion
 import com.alesat1215.productsfromerokhin.tutorial.InstructionFragment.Companion.SHARED_PREFS
 import com.orhanobut.logger.Logger
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 /**
@@ -96,7 +93,7 @@ class LoadFragment : DaggerFragment() {
             })
         } else {
             // Subscribe to trigger of tutorial loading
-            viewModel.loadCompleteTutorial().observe(viewLifecycleOwner, Observer {
+            viewModel.loadTutorialComplete().observe(viewLifecycleOwner, Observer {
                 if (it) {
                     // For non empty tutorials navigate to destination
                     findNavController().navigate(R.id.action_loadFragment_to_tutorialFragment)
