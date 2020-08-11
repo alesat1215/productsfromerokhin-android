@@ -12,7 +12,6 @@ import org.hamcrest.core.IsNot.not
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.Thread.sleep
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
