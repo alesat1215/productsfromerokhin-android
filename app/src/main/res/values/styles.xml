@@ -9,6 +9,7 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/common_google_signin_btn_text_dark_focused</item>
     </style>
 

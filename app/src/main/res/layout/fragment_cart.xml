@@ -70,7 +70,6 @@
             android:enabled="@{viewModel.totalInCart > 0}"
             android:onClick="@{() -> fragment.send()}"
             android:text="@string/send"
-            android:textSize="18sp"
             android:textStyle="bold"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
