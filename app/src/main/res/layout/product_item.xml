@@ -96,7 +96,7 @@
             android:background="#FFFFFF"
             android:contentDescription="@string/del_button_description"
             android:onClick="@{() -> viewModel.delProductFromCart(data)}"
-            android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/productImageContainer"
             app:layout_constraintStart_toEndOf="@+id/productImageContainer"
             app:srcCompat="@android:drawable/ic_menu_add" />
@@ -109,7 +109,7 @@
             android:text="@{Integer.toString(data.inCart.size())}"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{data.inCart.size() > 0 ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/del"
             app:layout_constraintStart_toEndOf="@+id/del"
             app:layout_constraintTop_toTopOf="@+id/del"
