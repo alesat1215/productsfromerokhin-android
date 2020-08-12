@@ -22,7 +22,7 @@ object AppModule {
     @Singleton
     @Provides
     fun db(applicationContext: Context) =
-        Room.databaseBuilder(applicationContext, AppDatabase::class.java, "productsDatabase").build()
+        Room.databaseBuilder(applicationContext, AppDatabase::class.java, "appDatabase").build()
 
     /** Limiter for update database from remote config */
     @Provides
