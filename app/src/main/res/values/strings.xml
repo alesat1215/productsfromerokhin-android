@@ -22,6 +22,7 @@
     <string name="clear_cart">Order was sent successfully? Clear cart?</string>
     <string name="clear_cart_button">Clear</string>
     <!--ProfileFragment-->
+    <string name="delivery_data">Delivery data</string>
     <string name="name">name</string>
     <string name="phone">phone</string>
     <string name="address">address</string>
