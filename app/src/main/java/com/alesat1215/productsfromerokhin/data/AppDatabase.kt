@@ -153,7 +153,7 @@ interface AboutAppDao {
     Contacts::class,
     AboutProducts::class,
     AboutApp::class
-], version = 1, exportSchema = false)
+], version = 1)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
     abstract fun titlesDao(): TitlesDao
