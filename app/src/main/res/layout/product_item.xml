@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/color_gradient" />
+            app:srcCompat="@drawable/color_gradient_270" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/productImageContainer"
