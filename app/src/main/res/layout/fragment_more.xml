@@ -29,10 +29,12 @@
                 android:background="@null"
                 android:backgroundTint="#00FFFFFF"
                 android:gravity="start|center_vertical"
+                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_tutorialFragment)}"
                 android:stateListAnimator="@null"
                 android:text="@string/tutorial"
-                android:textColor="@color/common_google_signin_btn_text_light"
-                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_tutorialFragment)}"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
 
@@ -42,10 +44,12 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
                 android:gravity="start|center_vertical"
+                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_aboutProductsFragment)}"
                 android:stateListAnimator="@null"
                 android:text="@string/about_products"
-                android:textColor="@color/common_google_signin_btn_text_light"
-                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_aboutProductsFragment)}"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
 
@@ -55,10 +59,12 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
                 android:gravity="start|center_vertical"
+                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_contactsFragment)}"
                 android:stateListAnimator="@null"
                 android:text="@string/contacts"
-                android:textColor="@color/common_google_signin_btn_text_light"
-                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_contactsFragment)}"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
 
@@ -68,10 +74,12 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
                 android:gravity="start|center_vertical"
+                android:onClick="@{() -> fragment.share()}"
                 android:stateListAnimator="@null"
                 android:text="@string/share"
-                android:textColor="@color/common_google_signin_btn_text_light"
-                android:onClick="@{() -> fragment.share()}"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
 
@@ -81,10 +89,12 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
                 android:gravity="start|center_vertical"
+                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_aboutAppFragment)}"
                 android:stateListAnimator="@null"
                 android:text="@string/about_app"
-                android:textColor="@color/common_google_signin_btn_text_light"
-                android:onClick="@{Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_aboutAppFragment)}"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
         </LinearLayout>
