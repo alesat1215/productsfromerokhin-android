@@ -33,7 +33,6 @@
                 android:stateListAnimator="@null"
                 android:text="@string/tutorial"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="18sp"
                 android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
@@ -48,7 +47,6 @@
                 android:stateListAnimator="@null"
                 android:text="@string/about_products"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
                 android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
@@ -63,7 +61,6 @@
                 android:stateListAnimator="@null"
                 android:text="@string/contacts"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="18sp"
                 android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
@@ -78,7 +75,6 @@
                 android:stateListAnimator="@null"
                 android:text="@string/share"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="18sp"
                 android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />
@@ -93,7 +89,6 @@
                 android:stateListAnimator="@null"
                 android:text="@string/about_app"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="18sp"
                 android:textStyle="bold"
                 app:icon="@android:drawable/ic_menu_info_details"
                 app:iconTint="@color/colorPrimary" />

@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{BuildConfig.VERSION_NAME}"
-            android:textSize="18sp"
             tools:text="App version" />
 
         <Button
@@ -49,7 +48,8 @@
             android:onClick="@{() -> fragment.privacy()}"
             android:stateListAnimator="@null"
             android:text="@string/privacy_policy"
-            android:textColor="@color/common_google_signin_btn_text_light" />
+            android:textColor="@color/common_google_signin_btn_text_light"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/update"
@@ -57,10 +57,11 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:backgroundTint="#00FFFFFF"
-            android:stateListAnimator="@null"
             android:onClick="@{() -> fragment.update()}"
+            android:stateListAnimator="@null"
             android:text="@string/update"
-            android:textColor="@color/common_google_signin_btn_text_light"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textStyle="bold"
             android:visibility="@{viewModel.aboutApp.versionCode > BuildConfig.VERSION_CODE ? View.VISIBLE : View.GONE}" />
 
     </LinearLayout>
