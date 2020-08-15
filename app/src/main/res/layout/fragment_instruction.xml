@@ -4,9 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="fragment"
             type="com.alesat1215.productsfromerokhin.tutorial.InstructionFragment" />
+        <variable
+            name="instruction"
+            type="com.alesat1215.productsfromerokhin.data.Instruction" />
+        <variable
+            name="isLast"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,10 +28,36 @@
             android:layout_marginTop="8dp"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:text="@{instruction.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="STEP 1" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/instruction_img_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:visibility="@{instruction.img_path.empty ? View.INVISIBLE : View.VISIBLE}"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/text_instruction"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_instruction" >
+
+            <ImageView
+                android:id="@+id/instruction_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/instruction_img_description"
+                android:scaleType="fitXY"
+                app:fb_image="@{instruction.img_path}"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/text_instruction"
@@ -32,12 +65,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textStyle="bold"
+            android:text="@{instruction.text}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Instrucion" />
+            tools:text="Instruction" />
 
         <Button
             android:id="@+id/ok_instruction"
@@ -46,6 +80,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:visibility="@{isLast ? View.VISIBLE : View.INVISIBLE}"
             android:onClick="@{() -> fragment.finishRead()}"
             android:text="@android:string/ok"
             android:textStyle="bold"

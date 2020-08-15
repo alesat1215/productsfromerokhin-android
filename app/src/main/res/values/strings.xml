@@ -40,4 +40,6 @@
     <!--AboutAppFragment-->
     <string name="update">Update</string>
     <string name="privacy_policy">Privacy policy</string>
+    <!--InstructionFragment-->
+    <string name="instruction_img_description">Instruction image</string>
 </resources>

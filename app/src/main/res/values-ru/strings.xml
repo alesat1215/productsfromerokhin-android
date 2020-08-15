@@ -40,4 +40,6 @@
     <!--AboutAppFragment-->
     <string name="update">Обновить</string>
     <string name="privacy_policy">Конфиденциальность</string>
+    <!--InstructionFragment-->
+    <string name="instruction_img_description">Изображение руководства</string>
 </resources>

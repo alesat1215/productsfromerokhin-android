@@ -25,19 +25,12 @@ class InstructionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FragmentInstructionBinding.inflate(inflater, container, false).apply {
+        // Set variables
         fragment = this@InstructionFragment
-        // Set text
-        arguments?.takeIf { it.containsKey(ViewPagerAdapter.ITEM) }?.apply {
-            val instruction = getParcelable<Instruction>(ViewPagerAdapter.ITEM)
-            titleInstruction.text = instruction?.title
-            textInstruction.text = instruction?.text
-        }
-        // Set OK button visibility
-        arguments?.takeIf { it.containsKey(ViewPagerAdapter.IS_LAST) }?.apply {
-            val isLast = getBoolean(ViewPagerAdapter.IS_LAST)
-            Logger.d("Last instruction: ${getBoolean(ViewPagerAdapter.IS_LAST)}")
-            okInstruction.visibility = if (isLast) View.VISIBLE else View.INVISIBLE
-        }
+        instruction = arguments?.takeIf { it.containsKey(ViewPagerAdapter.ITEM) }
+            ?.getParcelable(ViewPagerAdapter.ITEM) ?: Instruction()
+        isLast = arguments?.takeIf { it.containsKey(ViewPagerAdapter.IS_LAST) }
+            ?.getBoolean(ViewPagerAdapter.IS_LAST, false) ?: false
         executePendingBindings()
     }.root
 
