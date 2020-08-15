@@ -53,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:contentDescription="@string/image_description"
                     android:scaleType="fitXY"
-                    app:fb_image="@{viewModel.title(StartTitle.IMG)}"
+                    app:fb_image="@{(viewModel.title(StartTitle.IMG) ?? ``)}"
                     app:srcCompat="@drawable/color_gradient" />
 
                 <TextView

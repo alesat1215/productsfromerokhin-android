@@ -17,8 +17,8 @@ val storageFB by lazy { FirebaseStorage.getInstance().reference }
 
 /** Load image from remote storage & set it to imageView */
 @BindingAdapter("fb_image")
-fun bindImage(imageView: ImageView, fsPath: String?) {
-    if (fsPath == null) return
+fun bindImage(imageView: ImageView, fsPath: String) {
+    if (fsPath.isEmpty()) return
     Glide.with(imageView)
         .load(storageFB.child(fsPath))
         .into(imageView)
