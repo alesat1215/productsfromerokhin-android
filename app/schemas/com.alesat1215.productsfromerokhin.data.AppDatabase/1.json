@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bd9719faf65a186cca12568882ca32de",
+    "identityHash": "293835efe6fabbcc69409400f53a8f4e",
     "entities": [
       {
         "ftsVersion": "FTS4",
@@ -114,37 +114,37 @@
         },
         "contentSyncTriggers": [],
         "tableName": "Titles",
-        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`title` TEXT, `img` TEXT, `imgTitle` TEXT, `productsTitle` TEXT, `productsTitle2` TEXT)",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`title` TEXT NOT NULL, `img` TEXT NOT NULL, `imgTitle` TEXT NOT NULL, `productsTitle` TEXT NOT NULL, `productsTitle2` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "img",
             "columnName": "img",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "imgTitle",
             "columnName": "imgTitle",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "productsTitle",
             "columnName": "productsTitle",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "productsTitle2",
             "columnName": "productsTitle2",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -408,7 +408,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd9719faf65a186cca12568882ca32de')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '293835efe6fabbcc69409400f53a8f4e')"
     ]
   }
 }

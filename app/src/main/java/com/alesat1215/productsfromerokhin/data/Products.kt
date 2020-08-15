@@ -58,14 +58,3 @@ data class ProductInCart(
     var rowid: Int = 0,
     val name: String? = null
 )
-
-/** Model for [Titles] */
-@Fts4
-@Entity
-data class Titles(
-    val title: String? = null,
-    val img: String? = null,
-    val imgTitle: String? = null,
-    val productsTitle: String? = null,
-    val productsTitle2: String? = null
-)
