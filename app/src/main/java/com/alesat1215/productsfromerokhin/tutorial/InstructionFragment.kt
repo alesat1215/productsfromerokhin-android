@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.alesat1215.productsfromerokhin.MainActivity
-import com.alesat1215.productsfromerokhin.R
 import com.alesat1215.productsfromerokhin.data.Instruction
 import com.alesat1215.productsfromerokhin.databinding.FragmentInstructionBinding
 import com.alesat1215.productsfromerokhin.util.ViewPagerAdapter
