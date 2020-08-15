@@ -17,8 +17,8 @@
     <string name="total">Total:</string>
     <string name="send">Send</string>
     <!--CartFragment-->
-    <string name="rub">₽</string>
-    <string name="add_contact">The phone number for the order will be added to the contacts. Click save to select it from the list in the future and send the order. You may send order through Viber, WhatsApp or SMS</string>
+    <string name="rub" translatable="false">₽</string>
+    <string name="add_contact">The phone number for the order will be added to the contacts. Click \"Save\" to select it from the list when submitting your order via Viber, WhatsApp or SMS.</string>
     <string name="clear_cart">Order was sent successfully? Clear cart?</string>
     <string name="clear_cart_button">Clear</string>
     <!--ProfileFragment-->
@@ -28,20 +28,16 @@
     <string name="address">address</string>
     <string name="save">save</string>
     <string name="profile_saved">Profile saved</string>
-    <string name="back">back</string>
-    <string name="next">next</string>
     <!--MoreFragment-->
     <string name="tutorial">How to order</string>
     <string name="about_products">About products</string>
     <string name="contacts">Contacts</string>
     <string name="share">Share</string>
-    <string name="confidentiality">Confidentiality</string>
     <string name="about_app">About app</string>
     <!--ContactsFragment-->
     <string name="our_phone">Our phone:</string>
     <string name="our_address">Our address:</string>
     <!--AboutAppFragment-->
-    <string name="update_available">New version available</string>
     <string name="update">Update</string>
     <string name="privacy_policy">Privacy policy</string>
 </resources>

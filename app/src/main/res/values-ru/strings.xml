@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Продукты от Ерохина</string>
+    <!--MainActivity-->
+    <string name="start">Начало</string>
+    <string name="menu">Меню</string>
+    <string name="cart">Корзина</string>
+    <string name="profile">Профиль</string>
+    <string name="more">Ещё</string>
+    <string name="logo_toolbar_description">Логотип</string>
+    <!--StartFragment-->
+    <string name="image_description">Изображение</string>
+    <string name="product_image_description">Изображение продукта</string>
+    <string name="in_cart_marker_description">Маркер продукта в корзине</string>
+    <string name="add_button_description">Добавить</string>
+    <string name="del_button_description">Удалить</string>
+    <string name="rub_kg">₽/кг</string>
+    <string name="total">Итого:</string>
+    <string name="send">Отправить</string>
+    <!--CartFragment-->
+    <string name="add_contact">Телефон для заказа будет добавлен в контакты. Нажмите «Сохранить», чтобы выбрать его из списка при отправке заказа через Viber, WhatsApp или SMS.</string>
+    <string name="clear_cart">Заказ был отправлен успешно? Очистить корзину?</string>
+    <string name="clear_cart_button">Очистить</string>
+    <!--ProfileFragment-->
+    <string name="delivery_data">Данные для доставки</string>
+    <string name="name">имя</string>
+    <string name="phone">телефон</string>
+    <string name="address">адрес</string>
+    <string name="save">сохранить</string>
+    <string name="profile_saved">Профиль сохранён</string>
+    <!--MoreFragment-->
+    <string name="tutorial">Как заказать</string>
+    <string name="about_products">О продукции</string>
+    <string name="contacts">Контакты</string>
+    <string name="share">Поделиться</string>
+    <string name="about_app">О приложении</string>
+    <!--ContactsFragment-->
+    <string name="our_phone">Наш телефон:</string>
+    <string name="our_address">Наш адрес:</string>
+    <!--AboutAppFragment-->
+    <string name="update">Обновить</string>
+    <string name="privacy_policy">Конфиденциальность</string>
+</resources>
