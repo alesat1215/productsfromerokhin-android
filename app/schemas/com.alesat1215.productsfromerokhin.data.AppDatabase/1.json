@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "293835efe6fabbcc69409400f53a8f4e",
+    "identityHash": "3e809c60103c1666c4f79dd3d85d3f45",
     "entities": [
       {
         "ftsVersion": "FTS4",
@@ -18,37 +18,37 @@
         },
         "contentSyncTriggers": [],
         "tableName": "Product",
-        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`group` TEXT, `name` TEXT, `consist` TEXT, `img` TEXT, `price` INTEGER, `inStart` INTEGER NOT NULL, `inStart2` INTEGER NOT NULL)",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`group` TEXT NOT NULL, `name` TEXT NOT NULL, `consist` TEXT NOT NULL, `img` TEXT NOT NULL, `price` INTEGER NOT NULL, `inStart` INTEGER NOT NULL, `inStart2` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "group",
             "columnName": "group",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "consist",
             "columnName": "consist",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "img",
             "columnName": "img",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "price",
             "columnName": "price",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "inStart",
@@ -84,13 +84,13 @@
         },
         "contentSyncTriggers": [],
         "tableName": "Group",
-        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name` TEXT)",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -168,7 +168,7 @@
         },
         "contentSyncTriggers": [],
         "tableName": "ProductInCart",
-        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name` TEXT)",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "rowid",
@@ -180,7 +180,7 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -408,7 +408,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '293835efe6fabbcc69409400f53a8f4e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e809c60103c1666c4f79dd3d85d3f45')"
     ]
   }
 }

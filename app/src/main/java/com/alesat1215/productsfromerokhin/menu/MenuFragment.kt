@@ -141,7 +141,7 @@ class MenuFragment : DaggerFragment() {
                         // Get only one event
                         products.removeObservers(viewLifecycleOwner)
                         /** Find first product with group id */
-                        val position = it.indexOfFirst { it.product?.group == tab?.text }
+                        val position = it.indexOfFirst { it.product.group == tab?.text }
                         /** Scroll to position */
                         products_menu.layoutManager?.startSmoothScroll(object : LinearSmoothScroller(context) {
                             // Scroll item in top

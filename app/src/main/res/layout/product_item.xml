@@ -81,7 +81,7 @@
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{(data.product.price.toString() ?? ``) + ' ' + @string/rub_kg}"
+                android:text="@{Integer.toString(data.product.price) + ' ' + @string/rub_kg}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="250 ₽/kg" />

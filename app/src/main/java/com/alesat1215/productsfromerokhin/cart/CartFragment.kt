@@ -116,12 +116,12 @@ class CartFragment : DaggerFragment() {
             builder.apply {
                 setMessage(R.string.add_contact)
                 // Show contact card for positive button
-                setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
+                setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                     Logger.d("OK click")
                     addContact(number)
                 }
                 // Show select messenger for negative button
-                setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, i: Int ->
+                setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int ->
                     Logger.d("CANCEL click")
                     selectMessenger()
                 }
