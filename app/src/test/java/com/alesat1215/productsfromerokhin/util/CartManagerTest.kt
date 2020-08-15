@@ -1,5 +1,6 @@
 package com.alesat1215.productsfromerokhin.util
 
+import com.alesat1215.productsfromerokhin.data.Product
 import com.alesat1215.productsfromerokhin.data.ProductInCart
 import com.alesat1215.productsfromerokhin.data.ProductsRepository
 import com.alesat1215.productsfromerokhin.data.ProductInfo
@@ -33,7 +34,7 @@ class CartManagerTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        productInfo = ProductInfo(inCart = listOf(productInCart))
+        productInfo = ProductInfo(Product(), listOf(productInCart))
         cartManager = object : CartManager() {
             override val productsRepository = this@CartManagerTest.repository
         }
