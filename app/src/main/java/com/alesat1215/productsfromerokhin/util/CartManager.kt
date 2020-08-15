@@ -14,7 +14,7 @@ abstract class CartManager: ViewModel() {
     fun addProductToCart(productInfo: ProductInfo) {
         viewModelScope.launch {
             productsRepository.addProductToCart(productInfo.asProductInCart())
-            Logger.d("Add to cart: ${productInfo.product?.name}")
+            Logger.d("Add to cart: ${productInfo.product.name}")
         }
     }
 

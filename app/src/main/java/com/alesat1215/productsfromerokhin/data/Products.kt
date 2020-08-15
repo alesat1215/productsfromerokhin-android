@@ -4,7 +4,7 @@ import androidx.room.*
 
 /** Model for [ProductInfo] with list of [ProductInCart] */
 data class ProductInfo(
-    @Embedded val product: Product? = null,
+    @Embedded val product: Product,
     @Relation(
         parentColumn = "name",
         entityColumn = "name"
@@ -13,23 +13,23 @@ data class ProductInfo(
 ) {
     /** @return [ProductInCart] from [Product] */
     fun asProductInCart() =
-        ProductInCart(name = product?.name)
+        ProductInCart(name = product.name)
     /** @return total sum of price for products in cart */
-    fun priceSumInCart() = (product?.price ?: 0) * inCart.count()
+    fun priceSumInCart() = (product.price) * inCart.count()
     /** @return text for order with: name | price * count = sum | */
     fun textForOrder() =
-        "${product?.name.orEmpty()} | ${product?.price ?: 0} * ${inCart.count()} = ${priceSumInCart()} |"
+        "${product.name} | ${product.price} * ${inCart.count()} = ${priceSumInCart()} |"
 }
 
 /** Model for [Product] */
 @Fts4
 @Entity
 data class Product(
-    var group: String? = null,
-    val name: String? = null,
-    val consist: String? = null,
-    val img: String? = null,
-    val price: Int? = null,
+    var group: String = "",
+    val name: String = "",
+    val consist: String = "",
+    val img: String = "",
+    val price: Int = 0,
     val inStart: Boolean = false,
     val inStart2: Boolean = false
 )
@@ -38,7 +38,7 @@ data class Product(
 @Fts4
 @Entity
 data class Group(
-    val name: String? = null
+    val name: String = ""
 ) {
     @Ignore var products: List<Product> = emptyList()
 
@@ -56,5 +56,5 @@ fun products(groups: List<Group>) = groups.map { it.productsWithGroup() }.flatte
 data class ProductInCart(
     @PrimaryKey(autoGenerate = true)
     var rowid: Int = 0,
-    val name: String? = null
+    val name: String = ""
 )
