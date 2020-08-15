@@ -89,7 +89,7 @@
                 android:text="@string/about_app"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textStyle="bold"
-                app:icon="@drawable/baseline_android_black_24dp"
+                app:icon="@drawable/ic_logo_24dp"
                 app:iconTint="@color/colorPrimary" />
         </LinearLayout>
 
