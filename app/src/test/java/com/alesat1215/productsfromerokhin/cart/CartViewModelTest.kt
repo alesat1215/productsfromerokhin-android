@@ -41,6 +41,7 @@ class CartViewModelTest {
     private lateinit var contactsResult: LiveData<Contacts?>
     @Mock
     private lateinit var orderWarningRepository: OrderWarningRepository
+    private val orderWarning = OrderWarning("text", listOf("group 1", "group 2"))
 
     private lateinit var viewModel: CartViewModel
 
@@ -59,6 +60,7 @@ class CartViewModelTest {
         `when`(profile.delivery()).thenReturn(delivery)
         `when`(profileRepository.profile).thenReturn(MutableLiveData(profile))
         `when`(contactsRepository.contacts()).thenReturn(contactsResult)
+        `when`(orderWarningRepository.orderWarning()).thenReturn(MutableLiveData(orderWarning))
         viewModel = CartViewModel(productsRepository, profileRepository, contactsRepository, orderWarningRepository)
     }
 
@@ -101,5 +103,12 @@ class CartViewModelTest {
     @Test
     fun contacts() {
         assertEquals(viewModel.contacts(), contactsResult)
+    }
+
+    @Test
+    fun warning() {
+        var result = ""
+        viewModel.warning.observeForever { result = it }
+        assertEquals(result, orderWarning.text)
     }
 }
