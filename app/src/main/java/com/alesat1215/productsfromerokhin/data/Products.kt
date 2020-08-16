@@ -18,7 +18,7 @@ data class ProductInfo(
     fun priceSumInCart() = (product.price) * inCart.count()
     /** @return text for order with: name | price * count = sum | */
     fun textForOrder() =
-        "${product.name} | ${product.price} * ${inCart.count()} = ${priceSumInCart()} |"
+        "${product.name} ${product.price} * ${inCart.count()} = ${priceSumInCart()}"
 }
 
 /** Model for [Product] */
