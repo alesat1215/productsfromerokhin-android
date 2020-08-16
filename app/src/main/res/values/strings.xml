@@ -19,8 +19,9 @@
     <!--CartFragment-->
     <string name="rub" translatable="false">₽</string>
     <string name="add_contact">The phone number for the order will be added to the contacts. Click \"Save\" to select it from the list when submitting your order via Viber, WhatsApp or SMS.</string>
-    <string name="clear_cart">Order was sent successfully? Clear cart?</string>
+    <string name="clear_cart_order">Order was sent successfully? Clear cart?</string>
     <string name="clear_cart_button">Clear</string>
+    <string name="clear_cart_alert">Are you sure you want to clear cart?</string>
     <!--ProfileFragment-->
     <string name="delivery_data">Delivery data</string>
     <string name="name">name</string>

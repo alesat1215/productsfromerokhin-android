@@ -19,8 +19,9 @@
     <string name="send">Отправить</string>
     <!--CartFragment-->
     <string name="add_contact">Телефон для заказа будет добавлен в контакты. Нажмите «Сохранить», чтобы выбрать его из списка при отправке заказа через Viber, WhatsApp или SMS.</string>
-    <string name="clear_cart">Заказ был отправлен успешно? Очистить корзину?</string>
+    <string name="clear_cart_order">Заказ был отправлен успешно? Очистить корзину?</string>
     <string name="clear_cart_button">Очистить</string>
+    <string name="clear_cart_alert">Вы уверены, что хотите очистить корзину?</string>
     <!--ProfileFragment-->
     <string name="delivery_data">Данные для доставки</string>
     <string name="name">имя</string>

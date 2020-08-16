@@ -201,7 +201,7 @@ class CartFragment : DaggerFragment() {
         val dialog = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
-                setMessage(R.string.clear_cart)
+                setMessage(R.string.clear_cart_order)
                 // Show contact card for positive button
                 setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                     Logger.d("Clear cart")
