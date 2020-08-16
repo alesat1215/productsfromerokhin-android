@@ -1,9 +1,7 @@
 package com.alesat1215.productsfromerokhin.cart
 
 import androidx.lifecycle.*
-import com.alesat1215.productsfromerokhin.data.IContactsRepository
-import com.alesat1215.productsfromerokhin.data.IProductsRepository
-import com.alesat1215.productsfromerokhin.data.IProfileRepository
+import com.alesat1215.productsfromerokhin.data.*
 import com.alesat1215.productsfromerokhin.util.CartManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -11,7 +9,8 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     override val productsRepository: IProductsRepository,
     private val profileRepository: IProfileRepository,
-    private val contactsRepository: IContactsRepository
+    private val contactsRepository: IContactsRepository,
+    private val orderWarningRepository: IOrderWarningRepository
 ) : CartManager() {
     /** Products in cart */
     val productsInCart by lazy { productsRepository.productsInCart }
@@ -42,4 +41,15 @@ class CartViewModel @Inject constructor(
     }
 
     fun contacts() = contactsRepository.contacts()
+
+    private val orderWarning by lazy { orderWarningRepository.orderWarning() }
+
+    val warning by lazy { Transformations.map(orderWarning) { it?.text.orEmpty() } }
+
+    val withWarning by lazy {
+        Transformations.switchMap(orderWarning) { orderWarning ->
+            Transformations.map(productsInCart) { it.filter { orderWarning?.groups?.contains(it.product.group) ?: false }.isNotEmpty() }
+        }
+
+    }
 }
