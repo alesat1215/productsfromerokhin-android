@@ -43,12 +43,12 @@ class CartViewModel @Inject constructor(
     fun contacts() = contactsRepository.contacts()
 
     private val orderWarning by lazy { orderWarningRepository.orderWarning() }
-
+    /** Text for warning */
     val warning by lazy { Transformations.map(orderWarning) { it?.text.orEmpty() } }
-
+    /** Check in cart products from groups with warning */
     val withWarning by lazy {
         Transformations.switchMap(orderWarning) { orderWarning ->
-            Transformations.map(productsInCart) { it.filter { orderWarning?.groups?.contains(it.product.group) ?: false }.isNotEmpty() }
+            Transformations.map(productsInCart) { it.firstOrNull { orderWarning?.groups?.contains(it.product.group) ?: false } != null }
         }
 
     }
