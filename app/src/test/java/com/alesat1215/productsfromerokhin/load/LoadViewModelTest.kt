@@ -39,6 +39,9 @@ class LoadViewModelTest {
     private lateinit var titlesRepository: TitlesRepository
     private val titles: LiveData<Titles?> = MutableLiveData(Titles())
     @Mock
+    private lateinit var orderWarningRepository: OrderWarningRepository
+    private val orderWarning: LiveData<OrderWarning?> = MutableLiveData(OrderWarning())
+    @Mock
     private lateinit var auth: Auth
     private val authResult: LiveData<Result<Unit>> = MutableLiveData(Result.success(Unit))
     @Mock
@@ -63,7 +66,16 @@ class LoadViewModelTest {
         `when`(titlesRepository.titles()).thenReturn(titles)
         `when`(aboutProductsRepository.aboutProducts()).thenReturn(MutableLiveData(aboutProductsList))
         `when`(aboutAppRepository.aboutApp()).thenReturn(MutableLiveData(aboutApp))
-        viewModel = LoadViewModel(productsRepository, tutorialRepository, contactsRepository, titlesRepository, aboutProductsRepository, aboutAppRepository, auth)
+        `when`(orderWarningRepository.orderWarning()).thenReturn(orderWarning)
+        viewModel = LoadViewModel(
+            productsRepository,
+            tutorialRepository,
+            contactsRepository,
+            titlesRepository,
+            aboutProductsRepository,
+            aboutAppRepository,
+            orderWarningRepository,
+            auth)
     }
 
     @Test
