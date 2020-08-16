@@ -1,5 +1,7 @@
 package com.alesat1215.productsfromerokhin
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -66,10 +68,28 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (item.itemId == R.id.clearCart) {
-            viewModel.clearCart()
-            Logger.d("Clear cart")
+            clearCart()
             true
         } else super.onOptionsItemSelected(item)
+    }
+    /** Create dialog for clear cart */
+    private fun clearCart() {
+        // Build alert
+        val builder = AlertDialog.Builder(this)
+        builder.apply {
+            setMessage(R.string.clear_cart_alert)
+            // Show contact card for positive button
+            setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                Logger.d("Clear cart")
+                viewModel.clearCart()
+            }
+            // Show select messenger for negative button
+            setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int ->
+                Logger.d("CANCEL click")
+            }
+        }
+        // Show alert
+        builder.show()
     }
 
     private fun setupNavigation(navController: NavController) {
