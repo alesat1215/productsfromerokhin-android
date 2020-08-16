@@ -16,6 +16,7 @@ class LoadViewModel @Inject constructor(
     private val titlesRepository: ITitlesRepository,
     private val aboutProductsRepository: IAboutProductsRepository,
     private val aboutAppRepository: IAboutAppRepository,
+    private val orderWarningRepository: IOrderWarningRepository,
     private val auth: Auth
 ) : ViewModel() {
 
@@ -29,8 +30,9 @@ class LoadViewModel @Inject constructor(
         val products = Transformations.map(productsRepository.products()) { it.isNotEmpty() }
         val aboutProducts = Transformations.map(aboutProductsRepository.aboutProducts()) { it.isNotEmpty() }
         val aboutApp = Transformations.map(aboutAppRepository.aboutApp()) { it != null }
+        val orderWarning = Transformations.map(orderWarningRepository.orderWarning()) { it != null }
 
-        return listOf(phone, titles, products, aboutProducts, aboutApp).reduce { acc, liveData ->
+        return listOf(phone, titles, products, aboutProducts, aboutApp, orderWarning).reduce { acc, liveData ->
             Transformations.switchMap(acc) {
                 if (it) {
                     Logger.d("Load complete")
