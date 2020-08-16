@@ -18,4 +18,5 @@ object DataMock {
     )
     val instructions = listOf(Instruction("title 1", "text 1"), Instruction("title 2", "text 2"))
     val aboutApp = AboutApp("https://google.com", 6, "https://play.google.com/store/apps/details?id=")
+    val orderWarning = OrderWarning("text", listOf("group 1"))
 }

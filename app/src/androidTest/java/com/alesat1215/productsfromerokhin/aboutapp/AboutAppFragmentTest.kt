@@ -44,7 +44,7 @@ class AboutAppFragmentTest {
         onView(withId(R.id.appName)).check(matches(isDisplayed()))
         onView(withId(R.id.appVersion)).check(matches(isDisplayed()))
         onView(withId(R.id.privacy)).check(matches(isDisplayed()))
-        onView(withId(R.id.update)).check(matches(isDisplayed()))
+//        onView(withId(R.id.update)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -58,14 +58,14 @@ class AboutAppFragmentTest {
         assertEquals(intent?.data, Uri.parse(DataMock.aboutApp.privacy))
     }
 
-    @Test
-    fun update() {
-        onView(withId(R.id.update)).perform(click())
-        val chooser = Intents.getIntents().last()
-        assertEquals(chooser.action, Intent.ACTION_CHOOSER)
-        assertTrue(chooser.hasExtra(Intent.EXTRA_INTENT))
-        val intent = chooser.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)
-        assertEquals(intent?.action, Intent.ACTION_VIEW)
-        assertEquals(intent?.data, Uri.parse(DataMock.aboutApp.googlePlay + intentsTestRule.activity.packageName))
-    }
+//    @Test
+//    fun update() {
+//        onView(withId(R.id.update)).perform(click())
+//        val chooser = Intents.getIntents().last()
+//        assertEquals(chooser.action, Intent.ACTION_CHOOSER)
+//        assertTrue(chooser.hasExtra(Intent.EXTRA_INTENT))
+//        val intent = chooser.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)
+//        assertEquals(intent?.action, Intent.ACTION_VIEW)
+//        assertEquals(intent?.data, Uri.parse(DataMock.aboutApp.googlePlay + intentsTestRule.activity.packageName))
+//    }
 }

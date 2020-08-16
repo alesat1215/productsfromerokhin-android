@@ -47,6 +47,8 @@ abstract class TestRepositoryModule {
     abstract fun bindAboutProductsRepository(repository: AboutProductsRepositoryMock): IAboutProductsRepository
     @Binds
     abstract fun bindAboutAppRepository(repository: AboutAppRepositoryMock): IAboutAppRepository
+    @Binds
+    abstract fun bindOrderWarningRepository(repository: OrderWarningRepositoryMock): IOrderWarningRepository
 }
 
 @Module
