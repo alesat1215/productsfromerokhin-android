@@ -26,7 +26,7 @@ object AppModule {
 
     /** Limiter for update database from remote config */
     @Provides
-    fun limiter() = UpdateLimiter(1, TimeUnit.MINUTES)
+    fun limiter() = UpdateLimiter(12, TimeUnit.HOURS)
 
     @Singleton
     @Provides
