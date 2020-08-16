@@ -19,5 +19,7 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindAboutProductsRepository(repository: AboutProductsRepository): IAboutProductsRepository
     @Binds
-    abstract fun bindAboutAppRepository(repositoryAbout: AboutAppRepository): IAboutAppRepository
+    abstract fun bindAboutAppRepository(repository: AboutAppRepository): IAboutAppRepository
+    @Binds
+    abstract fun bindOrderWarningRepository(repository: OrderWarningRepository): IOrderWarningRepository
 }

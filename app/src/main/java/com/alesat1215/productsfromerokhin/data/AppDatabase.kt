@@ -142,6 +142,23 @@ interface AboutAppDao {
     suspend fun clearAboutApp()
 }
 
+@Dao
+interface OrderWarningDao {
+    @Query("SELECT * FROM orderwarning LIMIT 1")
+    fun orderWarning(): LiveData<OrderWarning?>
+    /** Clear & insert orderWarning */
+    @Transaction
+    suspend fun updateOrderWarning(orderWarning: OrderWarning) {
+        clearOrderWarning()
+        insertOrderWarning(orderWarning)
+        Logger.d("Update order warning")
+    }
+    @Insert(entity = OrderWarning::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrderWarning(orderWarning: OrderWarning)
+    @Query("DELETE FROM orderwarning")
+    suspend fun clearOrderWarning()
+}
+
 @Database(
     entities = [
     Product::class,
@@ -152,7 +169,8 @@ interface AboutAppDao {
     Instruction::class,
     Contacts::class,
     AboutProducts::class,
-    AboutApp::class
+    AboutApp::class,
+    OrderWarning::class
 ], version = 1)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun productsDao(): ProductsDao
@@ -163,5 +181,6 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun aboutProductsDao(): AboutProductsDao
     abstract fun aboutApp(): AboutAppDao
+    abstract fun orderWarningDao(): OrderWarningDao
 }
 
