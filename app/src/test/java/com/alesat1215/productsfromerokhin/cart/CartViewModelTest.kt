@@ -111,4 +111,24 @@ class CartViewModelTest {
         viewModel.warning.observeForever { result = it }
         assertEquals(result, orderWarning.text)
     }
+
+    @Test
+    fun withWarningTrue() {
+        var result = true
+        `when`(productsRepository.productsInCart).thenReturn(MutableLiveData(listOf(ProductInfo(
+            Product(), listOf()
+        ))))
+        viewModel.withWarning.observeForever { result = it }
+        assertFalse(result)
+    }
+
+    @Test
+    fun withWarningFalse() {
+        var result = false
+        `when`(productsRepository.productsInCart).thenReturn(MutableLiveData(listOf(ProductInfo(
+            Product("group 1"), listOf()
+        ))))
+        viewModel.withWarning.observeForever { result = it }
+        assertTrue(result)
+    }
 }
