@@ -39,6 +39,8 @@ class CartViewModelTest {
     private val delivery = "delivery"
     @Mock
     private lateinit var contactsResult: LiveData<Contacts?>
+    @Mock
+    private lateinit var orderWarningRepository: OrderWarningRepository
 
     private lateinit var viewModel: CartViewModel
 
@@ -57,7 +59,7 @@ class CartViewModelTest {
         `when`(profile.delivery()).thenReturn(delivery)
         `when`(profileRepository.profile).thenReturn(MutableLiveData(profile))
         `when`(contactsRepository.contacts()).thenReturn(contactsResult)
-        viewModel = CartViewModel(productsRepository, profileRepository, contactsRepository)
+        viewModel = CartViewModel(productsRepository, profileRepository, contactsRepository, orderWarningRepository)
     }
 
     @After
