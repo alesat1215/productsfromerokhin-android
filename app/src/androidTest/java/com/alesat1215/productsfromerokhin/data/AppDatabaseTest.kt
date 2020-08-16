@@ -29,6 +29,7 @@ class AppDatabaseTest {
     private lateinit var instructionsDao: InstructionsDao
     private lateinit var contactsDao: ContactsDao
     private lateinit var aboutProductsDao: AboutProductsDao
+    private lateinit var orderWarningDao: OrderWarningDao
     private lateinit var db: AppDatabase
 
     @get:Rule
@@ -52,6 +53,7 @@ class AppDatabaseTest {
         instructionsDao = db.instructionsDao()
         contactsDao = db.contactsDao()
         aboutProductsDao = db.aboutProductsDao()
+        orderWarningDao = db.orderWarningDao()
     }
 
     @After
@@ -137,6 +139,15 @@ class AppDatabaseTest {
         aboutProductsDao.updateAboutProducts(aboutProducts)
         sleep(100)
         assertEquals(result, aboutProducts)
+    }
+
+    @Test
+    fun updateOrderWarning() = runBlocking {
+        var result: OrderWarning? = null
+        orderWarningDao.orderWarning().observeForever { result = it }
+        orderWarningDao.updateOrderWarning(DataMock.orderWarning)
+        sleep(100)
+        assertEquals(result, DataMock.orderWarning)
     }
 
 }
