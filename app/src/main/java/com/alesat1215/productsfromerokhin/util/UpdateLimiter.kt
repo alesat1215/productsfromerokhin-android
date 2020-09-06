@@ -12,7 +12,7 @@ class UpdateLimiter(timeout: Int, timeUnit: TimeUnit)
     /** Timeout in millis for "true" result for shouldFetch() */
     private val timeout = timeUnit.toMillis(timeout.toLong())
 
-    /** @return true if timeout is not over */
+    /** @return true if timeout is over */
     @Synchronized
     fun needUpdate(): Boolean {
         val now = SystemClock.uptimeMillis()
